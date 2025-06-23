@@ -1,6 +1,6 @@
 # 🩺 VIGIA Medical AI
 
-[![Medical Grade](https://img.shields.io/badge/medical-grade-critical)](https://github.com/AutonomosCdM/vigia-medical-ai-hackathon)
+[![Medical Grade](https://img.shields.io/badge/medical-grade-critical)](https://github.com/AutonomosCdM/vigia-medical-ai)
 [![HIPAA Compliant](https://img.shields.io/badge/HIPAA-compliant-blue)](https://www.hhs.gov/hipaa/index.html)
 [![Google Cloud ADK](https://img.shields.io/badge/Google_Cloud-ADK_Agents-4285f4)](https://cloud.google.com/adk)
 [![Medical AI](https://img.shields.io/badge/AI-MedGemma_27B-purple)](https://ollama.ai/medgemma)
@@ -116,8 +116,8 @@ Patient (WhatsApp) → Medical Analysis → Physician Review (Slack) → Patient
 ### One-Command Setup
 ```bash
 # Clone and install
-git clone https://github.com/AutonomosCdM/vigia-medical-ai-hackathon.git
-cd vigia-medical-ai-hackathon
+git clone https://github.com/AutonomosCdM/vigia-medical-ai.git
+cd vigia-medical-ai
 ./install.sh
 
 # System automatically:
@@ -180,7 +180,7 @@ The system demonstrates actual medical decision-making:
 ## 🏗️ **Project Structure**
 
 ```
-vigia-medical-ai-hackathon/
+vigia-medical-ai/
 ├── 📖 README.md (This file)
 ├── ⚡ install.sh (One-command installer)
 ├── 🔧 requirements.txt (Python dependencies)
@@ -233,7 +233,7 @@ vigia-medical-ai-hackathon/
 - **Healthcare Integration**: Bidirectional patient-physician communication
 
 ### 📧 **Contact**
-- **GitHub**: [vigia-medical-ai-hackathon](https://github.com/AutonomosCdM/vigia-medical-ai-hackathon)
+- **GitHub**: [vigia-medical-ai](https://github.com/AutonomosCdM/vigia-medical-ai)
 - **Interface**: `http://localhost:7860` (after installation)
 - **Documentation**: `./docs/` (comprehensive medical and technical docs)
 

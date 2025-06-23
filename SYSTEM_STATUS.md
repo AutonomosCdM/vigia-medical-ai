@@ -22,8 +22,8 @@ NPUAP Compliance: True
 
 #### Installation (2-3 minutes):
 ```bash
-git clone https://github.com/AutonomosCdM/vigia-medical-ai-hackathon.git
-cd vigia-medical-ai-hackathon
+git clone https://github.com/AutonomosCdM/vigia-medical-ai.git
+cd vigia-medical-ai
 ./install.sh
 # Interface available at: http://localhost:7860
 ```

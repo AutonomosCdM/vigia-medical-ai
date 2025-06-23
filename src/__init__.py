@@ -8,9 +8,9 @@ Medical-grade pressure injury detection system with:
 - Google Cloud ADK agent coordination
 - Evidence-based medical decision making
 
-This package contains the core medical functionality for hackathon demonstration.
+This package contains the core medical functionality for professional deployment.
 """
 
-__version__ = "1.1.0-hackathon"
+__version__ = "2.0.0-production"
 __author__ = "VIGIA Medical AI Team"
 __description__ = "Medical-grade pressure injury detection with NPUAP compliance"

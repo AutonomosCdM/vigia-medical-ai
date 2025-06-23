@@ -422,7 +422,7 @@ graph TD
 
 ---
 
-## 🎖️ Hackathon Deliverables
+## 🏆 Production Features
 
 ### 🏆 **What Makes VIGIA Special**
 1. **Real Medical Impact**: Production-ready pressure injury detection saving lives

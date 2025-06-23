@@ -286,7 +286,7 @@ next_step "Creating medical demo interface..."
 
 cat > launch_demo.py << 'EOF'
 #!/usr/bin/env python3
-"""Launch Vigia Medical Demo for Hackathon"""
+"""Launch Vigia Medical AI Professional Demo"""
 
 import gradio as gr
 import asyncio

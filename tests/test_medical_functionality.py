@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-VIGIA Medical AI - Hackathon Functionality Tests
+VIGIA Medical AI - Medical Functionality Tests
 ==============================================
 
 Comprehensive test suite to validate real medical functionality
-for hackathon demonstration. Tests actual NPUAP compliance and
-medical decision making.
+and clinical decision making. Tests actual NPUAP compliance and
+evidence-based medical protocols.
 
-Run: python -m pytest tests/test_hackathon_medical_functionality.py -v
+Run: python -m pytest tests/test_medical_functionality.py -v
 """
 
 import pytest
@@ -152,8 +152,8 @@ class TestPHITokenization:
         assert hasattr(client, 'tokenize_patient')
         assert callable(getattr(client, 'tokenize_patient'))
 
-class TestHackathonSystemIntegration:
-    """Test integrated system functionality for hackathon demo"""
+class TestMedicalSystemIntegration:
+    """Test integrated system functionality for medical deployment"""
     
     def test_medical_system_components(self):
         """Test all major components can be initialized"""
@@ -199,8 +199,8 @@ class TestHackathonSystemIntegration:
         evidence = decision['evidence_documentation']
         assert evidence.get('npuap_compliance') is True
 
-def test_hackathon_system_readiness():
-    """Test overall system readiness for hackathon demonstration"""
+def test_medical_system_readiness():
+    """Test overall system readiness for medical deployment"""
     
     # Test medical functionality
     engine = MedicalDecisionEngine()
