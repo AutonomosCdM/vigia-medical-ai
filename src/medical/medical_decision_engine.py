@@ -1,11 +1,11 @@
 """
-Medical Decision Engine - Sistema Vigía
-=========================================
+Medical Decision Engine - VIGIA Medical AI
+==========================================
 
-Motor de decisiones médicas basado en evidencia científica y guidelines NPUAP/EPUAP/PPPIA.
-Implementa lógica de decisión clínica documentada según estándares internacionales.
+Evidence-based medical decision engine implementing NPUAP/EPUAP/PPPIA clinical guidelines.
+Provides clinical decision logic documented according to international medical standards.
 
-Referencias:
+References:
 - NPUAP/EPUAP/PPPIA Clinical Practice Guideline 2019
 - International Classification System for Pressure Injuries
 - Evidence-Based Medicine Guidelines for Pressure Injury Care
@@ -20,29 +20,29 @@ logger = logging.getLogger(__name__)
 
 
 class LPPGrade(Enum):
-    """Clasificación LPP según NPUAP/EPUAP/PPPIA 2019"""
-    GRADE_0 = 0  # Sin evidencia de LPP
-    GRADE_1 = 1  # Eritema no blanqueable
-    GRADE_2 = 2  # Pérdida parcial del espesor
-    GRADE_3 = 3  # Pérdida completa del espesor
-    GRADE_4 = 4  # Pérdida completa del tejido
-    UNSTAGEABLE = 5  # No clasificable
-    SUSPECTED_DTI = 6  # Sospecha de lesión tejido profundo
+    """Pressure injury classification according to NPUAP/EPUAP/PPPIA 2019"""
+    GRADE_0 = 0  # No evidence of pressure injury
+    GRADE_1 = 1  # Non-blanchable erythema
+    GRADE_2 = 2  # Partial thickness skin loss
+    GRADE_3 = 3  # Full thickness skin loss
+    GRADE_4 = 4  # Full thickness tissue loss
+    UNSTAGEABLE = 5  # Unstageable/unclassified
+    SUSPECTED_DTI = 6  # Suspected deep tissue injury
 
 
 class SeverityLevel(Enum):
-    """Niveles de severidad médica para escalación"""
-    PREVENTIVE = "RUTINA_PREVENTIVA"
-    ATTENTION = "ATENCIÓN"
-    IMPORTANT = "IMPORTANTE"
-    URGENT = "URGENTE"
-    EMERGENCY = "EMERGENCY"
-    SPECIALIZED_EVAL = "EVALUACIÓN_ESPECIALIZADA"
-    STRICT_MONITORING = "MONITOREO_ESTRICTO"
+    """Medical severity levels for clinical escalation"""
+    PREVENTIVE = "preventive"
+    ATTENTION = "attention"
+    IMPORTANT = "important"
+    URGENT = "urgent"
+    EMERGENCY = "emergency"
+    SPECIALIZED_EVAL = "specialized_evaluation"
+    STRICT_MONITORING = "strict_monitoring"
 
 
 class EvidenceLevel(Enum):
-    """Niveles de evidencia científica según NPUAP"""
+    """Scientific evidence levels according to NPUAP standards"""
     LEVEL_A = "A"  # Strong evidence, multiple RCTs
     LEVEL_B = "B"  # Moderate evidence, some RCTs
     LEVEL_C = "C"  # Limited evidence, expert opinion

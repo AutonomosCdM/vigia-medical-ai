@@ -69,13 +69,24 @@ def analyze_medical_case(image, patient_age, diabetes, hypertension, location):
             patient_context=patient_context
         )
         
+        # Translate severity to English for professional presentation
+        severity_translation = {
+            'emergency': 'EMERGENCY',
+            'urgente': 'URGENT', 
+            'importante': 'IMPORTANT',
+            'atención': 'ATTENTION',
+            'preventive': 'PREVENTIVE'
+        }
+        severity = decision['severity_assessment'].lower()
+        display_severity = severity_translation.get(severity, severity.upper())
+        
         # Format professional medical response
         result = f"""
 # 🏥 VIGIA Medical AI Analysis
 
 ## 📊 **Clinical Assessment**
 - **LPP Grade Detected:** {decision['lpp_grade']} 
-- **Clinical Severity:** {decision['severity_assessment'].upper()}
+- **Clinical Severity:** {display_severity}
 - **Detection Confidence:** {mock_confidence:.1%}
 - **Anatomical Location:** {location.title()}
 
@@ -84,10 +95,33 @@ def analyze_medical_case(image, patient_age, diabetes, hypertension, location):
 **Immediate Actions:**
 """
         
-        # Show real clinical recommendations from NPUAP engine
+        # Show real clinical recommendations from NPUAP engine (with English translation)
         if 'clinical_recommendations' in decision:
+            # Basic translation for key Spanish medical terms
+            def translate_recommendation(rec):
+                translations = {
+                    'Evaluación quirúrgica urgente': 'Urgent surgical evaluation',
+                    'Cuidados multidisciplinarios intensivos': 'Intensive multidisciplinary care',
+                    'Colchón de redistribución de presión': 'Pressure redistribution mattress',
+                    'Curación húmeda con apósitos hidrocoloides': 'Moist wound healing with hydrocolloid dressings',
+                    'Evaluación y manejo del dolor': 'Pain assessment and management',
+                    'Dispositivos de alivio de presión': 'Pressure relief devices',
+                    'Alivio inmediato de presión': 'Immediate pressure relief',
+                    'Protección cutánea': 'Skin protection',
+                    'quirúrgica': 'surgical',
+                    'evaluación': 'evaluation',
+                    'alivio': 'relief',
+                    'presión': 'pressure'
+                }
+                
+                for spanish, english in translations.items():
+                    if spanish in rec:
+                        return rec.replace(spanish, english)
+                return rec
+            
             for i, rec in enumerate(decision['clinical_recommendations'][:4], 1):
-                result += f"{i}. {rec}\n"
+                translated_rec = translate_recommendation(rec)
+                result += f"{i}. {translated_rec}\n"
         
         # Add medical warnings for high-risk cases
         if decision.get('medical_warnings'):
