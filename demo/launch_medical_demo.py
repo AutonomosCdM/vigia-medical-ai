@@ -174,7 +174,7 @@ This is expected in demo mode if medical services are not fully configured.
 
 # Create professional Gradio interface
 with gr.Blocks(
-    title="VIGIA Medical AI - Hackathon Demo",
+    title="VIGIA Medical AI - Professional Demo",
     theme=gr.themes.Soft(),
     css="""
     .gradio-container {
