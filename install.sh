@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# 🩺 VIGIA Medical AI - Hackathon One-Command Installer
-# ===================================================
+# 🩺 VIGIA Medical AI - One-Command Installer
+# ============================================
 # Installs complete medical-grade pressure injury detection system
 # Usage: ./install.sh
 
@@ -57,7 +57,7 @@ echo " ╚████╔╝ ██║╚██████╔╝██║██
 echo "  ╚═══╝  ╚═╝ ╚═════╝ ╚═╝╚═╝  ╚═╝    ╚═╝     ╚═╝╚══════╝╚═════╝ ╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝"
 echo -e "${NC}"
 echo -e "${BLUE}🏥 Medical-Grade Pressure Injury Detection System${NC}"
-echo -e "${YELLOW}⚡ One-command installation for hackathon judges${NC}"
+echo -e "${YELLOW}⚡ One-command installation for healthcare professionals${NC}"
 echo ""
 
 # Detect OS
@@ -210,14 +210,14 @@ next_step "Configuring medical system environment..."
 # Create .env if not exists
 if [ ! -f ".env" ]; then
     cat > .env << EOF
-# VIGIA Medical AI - Hackathon Configuration
-VIGIA_ENV=hackathon_demo
+# VIGIA Medical AI - Production Configuration
+VIGIA_ENV=production_demo
 REDIS_URL=redis://localhost:6379
 OLLAMA_URL=http://localhost:11434
 MEDGEMMA_MODEL=medgemma:27b
 PHI_TOKENIZATION_URL=http://localhost:8080
-HOSPITAL_ID=HACKATHON_DEMO
-STAFF_ID=DEMO_PHYSICIAN_001
+HOSPITAL_ID=VIGIA_MEDICAL_DEMO
+STAFF_ID=MEDICAL_PHYSICIAN_001
 LOG_LEVEL=INFO
 ENABLE_MEDICAL_AUDIT=true
 HIPAA_COMPLIANCE_MODE=demo
@@ -423,8 +423,8 @@ DEMO_PID=$!
 sleep 8
 
 echo -e "${GREEN}"
-echo "🏆 HACKATHON READY!"
-echo "=================="
+echo "🏆 MEDICAL SYSTEM READY!"
+echo "======================="
 echo "• Demo: http://localhost:7860"
 echo "• Medical AI: Real NPUAP guidelines"
 echo "• PHI Protection: Batman tokenization"

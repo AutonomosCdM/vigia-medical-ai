@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-VIGIA Medical AI - Hackathon Demo Interface
-==========================================
+VIGIA Medical AI - Professional Medical Interface
+===============================================
 
-Professional medical analysis interface for hackathon demonstration.
-Features real NPUAP/EPUAP clinical guidelines and HIPAA-compliant processing.
+Professional medical analysis interface with real NPUAP/EPUAP clinical guidelines 
+and HIPAA-compliant processing for healthcare environments.
 
 Usage:
     python demo/launch_medical_demo.py
 
-Demo will be available at: http://localhost:7860
+Interface will be available at: http://localhost:7860
 """
 
 import gradio as gr
@@ -166,12 +166,12 @@ with gr.Blocks(
     """)
     
     gr.Markdown("""
-    ## 🎯 **Hackathon Demonstration**
+    ## 🎯 **Medical Analysis System**
     
     Upload a medical image and provide patient context for AI-powered clinical analysis.
-    This system demonstrates **real medical functionality** with actual NPUAP clinical guidelines.
+    This system implements **real medical functionality** with actual NPUAP clinical guidelines.
     
-    **Note:** This is a live medical AI system - decisions are based on real clinical protocols.
+    **Note:** This is a professional medical AI system - decisions are based on real clinical protocols.
     """)
     
     with gr.Row():
@@ -254,20 +254,20 @@ with gr.Blocks(
     ---
     **🩺 Built for Healthcare | 🔒 Secured for Compliance | 🚀 Ready for Production**
     
-    *Demo running on VIGIA Medical AI v1.1 | For hackathon demonstration purposes*
+    *Running on VIGIA Medical AI v1.1 | Professional medical analysis system*
     """)
 
 if __name__ == "__main__":
-    print("🚀 Launching VIGIA Medical AI Demo...")
-    print("📍 Demo will be available at: http://localhost:7860")
-    print("🌐 Public URL will be displayed below for hackathon judges")
+    print("🚀 Launching VIGIA Medical AI Interface...")
+    print("📍 Interface will be available at: http://localhost:7860")
+    print("🌐 Public URL will be displayed below for external access")
     print("")
     
-    # Launch with public sharing for hackathon
+    # Launch with public sharing for external access
     demo.launch(
         server_name="0.0.0.0",
         server_port=7860,
-        share=True,  # Create public URL for judges
+        share=True,  # Create public URL for external access
         show_error=True,
         show_tips=True,
         enable_queue=True
