@@ -1,0 +1,117 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Medical Data (IMPORTANT: Never commit real medical data)
+*.dcm
+*.dicom
+patient_data/
+medical_images/
+phi_data/
+hospital_records/
+
+# Configuration (Security: Never commit credentials)
+.env
+.env.local
+.env.production
+config/secrets/
+credentials/
+keys/
+*.pem
+*.key
+*.crt
+
+# Logs
+logs/
+*.log
+audit_logs/
+medical_audit/
+
+# Cache
+.cache/
+*.cache
+redis-dump.rdb
+
+# Models (Large files)
+models/
+weights/
+checkpoints/
+*.pt
+*.pth
+*.h5
+*.pb
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+database_backups/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+.tmp/
+
+# Documentation builds
+docs/_build/
+site/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Medical AI specific
+ollama_models/
+medgemma_cache/
+medical_protocols_cache/
