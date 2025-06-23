@@ -21,14 +21,14 @@
 
 ---
 
-## FASE 1: Recepción y Tokenización PHI
+## PHASE 1: PHI Reception and Tokenization
 
 ```mermaid
 graph TD
-    %% ENTRADA DEL PACIENTE
+    %% PATIENT INPUT
     A[📱 WhatsApp Input<br/>Bruce Wayne<br/>MRN-2025-001-BW<br/>🖼️ Medical Image<br/>🎤 Voice Message] --> B[🤖 PatientCommunicationAgent<br/>Input Validation<br/>Format Check]
     
-    %% VALIDACIÓN Y PROCESAMIENTO
+    %% VALIDATION AND PROCESSING
     B --> C{✅ Valid Input?}
     C -->|❌ No| D[⚠️ Error Response<br/>Invalid Format]
     C -->|✅ Yes| E[📋 Input Packager<br/>Metadata Extraction<br/>Session Creation]
@@ -43,12 +43,12 @@ graph TD
     %% SECURITY LAYER
     E --> I[🔒 Session Manager<br/>15-min Timeout<br/>Encrypted Storage<br/>Access Control]
     
-    %% FASE 1 COMPLETION
+    %% PHASE 1 COMPLETION
     H --> J[📊 Medical Dispatcher<br/>Triage Assessment<br/>Priority Routing]
     I --> J
     
-    %% TRIGGER PARA FASE 2
-    J --> K[🚀 FASE 2 Trigger<br/>✅ PHI Separated<br/>✅ Token Generated<br/>✅ Ready for Analysis]
+    %% TRIGGER FOR PHASE 2
+    J --> K[🚀 PHASE 2 Trigger<br/>✅ PHI Separated<br/>✅ Token Generated<br/>✅ Ready for Analysis]
     
     %% AUDIT TRAIL
     G --> L[📋 Audit Trail<br/>Hospital Access Log<br/>PHI Correlation Record]
@@ -75,7 +75,7 @@ graph TD
     class L,M,N auditNode
 ```
 
-### Componentes FASE 1
+### Components PHASE 1
 
 #### 📱 **Input Layer**
 - **PatientCommunicationAgent**: WhatsApp message reception
@@ -90,16 +90,16 @@ graph TD
 #### 📊 **Processing Preparation**
 - **Medical Dispatcher**: Triage and priority assessment
 - **Cross-Database Audit**: Complete traceability
-- **FASE 2 Trigger**: Ready for medical analysis
+- **PHASE 2 Trigger**: Ready for medical analysis
 
 ---
 
-## FASE 2A: Detección Médica Multimodal
+## PHASE 2A: Multimodal Medical Detection
 
 ```mermaid
 graph TD
-    %% FASE 2A TRIGGER INPUT
-    A[🚀 FASE 2A Trigger<br/>Batman Token<br/>Medical Image<br/>Voice Audio] --> B[📊 Medical Dispatcher<br/>Multimodal Detection<br/>Priority Routing]
+    %% PHASE 2A TRIGGER INPUT
+    A[🚀 PHASE 2A Trigger<br/>Batman Token<br/>Medical Image<br/>Voice Audio] --> B[📊 Medical Dispatcher<br/>Multimodal Detection<br/>Priority Routing]
     
     %% ADAPTIVE MEDICAL DETECTION
     B --> C[🎯 Adaptive Medical Detector<br/>MONAI Medical-First Strategy]
@@ -128,8 +128,8 @@ graph TD
     H --> L
     I --> L
     
-    %% FASE 2A COMPLETION
-    K --> M[✅ FASE 2A Complete<br/>Medical Detection Done<br/>Ready for Agent Analysis]
+    %% PHASE 2A COMPLETION
+    K --> M[✅ PHASE 2A Complete<br/>Medical Detection Done<br/>Ready for Agent Analysis]
     L --> M
     
     %% STYLING
@@ -151,7 +151,7 @@ graph TD
     class L storageNode
 ```
 
-### Componentes FASE 2A
+### Components PHASE 2A
 
 #### 🎯 **Adaptive Medical Detection**
 - **MONAI Primary**: Medical-grade AI with 90-95% precision
@@ -169,12 +169,12 @@ graph TD
 
 ---
 
-## FASE 2B: Agent Analysis Done
+## PHASE 2B: Agent Analysis Coordination
 
 ```mermaid
 graph TD
-    %% FASE 2B TRIGGER
-    A[🚀 FASE 2B Trigger<br/>Medical Detection Results<br/>Ready for Agent Analysis] --> B[🎯 Agent Dispatch System<br/>Medical Task Distribution]
+    %% PHASE 2B TRIGGER
+    A[🚀 PHASE 2B Trigger<br/>Medical Detection Results<br/>Ready for Agent Analysis] --> B[🎯 Agent Dispatch System<br/>Medical Task Distribution]
     
     %% PRIMARY MEDICAL AGENTS (Top Row)
     B --> C[🔍 ImageAnalysisAgent<br/>🎯 LPP Grade Detection<br/>📊 Confidence: 0.85<br/>📍 Anatomical Location<br/>🔬 Visual Assessment]
@@ -195,7 +195,7 @@ graph TD
     F --> J[🔬 MONAI Review Output<br/>Model Performance: Good<br/>Precise Segmentation<br/>Medical Validity: Acceptable]
     
     %% COMPLETION
-    G --> K[✅ FASE 2B Complete<br/>Agent Analysis Done<br/>Ready for ADK Coordination]
+    G --> K[✅ PHASE 2B Complete<br/>Agent Analysis Done<br/>Ready for ADK Coordination]
     H --> K
     I --> K
     J --> K
@@ -212,7 +212,7 @@ graph TD
     class G,H,I,J outputNode
 ```
 
-### Componentes FASE 2B
+### Components PHASE 2B
 
 #### 🔍 **ImageAnalysisAgent**
 - **LPP Grade Detection**: Pressure injury classification (0-4)
@@ -240,12 +240,12 @@ graph TD
 
 ---
 
-## FASE 2C: ADK Google Coordination + A2A Protocol
+## PHASE 2C: ADK Google Coordination + A2A Protocol
 
 ```mermaid
 graph TD
-    %% FASE 2C INPUT - ALL AGENT OUTPUTS
-    A[🚀 FASE 2C Input<br/>All Agent Analysis Complete<br/>Medical Detection Results<br/>Agent Outputs Collected] --> B[🌐 Google Cloud ADK<br/>Agent Development Kit<br/>Multi-Agent Orchestration]
+    %% PHASE 2C INPUT - ALL AGENT OUTPUTS
+    A[🚀 PHASE 2C Input<br/>All Agent Analysis Complete<br/>Medical Detection Results<br/>Agent Outputs Collected] --> B[🌐 Google Cloud ADK<br/>Agent Development Kit<br/>Multi-Agent Orchestration]
     
     %% ADK COORDINATION ARCHITECTURE
     B --> C[🎯 Master Medical Orchestrator<br/>ADK Central Coordination<br/>Cross-Agent Analysis Synthesis<br/>Task Lifecycle Management]
@@ -280,7 +280,7 @@ graph TD
     class F,G storageNode
 ```
 
-### Componentes FASE 2C
+### Components PHASE 2C
 
 #### 🌐 **Google Cloud ADK Architecture**
 - **Agent Development Kit**: Multi-agent orchestration platform
@@ -302,12 +302,12 @@ graph TD
 
 ---
 
-## FASE 3: Medical Team Notification & Patient Response
+## PHASE 3: Medical Team Notification & Patient Response
 
 ```mermaid
 graph TD
-    %% FASE 3 INPUT
-    A[🚀 FASE 3 Input<br/>ADK Analysis Complete<br/>Medical Decision Consensus<br/>Treatment Recommendations Ready] --> B[🩺 MedicalTeamAgent<br/>✅ 90% OPERATIONAL<br/>Slack Integration Active]
+    %% PHASE 3 INPUT
+    A[🚀 PHASE 3 Input<br/>ADK Analysis Complete<br/>Medical Decision Consensus<br/>Treatment Recommendations Ready] --> B[🩺 MedicalTeamAgent<br/>✅ 90% OPERATIONAL<br/>Slack Integration Active]
     
     %% MEDICAL TEAM NOTIFICATION
     B --> C[👥 Medical Team Slack Notification<br/>#clinical-team Channel<br/>Interactive Diagnosis Delivery<br/>Evidence-Based Findings]
@@ -341,7 +341,7 @@ graph TD
     K --> N
     
     %% SYSTEM COMPLETION
-    N --> O[✅ FASE 3 Complete<br/>Patient Notified<br/>Medical Team Coordinated<br/>Full System Cycle Complete]
+    N --> O[✅ PHASE 3 Complete<br/>Patient Notified<br/>Medical Team Coordinated<br/>Full System Cycle Complete]
     
     %% ERROR HANDLING
     H --> P[🚨 Escalation Protocol<br/>Senior Medical Review<br/>Alternative Diagnosis Path<br/>Patient Safety Priority]
@@ -369,7 +369,7 @@ graph TD
     class G,H,P,Q errorNode
 ```
 
-### Componentes FASE 3
+### Components PHASE 3
 
 #### 🩺 **MedicalTeamAgent**
 - **Slack Integration**: 90% operational status
