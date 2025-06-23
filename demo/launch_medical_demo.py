@@ -656,8 +656,5 @@ if __name__ == "__main__":
     demo.launch(
         server_name="0.0.0.0",
         server_port=7860,
-        share=True,  # Create public URL for external access
-        show_error=True,
-        show_tips=True,
-        enable_queue=True
+        share=True  # Create public URL for external access
     )
