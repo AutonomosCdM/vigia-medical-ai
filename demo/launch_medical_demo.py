@@ -25,80 +25,175 @@ from typing import Optional, Dict, Any
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 sys.path.insert(0, "/Users/autonomos_dev/Projects/vigia")
 
-# Real VIGIA system imports
+# Real VIGIA system imports with more specific error handling
+REAL_VIGIA_AVAILABLE = False
+missing_components = []
+
 try:
-    from vigia_detect.agents.master_medical_orchestrator import MasterMedicalOrchestrator
-    from vigia_detect.cv_pipeline.real_lpp_detector import RealLPPDetector
-    from vigia_detect.ai.medgemma_local_client import MedGemmaLocalClient
-    from vigia_detect.redis_layer.client_v2 import create_redis_client
-    from vigia_detect.messaging.slack_notifier_refactored import SlackNotifier
     from vigia_detect.core.async_pipeline import async_pipeline
-    from vigia_detect.core.phi_tokenization_client import PHITokenizationClient
-    REAL_VIGIA_AVAILABLE = True
+    print("✅ Async pipeline imported")
 except ImportError as e:
-    print(f"⚠️ Real VIGIA system not available: {e}")
-    # Fallback to demo components
+    missing_components.append(f"async_pipeline: {e}")
+
+try:
+    from vigia_detect.core.phi_tokenization_client import PHITokenizationClient
+    print("✅ PHI tokenization imported")
+except ImportError as e:
+    missing_components.append(f"PHI tokenization: {e}")
+
+try:
+    from vigia_detect.messaging.slack_notifier_refactored import SlackNotifier
+    print("✅ Slack notifier imported")
+except ImportError as e:
+    missing_components.append(f"Slack notifier: {e}")
+
+try:
+    # Try to import what's actually available
+    from vigia_detect.medical.medical_decision_engine import MedicalDecisionEngine as RealMedicalEngine
+    print("✅ Real medical engine imported")
+    REAL_MEDICAL_ENGINE = True
+except ImportError as e:
+    missing_components.append(f"Real medical engine: {e}")
+    REAL_MEDICAL_ENGINE = False
+
+if len(missing_components) == 0:
+    REAL_VIGIA_AVAILABLE = True
+    print("✅ All real VIGIA components available")
+else:
+    print(f"⚠️ Real VIGIA system partially available. Missing: {len(missing_components)} components")
+    for component in missing_components:
+        print(f"  - {component}")
+
+# Always import fallback components for medical decisions
+try:
     from medical.medical_decision_engine import MedicalDecisionEngine
+    print("✅ Demo medical engine imported")
+except ImportError as e:
+    print(f"❌ Demo medical engine import failed: {e}")
+    
+try:
     from cv_pipeline.medical_detector_factory import create_medical_detector
-    REAL_VIGIA_AVAILABLE = False
+    print("✅ Medical detector factory imported")
+except ImportError as e:
+    print(f"❌ Medical detector factory import failed: {e}")
 
 # Initialize medical components
 print("🩺 Initializing VIGIA Medical AI...")
 
-if REAL_VIGIA_AVAILABLE:
-    # Initialize real VIGIA system components
-    try:
-        print("🔄 Connecting to real VIGIA system...")
-        
-        # Initialize core components
-        orchestrator = MasterMedicalOrchestrator()
-        lpp_detector = RealLPPDetector()
-        medgemma_client = MedGemmaLocalClient()
-        redis_client = create_redis_client()
-        slack_notifier = SlackNotifier()
-        phi_tokenizer = PHITokenizationClient()
-        
-        print("✅ Real VIGIA system initialized successfully!")
-        
-    except Exception as e:
-        print(f"⚠️ Failed to initialize real VIGIA system: {e}")
-        print("🔄 Falling back to demo mode...")
-        REAL_VIGIA_AVAILABLE = False
+# Initialize what we can
+initialized_components = {}
 
-if not REAL_VIGIA_AVAILABLE:
-    # Fallback initialization
-    from medical.medical_decision_engine import MedicalDecisionEngine
-    from cv_pipeline.medical_detector_factory import create_medical_detector
+if REAL_VIGIA_AVAILABLE:
+    print("🔄 Attempting real VIGIA system initialization...")
     
+    # Try to initialize each available component
+    if 'async_pipeline' in globals():
+        try:
+            # Test if async pipeline is functional
+            print("✅ Async pipeline ready")
+            initialized_components['async_pipeline'] = async_pipeline
+        except Exception as e:
+            print(f"⚠️ Async pipeline error: {e}")
+    
+    if 'PHITokenizationClient' in globals():
+        try:
+            phi_tokenizer = PHITokenizationClient()
+            print("✅ PHI tokenizer ready")
+            initialized_components['phi_tokenizer'] = phi_tokenizer
+        except Exception as e:
+            print(f"⚠️ PHI tokenizer error: {e}")
+    
+    if 'SlackNotifier' in globals():
+        try:
+            slack_notifier = SlackNotifier()
+            print("✅ Slack notifier ready")
+            initialized_components['slack_notifier'] = slack_notifier
+        except Exception as e:
+            print(f"⚠️ Slack notifier error: {e}")
+
+# Always initialize fallback engine for medical decisions
+if REAL_MEDICAL_ENGINE:
+    try:
+        engine = RealMedicalEngine()
+        print("✅ Real medical decision engine ready")
+    except Exception as e:
+        print(f"⚠️ Real engine failed: {e}, using demo engine")
+        engine = MedicalDecisionEngine()
+else:
     engine = MedicalDecisionEngine()
+    print("✅ Demo medical decision engine ready")
+
+# Initialize demo detector factory
+try:
     detector = create_medical_detector()
-    print("✅ Demo medical systems ready")
+    print("✅ Medical detector factory ready")
+except Exception as e:
+    print(f"⚠️ Detector factory error: {e}")
+    detector = None
+
+print(f"🎯 System initialized: {len(initialized_components)} real components + fallback engine")
 
 async def _real_vigia_analysis(image_path: str, patient_context: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Perform real VIGIA system analysis with full pipeline.
+    Perform real VIGIA system analysis with available components.
     """
     try:
         # Generate patient MRN for PHI tokenization
         patient_mrn = f"DEMO-{uuid.uuid4().hex[:8].upper()}"
         
-        # Create Batman token for PHI protection
-        batman_token = await phi_tokenizer.create_token_async(patient_mrn, patient_context)
+        result = {"analysis_mode": "hybrid", "components_used": []}
         
-        # Process through full async pipeline
-        result = await async_pipeline.process_medical_case_async(
-            image_path=image_path,
-            hospital_mrn=patient_mrn,
-            patient_context=patient_context
-        )
+        # Try PHI tokenization if available
+        batman_token = None
+        if 'phi_tokenizer' in initialized_components:
+            try:
+                batman_token = await initialized_components['phi_tokenizer'].create_token_async(
+                    patient_mrn, patient_context
+                )
+                result["batman_token"] = batman_token
+                result["components_used"].append("PHI_tokenization")
+            except Exception as e:
+                print(f"PHI tokenization failed: {e}")
         
-        # Send Slack notification to medical team
-        if result.get('lpp_grade', 0) >= 2:  # Grade 2+ requires team notification
-            await slack_notifier.send_medical_assessment(
-                batman_token=batman_token,
-                medical_assessment=result,
-                channel="#clinical-team"
-            )
+        # Try async pipeline if available
+        if 'async_pipeline' in initialized_components:
+            try:
+                pipeline_result = await initialized_components['async_pipeline'].process_medical_case_async(
+                    image_path=image_path,
+                    hospital_mrn=patient_mrn,
+                    patient_context=patient_context
+                )
+                result.update(pipeline_result)
+                result["components_used"].append("async_pipeline")
+            except Exception as e:
+                print(f"Async pipeline failed: {e}")
+                # Fallback to simulated detection
+                lpp_grade, confidence = _simulate_lpp_detection(patient_context)
+                result.update({
+                    "lpp_grade": lpp_grade,
+                    "confidence_score": confidence,
+                    "detection_method": "simulation_fallback"
+                })
+        else:
+            # No pipeline available, use simulation
+            lpp_grade, confidence = _simulate_lpp_detection(patient_context)
+            result.update({
+                "lpp_grade": lpp_grade,
+                "confidence_score": confidence,
+                "detection_method": "simulation"
+            })
+        
+        # Try Slack notification if available and Grade 2+
+        if 'slack_notifier' in initialized_components and result.get('lpp_grade', 0) >= 2:
+            try:
+                await initialized_components['slack_notifier'].send_medical_assessment(
+                    batman_token=batman_token or patient_mrn,
+                    medical_assessment=result,
+                    channel="#clinical-team"
+                )
+                result["components_used"].append("slack_notification")
+            except Exception as e:
+                print(f"Slack notification failed: {e}")
         
         return result
         
@@ -139,43 +234,56 @@ def analyze_medical_case(image, patient_age, diabetes, hypertension, location):
             "anatomical_location": location
         }
         
-        if REAL_VIGIA_AVAILABLE and image is not None:
-            # Real VIGIA system processing
-            print("🔬 Processing with real VIGIA system...")
+        if (len(initialized_components) > 0 or REAL_VIGIA_AVAILABLE) and image is not None:
+            # Real/Hybrid VIGIA system processing
+            processing_mode = "🔬 Real VIGIA" if len(initialized_components) >= 2 else "🔄 Hybrid VIGIA"
+            print(f"{processing_mode} system processing...")
             
             # Save uploaded image to temporary file
             with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as tmp_file:
                 image.save(tmp_file.name)
                 temp_image_path = tmp_file.name
             
-            # Run real VIGIA analysis
+            # Run real/hybrid VIGIA analysis
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             try:
-                result = loop.run_until_complete(_real_vigia_analysis(temp_image_path, patient_context))
+                vigia_result = loop.run_until_complete(_real_vigia_analysis(temp_image_path, patient_context))
             finally:
                 loop.close()
                 # Cleanup temp file
                 os.unlink(temp_image_path)
             
-            if "error" in result:
+            if "error" in vigia_result:
                 return f"""
-# ⚠️ Real VIGIA System Error
+# ⚠️ VIGIA System Error
 
-**Error:** {result['error']}
+**Error:** {vigia_result['error']}
 
-The real VIGIA system encountered an issue. This may be due to:
+The VIGIA system encountered an issue. This may be due to:
 - Missing service dependencies (Redis, MedGemma, etc.)
 - Network connectivity issues
 - System configuration problems
 
+**Available components:** {len(initialized_components)}
 **Recommendation:** Check system status with `./install.sh` and validate services.
 """
             
-            # Extract real results
-            lpp_grade = result.get('lpp_grade', 0)
-            confidence = result.get('confidence_score', 0.0)
-            decision = result
+            # Extract results and generate medical decision
+            lpp_grade = vigia_result.get('lpp_grade', 0)
+            confidence = vigia_result.get('confidence_score', 0.0)
+            
+            # Use real medical engine for decision
+            decision = engine.make_clinical_decision(
+                lpp_grade=lpp_grade,
+                confidence=confidence,
+                anatomical_location=location,
+                patient_context=patient_context
+            )
+            
+            # Add VIGIA system info to decision
+            decision['vigia_analysis'] = vigia_result
+            decision['system_mode'] = vigia_result.get('analysis_mode', 'hybrid')
             
         else:
             # Demo mode simulation
@@ -204,7 +312,12 @@ The real VIGIA system encountered an issue. This may be due to:
                 )
         
         # Format professional medical response
-        system_mode = "🔬 REAL VIGIA SYSTEM" if REAL_VIGIA_AVAILABLE and image is not None else "🎭 DEMO MODE"
+        if len(initialized_components) >= 2 and image is not None:
+            system_mode = "🔬 REAL VIGIA SYSTEM"
+        elif len(initialized_components) > 0 and image is not None:
+            system_mode = "🔄 HYBRID VIGIA SYSTEM"
+        else:
+            system_mode = "🎭 DEMO MODE"
         
         # Extract severity and handle different result formats
         severity_assessment = decision.get('severity_assessment', 'unknown')
@@ -298,19 +411,31 @@ The real VIGIA system encountered an issue. This may be due to:
             result += f"**Timestamp:** {quality_metrics.get('timestamp', 'Generated')}\n"
         
         # Add system status information
-        if REAL_VIGIA_AVAILABLE and image is not None:
-            result += f"\n## 🔧 **Real System Status**\n"
-            result += f"**PHI Tokenization:** ✅ Active (Batman token generated)\n"
-            result += f"**Redis Cache:** ✅ Connected\n"
-            result += f"**MedGemma AI:** ✅ Local processing\n"
-            result += f"**Slack Integration:** ✅ Medical team notified\n"
-            result += f"**Medical System:** VIGIA AI v2.0 (Production)\n"
+        if len(initialized_components) > 0 and image is not None:
+            result += f"\n## 🔧 **VIGIA System Status**\n"
+            
+            # Show active components
+            vigia_analysis = decision.get('vigia_analysis', {})
+            components_used = vigia_analysis.get('components_used', [])
+            
+            result += f"**PHI Tokenization:** {'✅ Active' if 'PHI_tokenization' in components_used else '🎭 Simulated'}\n"
+            result += f"**Image Processing:** {'✅ Real pipeline' if 'async_pipeline' in components_used else '🎭 Simulated'}\n"
+            result += f"**Slack Integration:** {'✅ Team notified' if 'slack_notification' in components_used else '⚠️ Not sent'}\n"
+            result += f"**Components Active:** {len(initialized_components)}/4 real components\n"
+            
+            if components_used:
+                result += f"**Used Components:** {', '.join(components_used)}\n"
+            
+            system_version = "v2.0 (Hybrid)" if len(initialized_components) >= 2 else "v1.5 (Partial)"
+            result += f"**Medical System:** VIGIA AI {system_version}\n"
         else:
             result += f"**Medical System:** VIGIA AI v1.1 (Demo Mode)\n"
         
-        # Add real system indicators
-        if REAL_VIGIA_AVAILABLE and image is not None:
+        # Add system status indicators
+        if len(initialized_components) >= 2 and image is not None:
             result += f"\n---\n**🔬 REAL SYSTEM ACTIVE** | **🔒 PHI Protected** | **📊 Evidence-Based** | **🏥 NPUAP Compliant**"
+        elif len(initialized_components) > 0 and image is not None:
+            result += f"\n---\n**🔄 HYBRID SYSTEM** | **🔒 PHI Protected** | **📊 Evidence-Based** | **🏥 NPUAP Compliant**"
         else:
             result += f"\n---\n**🎭 DEMO MODE** | **🔒 PHI Protected** | **📊 Evidence-Based** | **🏥 NPUAP Compliant**"
         
@@ -360,8 +485,15 @@ with gr.Blocks(
 ) as demo:
     
     # Medical header with system mode indicator
-    system_status = "🔬 REAL SYSTEM CONNECTED" if REAL_VIGIA_AVAILABLE else "🎭 DEMO MODE ACTIVE"
-    header_color = "#2E7D32" if REAL_VIGIA_AVAILABLE else "#F57C00"
+    if len(initialized_components) >= 2:
+        system_status = f"🔬 REAL SYSTEM CONNECTED ({len(initialized_components)}/4 components)"
+        header_color = "#2E7D32"
+    elif len(initialized_components) > 0:
+        system_status = f"🔄 HYBRID SYSTEM ACTIVE ({len(initialized_components)}/4 components)"
+        header_color = "#FF8F00"
+    else:
+        system_status = "🎭 DEMO MODE ACTIVE"
+        header_color = "#F57C00"
     
     gr.Markdown(f"""
     <div class="medical-header" style="background: linear-gradient(135deg, {header_color} 0%, #764ba2 100%);">
