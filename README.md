@@ -12,6 +12,17 @@
 ```bash
 ./install.sh
 ```
+
+### 🌐 **Live Demo**
+```bash
+python final_demo.py
+```
+**Professional medical interface with public sharing URL for external access**
+
+### 🔬 **Full System**
+```bash
+python demo/launch_medical_demo.py
+```
 **Complete medical AI system ready in minutes with web interface at `http://localhost:7860`**
 
 ---

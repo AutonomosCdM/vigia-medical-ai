@@ -1,4 +1,17 @@
 #!/usr/bin/env python3
+"""
+VIGIA Medical AI - Professional Demo Interface
+=============================================
+
+Professional medical analysis interface for pressure injury detection
+using evidence-based NPUAP/EPUAP clinical guidelines.
+
+Usage:
+    python final_demo.py
+
+Interface creates public sharing URL for external access.
+"""
+
 import gradio as gr
 import sys
 
