@@ -1,52 +1,70 @@
-# VIGIA Medical AI - Core Dependencies
-# Medical-grade pressure injury detection system
+# VIGIA Medical AI v1.0 - Production Dependencies
+# Professional medical-grade pressure injury detection system
 
 # Core Medical AI Dependencies
-numpy>=1.24.0
-pandas>=2.0.0
-Pillow>=10.0.0
-opencv-python>=4.8.0
+numpy==1.26.4
+pandas==2.2.2
+Pillow==10.3.0
+opencv-python-headless==4.9.0.80  # Headless for deployment compatibility
+python-dotenv==1.0.1
+pydantic==2.7.0
+pydantic-settings==2.2.1
+python-dateutil>=2.8.0
 
-# Medical Imaging & Computer Vision
+# Medical Imaging & Computer Vision (MONAI + YOLOv5)
 monai>=1.3.0
-torch>=2.0.0
-torchvision>=0.15.0
-ultralytics>=8.0.0  # YOLOv5 backup detection
+torch==2.3.0
+torchvision==0.18.0
+ultralytics==8.2.0
+yolov5==7.0.13
 
 # Medical AI & Language Models
-ollama>=0.1.0       # Local MedGemma 27B
-httpx>=0.24.0       # Async HTTP client
-aiohttp>=3.8.0      # Async web requests
+ollama>=0.1.0                    # Local MedGemma 27B
+httpx==0.27.0                    # Async HTTP client
+transformers==4.40.1             # HuggingFace transformers
+sentence-transformers==2.7.0     # Medical embeddings
 
 # Google Cloud ADK & Agents
-google-cloud-aiplatform>=1.36.0
-anthropic>=0.3.0    # Claude agent integration
+google-cloud-aiplatform==1.49.0
+google-generativeai==0.8.0
+anthropic==0.25.7                # Claude agent integration
 
 # Medical Data & Security
-redis>=4.5.0        # Medical data caching
-cryptography>=41.0.0 # PHI encryption
-pyjwt>=2.8.0        # Medical audit tokens
+redis==5.0.4                     # Medical data caching
+redisvl==0.2.1                   # Vector search
+cryptography>=41.0.0             # PHI encryption
+pyjwt>=2.8.0                     # Medical audit tokens
+python-magic==0.4.27             # File security validation
 
 # Communication & Messaging
-twilio>=8.5.0       # WhatsApp patient communication
-slack-sdk>=3.21.0   # Medical team collaboration
-fastapi>=0.103.0    # API endpoints
-uvicorn>=0.23.0     # ASGI server
+twilio==9.0.4                    # WhatsApp patient communication
+slack-sdk==3.27.1                # Medical team collaboration
+fastapi==0.110.2                 # API endpoints
+uvicorn==0.29.0                  # ASGI server
+python-multipart==0.0.9          # File uploads
+flask==3.0.3                     # Webhook server
+requests==2.31.0                 # HTTP requests
 
 # Medical Demo Interface
-gradio>=3.50.0      # Medical analysis UI
-streamlit>=1.28.0   # Alternative medical interface
+gradio>=4.20.0                   # Medical analysis UI with sharing
+matplotlib==3.8.4                # Medical charts
+
+# Database & Storage
+supabase==2.4.2                  # Medical database
+postgrest==0.16.4                # Database API
+faiss-cpu>=1.7.4                 # Vector search (use faiss-gpu if CUDA available)
+PyPDF2==3.0.1                    # Medical document processing
 
 # Testing & Validation
-pytest>=7.4.0       # Medical functionality tests
-pytest-asyncio>=0.21.0  # Async medical tests
-pytest-mock>=3.11.0     # Mock medical services
+pytest==8.2.0                    # Medical functionality tests
+pytest-asyncio==0.23.6           # Async medical tests
+pytest-vcr==1.0.2                # API mocking
+vcrpy==6.0.1                     # HTTP interaction recording
 
-# Development & Monitoring
-python-dotenv>=1.0.0    # Environment configuration
-celery>=5.3.0           # Async medical processing
-flower>=2.0.0           # Celery monitoring
+# Task Queue & Processing
+celery==5.3.6                    # Async medical processing
+kombu==5.3.5                     # Message broker
 
-# Medical Compliance & Audit
-structlog>=23.1.0       # Structured medical logging
-pydantic>=2.0.0         # Medical data validation
+# Code Quality & Development
+pylint==3.1.0                    # Code quality
+structlog>=23.1.0                # Structured medical logging
