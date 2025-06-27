@@ -11,6 +11,7 @@ from pathlib import Path
 import json
 
 from config.settings import settings
+from src.utils.medical_logger import get_medical_logger, MedicalLogLevel
 
 
 class VigiaLogger:
@@ -23,7 +24,10 @@ class VigiaLogger:
     
     @classmethod
     def get_logger(cls, name: str) -> logging.Logger:
-        """Get or create a logger with consistent configuration"""
+        """Get or create a logger with consistent configuration.
+        
+        Note: For medical operations, prefer get_medical_logger() from medical_logger module.
+        """
         if name not in cls._loggers:
             logger = logging.getLogger(f"vigia.{name}")
             
@@ -49,11 +53,16 @@ class VigiaLogger:
                     logger.addHandler(file_handler)
                 
                 # Set level from settings
-                logger.setLevel(getattr(logging, settings.log_level))
+                logger.setLevel(getattr(logging, settings.LOG_LEVEL))
             
             cls._loggers[name] = logger
         
         return cls._loggers[name]
+    
+    @classmethod
+    def get_medical_logger(cls, component_name: str):
+        """Get medical logger for HIPAA-compliant logging."""
+        return get_medical_logger(component_name)
 
 
 class VigiaValidator:
@@ -63,85 +72,9 @@ class VigiaValidator:
     """
     
     @staticmethod
-    def validate_patient_code(patient_code: str) -> Dict[str, Any]:
-        """
-        Validate patient code format.
-        
-        Args:
-            patient_code: Patient identifier to validate
-            
-        Returns:
-            Validation result
-        """
-        if not patient_code:
-            return {"valid": False, "error": "Patient code is required"}
-        
-        # Expected format: XX-YYYY-NNN (e.g., CD-2025-001)
-        parts = patient_code.split('-')
-        if len(parts) != 3:
-            return {
-                "valid": False, 
-                "error": "Patient code must follow format: XX-YYYY-NNN"
-            }
-        
-        prefix, year, number = parts
-        
-        if len(prefix) != 2 or not prefix.isalpha():
-            return {
-                "valid": False,
-                "error": "Patient code prefix must be 2 letters"
-            }
-        
-        if len(year) != 4 or not year.isdigit():
-            return {
-                "valid": False,
-                "error": "Patient code year must be 4 digits"
-            }
-        
-        if len(number) != 3 or not number.isdigit():
-            return {
-                "valid": False,
-                "error": "Patient code number must be 3 digits"
-            }
-        
-        return {"valid": True, "patient_code": patient_code}
+# Patient validation moved to src.utils.validators.PatientValidator
     
-    @staticmethod
-    def validate_image_file(file_path: Union[str, Path]) -> Dict[str, Any]:
-        """
-        Validate image file.
-        
-        Args:
-            file_path: Path to image file
-            
-        Returns:
-            Validation result
-        """
-        path = Path(file_path)
-        
-        if not path.exists():
-            return {"valid": False, "error": f"File does not exist: {file_path}"}
-        
-        if not path.is_file():
-            return {"valid": False, "error": f"Path is not a file: {file_path}"}
-        
-        # Check file extension
-        valid_extensions = {'.jpg', '.jpeg', '.png', '.bmp', '.tiff', '.tif'}
-        if path.suffix.lower() not in valid_extensions:
-            return {
-                "valid": False,
-                "error": f"Invalid image format. Supported: {', '.join(valid_extensions)}"
-            }
-        
-        # Check file size (max 50MB)
-        max_size = 50 * 1024 * 1024  # 50MB
-        if path.stat().st_size > max_size:
-            return {
-                "valid": False,
-                "error": f"File too large. Maximum size: 50MB"
-            }
-        
-        return {"valid": True, "file_path": str(path)}
+# Image validation moved to src.utils.validators.ImageValidator
     
     @staticmethod
     def validate_detection_confidence(confidence: float) -> Dict[str, Any]:

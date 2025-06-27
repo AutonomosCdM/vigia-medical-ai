@@ -33,7 +33,7 @@ import gc
 
 from ..utils.secure_logger import SecureLogger
 from ..utils.error_handling import handle_exceptions
-from ..core.base_client_v2 import BaseClientV2
+from ..core.base_client import BaseClient as BaseClientV2
 
 logger = SecureLogger("medgemma_local_client")
 

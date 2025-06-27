@@ -372,7 +372,7 @@ class MINSALDecisionEngine(MedicalDecisionEngine):
     def _load_minsal_guidelines(self) -> Dict[str, Any]:
         """Carga configuración guidelines MINSAL"""
         try:
-            config_path = Path("vigia_detect/systems/config/clinical_guidelines.json")
+            config_path = Path("src/systems/config/clinical_guidelines.json")
             if config_path.exists():
                 with open(config_path, 'r', encoding='utf-8') as f:
                     return json.load(f)
@@ -388,7 +388,7 @@ class MINSALDecisionEngine(MedicalDecisionEngine):
     def _load_extracted_minsal_info(self) -> Dict[str, Any]:
         """Carga información extraída de documentos MINSAL"""
         try:
-            info_path = Path("vigia_detect/systems/config/minsal_extracted_info.json")
+            info_path = Path("src/systems/config/minsal_extracted_info.json")
             if info_path.exists():
                 with open(info_path, 'r', encoding='utf-8') as f:
                     return json.load(f)

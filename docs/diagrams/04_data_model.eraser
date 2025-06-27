@@ -1,0 +1,162 @@
+# VIGIA Medical AI - Data Model
+
+## Objetivo
+Entidades y relaciones clave del sistema médico: PHI tokenización, sesiones médicas, análisis de agentes y audit trail para compliance HIPAA.
+
+## Código Eraser.io
+```
+colorMode bold
+styleMode shadow
+
+// PHI Tokenization Tables
+phi_patients [icon: user, color: blue] {
+  id string pk
+  hospital_mrn string unique
+  real_name string encrypted
+  date_of_birth date encrypted
+  medical_record_number string
+  created_at timestamp
+  updated_at timestamp
+}
+
+batman_tokens [icon: key, color: red] {
+  id string pk
+  token_id string unique
+  patient_id < phi_patients.id
+  batman_alias string
+  session_timeout timestamp
+  created_at timestamp
+  is_active boolean
+}
+
+// Medical Session Management
+medical_sessions [icon: clock, color: orange] {
+  id string pk
+  token_id < batman_tokens.token_id
+  session_state string
+  session_type string
+  priority_level string
+  timeout_at timestamp
+  created_at timestamp
+  metadata json
+}
+
+// Medical Analysis Results
+agent_analyses [icon: brain, color: purple] {
+  id string pk
+  session_id < medical_sessions.id
+  agent_name string
+  analysis_type string
+  confidence_score float
+  medical_findings json
+  recommendations json
+  processing_time_ms integer
+  created_at timestamp
+}
+
+// Image Processing Data
+medical_images [icon: camera, color: green] {
+  id string pk
+  session_id < medical_sessions.id
+  image_path string
+  image_metadata json
+  preprocessing_applied json
+  storage_location string
+  created_at timestamp
+  processed_at timestamp
+}
+
+// CV Pipeline Results
+cv_detections [icon: eye, color: blue] {
+  id string pk
+  image_id < medical_images.id
+  detection_engine string
+  detected_objects json
+  confidence_scores json
+  bounding_boxes json
+  medical_classification string
+  created_at timestamp
+}
+
+// Medical Decision Engine
+medical_decisions [icon: medical, color: red] {
+  id string pk
+  session_id < medical_sessions.id
+  decision_type string
+  npuap_grade string
+  clinical_recommendations json
+  evidence_level string
+  urgency_level string
+  created_at timestamp
+  reviewed_by string
+}
+
+// Communication Log
+communication_log [icon: mobile, color: green] {
+  id string pk
+  session_id < medical_sessions.id
+  channel_type string
+  direction string
+  message_content text encrypted
+  recipient_info json
+  sent_at timestamp
+  delivered_at timestamp
+  read_at timestamp
+}
+
+// Audit Trail for HIPAA
+audit_trail [icon: clipboard, color: orange] {
+  id string pk
+  session_id < medical_sessions.id
+  action_type string
+  actor_id string
+  actor_type string
+  action_details json
+  ip_address string
+  user_agent string
+  created_at timestamp
+}
+
+// Medical Team Management
+medical_teams [icon: users, color: purple] {
+  id string pk
+  team_name string
+  slack_channel_id string
+  specialization string
+  on_call_schedule json
+  created_at timestamp
+}
+
+medical_team_members [icon: user, color: blue] {
+  id string pk
+  team_id < medical_teams.id
+  user_id string
+  role string
+  slack_user_id string
+  phone_number string encrypted
+  created_at timestamp
+}
+
+// Relationships
+phi_patients - batman_tokens: "1:many"
+batman_tokens - medical_sessions: "1:many" 
+medical_sessions - agent_analyses: "1:many"
+medical_sessions - medical_images: "1:many"
+medical_sessions - medical_decisions: "1:many"
+medical_sessions - communication_log: "1:many"
+medical_sessions - audit_trail: "1:many"
+medical_images - cv_detections: "1:many"
+medical_teams - medical_team_members: "1:many"
+```
+
+## Notas Clave
+- **PHI Separation**: Datos reales (phi_patients) completamente separados de tokens de procesamiento (batman_tokens)
+- **Session Management**: Timeouts de 15 minutos con estados médicos específicos
+- **Complete Audit Trail**: Cada acción médica registrada para compliance HIPAA
+- **Multi-Agent Results**: Análisis de 9 agentes especializados con confidence scores
+
+## Para Editar
+1. Copia el código anterior
+2. Ve a [eraser.io](https://eraser.io)
+3. Crea nuevo diagrama → Diagram-as-code
+4. Pega el código y edita

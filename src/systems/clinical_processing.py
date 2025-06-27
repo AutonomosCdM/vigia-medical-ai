@@ -25,7 +25,7 @@ from ..core.medical_dispatcher import TriageDecision
 from ..core.phi_tokenization_client import TokenizedPatient
 from ..cv_pipeline.detector import LPPDetector
 from ..cv_pipeline.preprocessor import ImagePreprocessor
-from ..db.supabase_client_refactored import SupabaseClientRefactored as SupabaseClient
+from ..db.supabase_client import SupabaseClient
 from ..storage.medical_image_storage import MedicalImageStorage, AnatomicalRegion, ImageType
 from ..utils.secure_logger import SecureLogger
 from ..utils.validators import validate_patient_code_format
