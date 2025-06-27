@@ -20,15 +20,15 @@ from google.adk.agents.llm_agent import Agent
 from google.adk.tools import FunctionTool
 
 # Import CV pipeline components
-from vigia_detect.cv_pipeline.detector import LPPDetector
-from vigia_detect.cv_pipeline.preprocessor import ImagePreprocessor
-from vigia_detect.cv_pipeline.real_lpp_detector import RealLPPDetector, PressureUlcerDetector
-from vigia_detect.cv_pipeline.yolo_loader import YOLOLoader
+from src.cv_pipeline.detector import LPPDetector
+from src.cv_pipeline.preprocessor import ImagePreprocessor
+from src.cv_pipeline.real_lpp_detector import RealLPPDetector, PressureUlcerDetector
+from src.cv_pipeline.yolo_loader import YOLOLoader
 
 # Import medical systems
-from vigia_detect.core.session_manager import SessionManager
-from vigia_detect.utils.audit_service import AuditService, AuditEventType
-from vigia_detect.a2a.base_infrastructure import A2AServer, AgentCard
+from src.core.session_manager import SessionManager
+from src.utils.audit_service import AuditService, AuditEventType
+from src.a2a.base_infrastructure import A2AServer, AgentCard
 
 logger = logging.getLogger(__name__)
 

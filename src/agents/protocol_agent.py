@@ -10,11 +10,11 @@ from dataclasses import dataclass, asdict
 from enum import Enum
 import json
 
-from .base_agent import BaseAgent, AgentCapability, AgentMessage, AgentResponse
-from ..systems.medical_knowledge import MedicalKnowledgeSystem, MedicalQuery, QueryType
-from ..redis_layer.vector_service import VectorService
-from ..redis_layer.protocol_indexer import ProtocolIndexer
-from ..utils.secure_logger import SecureLogger
+from src.agents.base_agent import BaseAgent, AgentCapability, AgentMessage, AgentResponse
+from src.systems.medical_knowledge import MedicalKnowledgeSystem, MedicalQuery, QueryType
+from src.redis_layer.vector_service import VectorService
+from src.redis_layer.protocol_indexer import ProtocolIndexer
+from src.utils.secure_logger import SecureLogger
 
 logger = SecureLogger("protocol_agent")
 

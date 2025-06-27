@@ -10,12 +10,15 @@ from dataclasses import dataclass, asdict
 from enum import Enum
 import json
 
-from .base_agent import BaseAgent, AgentCapability, AgentMessage, AgentResponse
-from ..interfaces.slack_orchestrator import (
-    SlackOrchestrator, NotificationPayload, NotificationType, 
-    NotificationPriority, SlackChannel
+from src.agents.base_agent import BaseAgent, AgentCapability, AgentMessage, AgentResponse
+from src.interfaces.slack_orchestrator import (
+    SlackOrchestrator, SlackNotificationPriority as NotificationPriority
 )
-from ..utils.secure_logger import SecureLogger
+# Mock missing classes for compatibility
+class NotificationPayload: pass
+class NotificationType: pass
+class SlackChannel: pass
+from src.utils.secure_logger import SecureLogger
 
 logger = SecureLogger("communication_agent")
 

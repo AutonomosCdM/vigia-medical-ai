@@ -23,29 +23,29 @@ from google.adk.agents.sequential_agent import SequentialAgent
 from google.adk.tools import FunctionTool
 
 # Import existing tools and functions
-from vigia_detect.agents.lpp_medical_agent import procesar_imagen_lpp, generar_reporte_lpp
-from vigia_detect.messaging.adk_tools import enviar_alerta_lpp, test_slack_desde_adk
-from vigia_detect.systems.medical_decision_engine import make_evidence_based_decision
-from vigia_detect.core.session_manager import SessionManager
-from vigia_detect.utils.audit_service import AuditService
+from src.agents.lpp_medical_agent import procesar_imagen_lpp, generar_reporte_lpp
+from src.messaging.adk_tools import enviar_alerta_lpp, test_slack_desde_adk
+from src.systems.medical_decision_engine import make_evidence_based_decision
+from src.core.session_manager import SessionManager
+from src.utils.audit_service import AuditService
 
 # Import ADK specialized agents for real A2A communication
-from vigia_detect.agents.image_analysis_agent import ImageAnalysisAgent
-from vigia_detect.agents.clinical_assessment_agent import ClinicalAssessmentAgent
-from vigia_detect.agents.protocol_agent import ProtocolAgent
-from vigia_detect.agents.communication_agent import CommunicationAgent
-from vigia_detect.agents.workflow_orchestration_agent import WorkflowOrchestrationAgent
+from src.agents.image_analysis_agent import ImageAnalysisAgent
+from src.agents.clinical_assessment_agent import ClinicalAssessmentAgent
+from src.agents.protocol_agent import ProtocolAgent
+from src.agents.communication_agent import CommunicationAgent
+from src.agents.workflow_orchestration_agent import WorkflowOrchestrationAgent
 
 # Import new specialized medical agents (FASE 1-3 implementation)
-from vigia_detect.agents.risk_assessment_agent import RiskAssessmentAgent
-from vigia_detect.agents.monai_review_agent import MonaiReviewAgent
-from vigia_detect.agents.diagnostic_agent import DiagnosticAgent
-from vigia_detect.agents.adk.voice_analysis import VoiceAnalysisAgent
+from src.agents.risk_assessment_agent import RiskAssessmentAgent
+from src.agents.monai_review_agent import MonaiReviewAgent
+from src.agents.diagnostic_agent import DiagnosticAgent
+from src.agents.adk.voice_analysis import VoiceAnalysisAgent
 
 # AgentOps Monitoring Integration
-from vigia_detect.monitoring.agentops_client import AgentOpsClient
-from vigia_detect.monitoring.medical_telemetry import MedicalTelemetry
-from vigia_detect.monitoring.adk_wrapper import adk_agent_wrapper
+from src.monitoring.agentops_client import AgentOpsClient
+from src.monitoring.medical_telemetry import MedicalTelemetry
+from src.monitoring.adk_wrapper import adk_agent_wrapper
 
 warnings.filterwarnings("ignore", category=UserWarning, module=".*pydantic.*")
 
@@ -535,7 +535,7 @@ class MasterMedicalOrchestrator:
         patient_alias = case_data.get('patient_alias', 'Unknown')  # Display alias
         
         # Import session types
-        from vigia_detect.core.session_manager import SessionType
+        from src.core.session_manager import SessionType
         
         # Create session using correct API (Batman tokenization - NO PHI)
         session_result = await self.session_manager.create_session(
@@ -555,7 +555,7 @@ class MasterMedicalOrchestrator:
             raise RuntimeError(f"Failed to create session: {session_result.get('error', 'Unknown error')}")
         
         # Import AuditEventType
-        from vigia_detect.utils.audit_service import AuditEventType
+        from src.utils.audit_service import AuditEventType
         
         # Audit trail initialization
         await self.audit_service.log_event(
@@ -1041,8 +1041,8 @@ class MasterMedicalOrchestrator:
         """
         try:
             # Import voice analysis components
-            from vigia_detect.systems.voice_medical_analysis import VoiceMedicalAnalysisEngine
-            from vigia_detect.ai.hume_ai_client import create_hume_ai_client
+            from src.systems.voice_medical_analysis import VoiceMedicalAnalysisEngine
+            from src.ai.hume_ai_client import create_hume_ai_client
             
             # Extract voice data from case_data
             audio_data = (
@@ -1253,7 +1253,7 @@ class MasterMedicalOrchestrator:
         """Finalize case session with cleanup"""
         if session_token:
             # Import session states
-            from vigia_detect.core.session_manager import SessionState
+            from src.core.session_manager import SessionState
             
             # Get session info first to check if it exists
             session_info = await self.session_manager.get_session_info(session_token)
@@ -1384,7 +1384,7 @@ def get_orchestrator_status() -> Dict[str, Any]:
         """
         try:
             # Import A2A infrastructure
-            from vigia_detect.a2a.base_infrastructure import AgentCard
+            from src.a2a.base_infrastructure import AgentCard
             
             # Register each agent with A2A infrastructure
             agent_cards = {
@@ -1519,7 +1519,7 @@ def get_orchestrator_status() -> Dict[str, Any]:
         try:
             if self.registered_agents['risk_assessment']:
                 # Use A2A communication with RiskAssessmentAgent
-                from vigia_detect.agents.base_agent import AgentMessage
+                from src.agents.base_agent import AgentMessage
                 
                 message = AgentMessage(
                     sender_id=self.orchestrator_id,
@@ -1591,7 +1591,7 @@ def get_orchestrator_status() -> Dict[str, Any]:
                         'skipped': True
                     }
                 
-                from vigia_detect.agents.base_agent import AgentMessage
+                from src.agents.base_agent import AgentMessage
                 
                 message = AgentMessage(
                     sender_id=self.orchestrator_id,
@@ -1648,7 +1648,7 @@ def get_orchestrator_status() -> Dict[str, Any]:
         """Coordinate integrated diagnosis using DiagnosticAgent"""
         try:
             if self.registered_agents['diagnostic']:
-                from vigia_detect.agents.base_agent import AgentMessage
+                from src.agents.base_agent import AgentMessage
                 
                 message = AgentMessage(
                     sender_id=self.orchestrator_id,

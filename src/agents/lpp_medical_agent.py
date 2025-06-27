@@ -22,7 +22,7 @@ except ImportError:
             return f"Mock response for: {prompt}"
 
 # Import our Slack tools
-from vigia_detect.messaging.adk_tools import enviar_alerta_lpp, test_slack_desde_adk
+from src.messaging.adk_tools import enviar_alerta_lpp, test_slack_desde_adk
 
 warnings.filterwarnings("ignore", category=UserWarning, module=".*pydantic.*")
 

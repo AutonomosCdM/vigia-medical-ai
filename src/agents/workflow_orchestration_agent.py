@@ -10,11 +10,11 @@ from dataclasses import dataclass, asdict
 from enum import Enum
 import json
 
-from .base_agent import BaseAgent, AgentCapability, AgentMessage, AgentResponse
-from ..core.medical_dispatcher import MedicalDispatcher, ProcessingRoute, TriageDecision
-from ..core.input_packager import StandardizedInput
-from ..core.session_manager import SessionManager, SessionState, SessionType
-from ..utils.secure_logger import SecureLogger
+from src.agents.base_agent import BaseAgent, AgentCapability, AgentMessage, AgentResponse
+from src.core.medical_dispatcher import MedicalDispatcher, ProcessingRoute, TriageDecision
+from src.core.input_packager import StandardizedInput
+from src.core.session_manager import SessionManager, SessionState, SessionType
+from src.utils.secure_logger import SecureLogger
 
 logger = SecureLogger("workflow_orchestration_agent")
 

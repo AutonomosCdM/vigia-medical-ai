@@ -11,7 +11,7 @@ from functools import wraps
 import inspect
 from pathlib import Path
 
-from vigia_detect.utils.security_validator import security_validator
+from src.utils.security_validator import security_validator
 
 
 class SecureFormatter(logging.Formatter):

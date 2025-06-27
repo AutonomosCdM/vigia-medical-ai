@@ -20,20 +20,20 @@ from google.adk.agents.llm_agent import Agent
 from google.adk.tools import FunctionTool
 
 # Import clinical processing components
-from vigia_detect.systems.clinical_processing import ClinicalProcessingSystem
-from vigia_detect.systems.medical_decision_engine import (
+from src.systems.clinical_processing import ClinicalProcessingSystem
+from src.systems.medical_decision_engine import (
     MedicalDecisionEngine, make_evidence_based_decision, EvidenceLevel
 )
-from vigia_detect.systems.minsal_medical_decision_engine import (
+from src.systems.minsal_medical_decision_engine import (
     make_minsal_clinical_decision, MINSALDecisionEngine
 )
-from vigia_detect.systems.medical_knowledge import MedicalKnowledgeSystem
-from vigia_detect.systems.human_review_queue import HumanReviewQueue
+from src.systems.medical_knowledge import MedicalKnowledgeSystem
+from src.systems.human_review_queue import HumanReviewQueue
 
 # Import medical systems
-from vigia_detect.core.session_manager import SessionManager
-from vigia_detect.utils.audit_service import AuditService, AuditEventType
-from vigia_detect.a2a.base_infrastructure import A2AServer, AgentCard
+from src.core.session_manager import SessionManager
+from src.utils.audit_service import AuditService, AuditEventType
+from src.a2a.base_infrastructure import A2AServer, AgentCard
 
 logger = logging.getLogger(__name__)
 

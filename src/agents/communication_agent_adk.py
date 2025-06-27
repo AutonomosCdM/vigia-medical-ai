@@ -28,12 +28,12 @@ from google.adk.agents import LlmAgent
 from google.adk.tools import FunctionTool
 
 # Communication system imports
-from ..interfaces.slack_orchestrator import (
+from src.interfaces.slack_orchestrator import (
     SlackOrchestrator, NotificationPayload, SlackMessage,
     NotificationType, NotificationPriority, SlackChannel
 )
-from ..messaging.slack_notifier_refactored import SlackNotifier
-from ..messaging.whatsapp.processor import WhatsAppProcessor
+from src.messaging.slack_notifier_refactored import SlackNotifier
+from src.messaging.whatsapp.processor import WhatsAppProcessor
 from ..messaging.whatsapp.isolated_bot import IsolatedWhatsAppBot
 from ..utils.secure_logger import SecureLogger
 from ..utils.audit_service import AuditService, AuditEventType, AuditLevel

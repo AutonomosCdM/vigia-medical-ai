@@ -10,8 +10,8 @@ import traceback
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Dict, Any, Optional, List
-from vigia_detect.utils.secure_logger import SecureLogger
-from vigia_detect.utils.audit_service import AuditService
+from src.utils.secure_logger import SecureLogger
+from src.utils.audit_service import AuditService
 
 class FailureSeverity(Enum):
     """Niveles de severidad para fallos médicos"""

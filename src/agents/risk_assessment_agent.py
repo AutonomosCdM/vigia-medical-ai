@@ -26,16 +26,16 @@ from typing import Dict, List, Optional, Any, Union
 from dataclasses import dataclass
 from enum import Enum
 
-from vigia_detect.agents.base_agent import BaseAgent, AgentMessage, AgentResponse
-from vigia_detect.db.supabase_client import SupabaseClient
-from vigia_detect.utils.audit_service import AuditService
-from vigia_detect.systems.medical_knowledge import MedicalKnowledgeSystem
-from vigia_detect.db.agent_analysis_client import AgentAnalysisClient
+from src.agents.base_agent import BaseAgent, AgentMessage, AgentResponse
+from src.db.supabase_client import SupabaseClient
+from src.utils.audit_service import AuditService
+from src.systems.medical_knowledge import MedicalKnowledgeSystem
+from src.db.agent_analysis_client import AgentAnalysisClient
 
 # AgentOps Monitoring Integration
-from vigia_detect.monitoring.agentops_client import AgentOpsClient
-from vigia_detect.monitoring.medical_telemetry import MedicalTelemetry
-from vigia_detect.monitoring.adk_wrapper import adk_agent_wrapper
+from src.monitoring.agentops_client import AgentOpsClient
+from src.monitoring.medical_telemetry import MedicalTelemetry
+from src.monitoring.adk_wrapper import adk_agent_wrapper
 
 logger = logging.getLogger(__name__)
 
@@ -1412,8 +1412,8 @@ class RiskAssessmentAgent(BaseAgent):
             risk_score: Calculated risk score details
         """
         try:
-            from vigia_detect.db.raw_outputs_client import RawOutputsClient
-            from vigia_detect.cv_pipeline.adaptive_medical_detector import RawOutputCapture
+            from src.db.raw_outputs_client import RawOutputsClient
+            from src.cv_pipeline.adaptive_medical_detector import RawOutputCapture
             
             raw_outputs_client = RawOutputsClient()
             

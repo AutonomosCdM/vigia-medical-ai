@@ -9,7 +9,7 @@ Implementa retry policies y timeouts específicos para el contexto médico.
 import os
 from celery import Celery
 from kombu import Queue
-from vigia_detect.utils.secure_logger import SecureLogger
+from src.utils.secure_logger import SecureLogger
 
 # Configuración de Redis backend
 REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/1')

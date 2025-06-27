@@ -9,7 +9,7 @@ import json
 import logging
 from typing import Dict, Any, Optional, Union
 from datetime import datetime, timedelta
-from vigia_detect.security.encryption import EncryptionManager
+from src.security.encryption import EncryptionManager
 
 logger = logging.getLogger(__name__)
 

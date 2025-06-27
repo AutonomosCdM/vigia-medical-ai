@@ -11,7 +11,7 @@ from typing import Dict, List, Set, Optional, Any, Union
 from enum import Enum
 from dataclasses import dataclass
 
-from vigia_detect.utils.audit_service import AuditService, AuditEvent, AuditLevel
+from src.utils.audit_service import AuditService, AuditEvent, AuditLevel
 
 
 class SystemLayer(Enum):

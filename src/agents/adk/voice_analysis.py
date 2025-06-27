@@ -21,10 +21,10 @@ import logging
 from datetime import datetime
 from typing import Dict, List, Optional, Any, Union
 
-from vigia_detect.agents.base_agent import BaseAgent, AgentMessage, AgentResponse
-from vigia_detect.ai.hume_ai_client import HumeAIClient, VoiceAnalysisResult, create_hume_ai_client
-from vigia_detect.systems.voice_medical_analysis import VoiceMedicalAnalysisEngine
-from vigia_detect.utils.audit_service import AuditService
+from src.agents.base_agent import BaseAgent, AgentMessage, AgentResponse
+from src.ai.hume_ai_client import HumeAIClient, VoiceAnalysisResult, create_hume_ai_client
+from src.systems.voice_medical_analysis import VoiceMedicalAnalysisEngine
+from src.utils.audit_service import AuditService
 
 logger = logging.getLogger(__name__)
 

@@ -8,12 +8,12 @@ Celery para prevenir timeouts y garantizar procesamiento fluido.
 
 from typing import Dict, Any, Optional, List
 from datetime import datetime, timezone
-from vigia_detect.core.celery_config import celery_app
-from vigia_detect.utils.secure_logger import SecureLogger
-from vigia_detect.utils.failure_handler import log_task_failure
+from src.core.celery_config import celery_app
+from src.utils.secure_logger import SecureLogger
+from src.utils.failure_handler import log_task_failure
 
 # PHI Tokenization Integration
-from vigia_detect.core.phi_tokenization_client import tokenize_patient_phi, TokenizedPatient
+from src.core.phi_tokenization_client import tokenize_patient_phi, TokenizedPatient
 
 logger = SecureLogger(__name__)
 
@@ -77,14 +77,14 @@ class AsyncMedicalPipeline:
             self.logger.info(f"Processing medical case for tokenized patient: {patient_alias} (Token: {token_id})")
             
             # Importar tareas asíncronas
-            from vigia_detect.tasks.medical import (
+            from src.tasks.medical import (
                 image_analysis_task, 
                 risk_score_task, 
                 medical_analysis_task,
                 triage_task
             )
-            from vigia_detect.tasks.audit import audit_log_task
-            from vigia_detect.tasks.notifications import notify_slack_task
+            from src.tasks.audit import audit_log_task
+            from src.tasks.notifications import notify_slack_task
             
             # Configuración por defecto
             options = processing_options or {}
@@ -330,11 +330,11 @@ class AsyncMedicalPipeline:
             self.logger.info(f"Triggering escalation pipeline: {escalation_type}")
             
             # Importar tareas de escalación
-            from vigia_detect.tasks.notifications import (
+            from src.tasks.notifications import (
                 medical_alert_slack_task,
                 escalation_notification_task
             )
-            from vigia_detect.tasks.audit import medical_decision_audit_task
+            from src.tasks.audit import medical_decision_audit_task
             
             # Determinar canales según tipo de escalación
             target_channels = self._get_escalation_channels(escalation_type)

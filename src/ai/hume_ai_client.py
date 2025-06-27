@@ -33,9 +33,9 @@ import numpy as np
 from pydantic import BaseModel, Field
 
 # Medical logging with audit compliance
-from vigia_detect.utils.audit_service import AuditService
-from vigia_detect.db.supabase_client import SupabaseClient
-from vigia_detect.db.raw_outputs_client import RawOutputsClient
+from src.utils.audit_service import AuditService
+from src.db.supabase_client import SupabaseClient
+from src.db.raw_outputs_client import RawOutputsClient
 
 # Batman tokenization for HIPAA compliance (import will be done dynamically if needed)
 
@@ -598,7 +598,7 @@ class HumeAIClient:
             processing_metadata.update(audio_metadata)
         
         # Dynamic import to avoid circular imports
-        from vigia_detect.cv_pipeline.adaptive_medical_detector import RawOutputCapture
+        from src.cv_pipeline.adaptive_medical_detector import RawOutputCapture
         return RawOutputCapture(
             raw_predictions=hume_result,  # Complete Hume API response
             expression_vectors=raw_vectors,  # Compressed emotion vectors

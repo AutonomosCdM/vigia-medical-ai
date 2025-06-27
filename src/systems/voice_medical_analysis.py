@@ -24,8 +24,8 @@ from datetime import datetime
 from enum import Enum
 from typing import Dict, List, Optional, Any, Tuple
 
-from vigia_detect.ai.hume_ai_client import VoiceAlertLevel, VoiceMedicalAssessment
-from vigia_detect.utils.audit_service import AuditService
+from src.ai.hume_ai_client import VoiceAlertLevel, VoiceMedicalAssessment
+from src.utils.audit_service import AuditService
 
 logger = logging.getLogger(__name__)
 

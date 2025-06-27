@@ -130,7 +130,7 @@ try:
     
 except ImportError:
     # Fallback to mock for development/testing
-    from vigia_detect.core.celery_mock import celery_app, MockQueue as Queue
+    from src.core.celery_mock import celery_app, MockQueue as Queue
     
     print("⚠️  CELERY NOT INSTALLED: Using mock configuration (development mode)")
     print("   For production: pip install celery==5.3.6 kombu==5.3.5")
@@ -151,7 +151,7 @@ except Exception as e:
 @celery_app.task(bind=True)
 def debug_task(self):
     """Task to verify configuration"""
-    from vigia_detect.utils.secure_logger import SecureLogger
+    from src.utils.secure_logger import SecureLogger
     logger = SecureLogger(__name__)
     logger.info(f'Request: {self.request!r}')
     return f'Celery configured successfully - Redis: {REDIS_URL} - Available: {CELERY_AVAILABLE}'

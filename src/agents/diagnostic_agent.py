@@ -26,15 +26,15 @@ from typing import Dict, List, Optional, Any, Union, Tuple
 from dataclasses import dataclass
 from enum import Enum
 
-from vigia_detect.agents.base_agent import BaseAgent, AgentMessage, AgentResponse
-from vigia_detect.agents.risk_assessment_agent import RiskAssessmentAgent, RiskLevel
-from vigia_detect.agents.monai_review_agent import MonaiReviewAgent, ModelPerformanceLevel
-from vigia_detect.agents.adk.voice_analysis import VoiceAnalysisAgent
-from vigia_detect.db.supabase_client import SupabaseClient
-from vigia_detect.utils.audit_service import AuditService
-from vigia_detect.systems.medical_decision_engine import make_evidence_based_decision
-from vigia_detect.systems.minsal_medical_decision_engine import make_minsal_clinical_decision
-from vigia_detect.systems.medical_knowledge import MedicalKnowledgeSystem
+from src.agents.base_agent import BaseAgent, AgentMessage, AgentResponse
+from src.agents.risk_assessment_agent import RiskAssessmentAgent, RiskLevel
+from src.agents.monai_review_agent import MonaiReviewAgent, ModelPerformanceLevel
+from src.agents.adk.voice_analysis import VoiceAnalysisAgent
+from src.db.supabase_client import SupabaseClient
+from src.utils.audit_service import AuditService
+from src.systems.medical_decision_engine import make_evidence_based_decision
+from src.systems.minsal_medical_decision_engine import make_minsal_clinical_decision
+from src.systems.medical_knowledge import MedicalKnowledgeSystem
 
 logger = logging.getLogger(__name__)
 

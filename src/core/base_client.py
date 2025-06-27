@@ -46,7 +46,7 @@ class BaseClient(ABC):
         """Configura el logger para el cliente con seguridad mejorada"""
         # Import secure logger
         try:
-            from vigia_detect.utils.secure_logger import get_secure_logger
+            from src.utils.secure_logger import get_secure_logger
             logger = get_secure_logger(f'vigia.{self.service_name.lower()}')
             return logger.logger
         except ImportError:

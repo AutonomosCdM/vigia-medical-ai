@@ -29,11 +29,11 @@ from typing import Dict, List, Optional, Any, Union, Tuple
 from dataclasses import dataclass
 from enum import Enum
 
-from vigia_detect.agents.base_agent import BaseAgent, AgentMessage, AgentResponse
-from vigia_detect.db.raw_outputs_client import RawOutputsClient
-from vigia_detect.db.supabase_client import SupabaseClient
-from vigia_detect.utils.audit_service import AuditService
-from vigia_detect.systems.medical_knowledge import MedicalKnowledgeSystem
+from src.agents.base_agent import BaseAgent, AgentMessage, AgentResponse
+from src.db.raw_outputs_client import RawOutputsClient
+from src.db.supabase_client import SupabaseClient
+from src.utils.audit_service import AuditService
+from src.systems.medical_knowledge import MedicalKnowledgeSystem
 
 logger = logging.getLogger(__name__)
 

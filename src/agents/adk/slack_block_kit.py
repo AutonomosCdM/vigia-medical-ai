@@ -22,7 +22,7 @@ import logging
 from datetime import datetime
 from typing import Dict, List, Optional, Any, Union
 
-from vigia_detect.agents.base_agent import BaseAgent, AgentMessage, AgentResponse
+from src.agents.base_agent import BaseAgent, AgentMessage, AgentResponse
 
 logger = logging.getLogger(__name__)
 

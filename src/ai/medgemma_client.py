@@ -17,9 +17,9 @@ from enum import Enum
 import google.generativeai as genai
 from google.generativeai.types import HarmCategory, HarmBlockThreshold
 
-from vigia_detect.core.base_client_v2 import BaseClientV2
-from vigia_detect.utils.secure_logger import SecureLogger
-from vigia_detect.utils.error_handling import handle_exceptions
+from src.core.base_client_v2 import BaseClientV2
+from src.utils.secure_logger import SecureLogger
+from src.utils.error_handling import handle_exceptions
 from config.settings import get_settings
 
 logger = SecureLogger(__name__)
