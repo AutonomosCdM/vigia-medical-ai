@@ -1,0 +1,534 @@
+/* 
+VIGIA Medical AI - Smart Care Interface Copy
+==========================================
+
+Exact replica of Smart Care interface with VIGIA medical terms
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Exact Smart Care Colors */
+    --smartcare-orange: #ff6b6b;
+    --smartcare-purple: #6c5ce7;
+    --smartcare-light-gray: #f8f9fa;
+    --smartcare-dark-gray: #2d3748;
+    --smartcare-white: #ffffff;
+    --smartcare-text-primary: #2d3748;
+    --smartcare-text-secondary: #718096;
+    --smartcare-border: #e2e8f0;
+    --smartcare-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    
+    /* Chart Colors */
+    --chart-orange: #ff6b35;
+    --chart-purple: #6c5ce7;
+    --chart-blue: #74b9ff;
+    --chart-gray: #a0aec0;
+    
+    /* Medical Data Colors */
+    --medical-black: #2d3748;
+    --medical-pink: #ff6b9d;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    background-color: var(--smartcare-light-gray);
+    color: var(--smartcare-text-primary);
+    line-height: 1.5;
+}
+
+/* Main Layout Container */
+.smartcare-container {
+    display: flex;
+    min-height: 100vh;
+    background: var(--smartcare-light-gray);
+}
+
+/* Sidebar Styling - Exact Copy */
+.smartcare-sidebar {
+    width: 240px;
+    background: var(--smartcare-white);
+    padding: 1.5rem 0;
+    box-shadow: var(--smartcare-shadow);
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 100;
+}
+
+.sidebar-header {
+    padding: 0 1.5rem 2rem 1.5rem;
+    border-bottom: 1px solid var(--smartcare-border);
+}
+
+.sidebar-logo {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--smartcare-text-primary);
+}
+
+.sidebar-gradient {
+    background: linear-gradient(135deg, var(--smartcare-orange) 0%, var(--smartcare-purple) 100%);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.sidebar-gradient::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(30px, -30px);
+}
+
+.sidebar-greeting {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    opacity: 0.9;
+}
+
+.sidebar-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.sidebar-nav {
+    padding: 1rem 0;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    color: var(--smartcare-text-secondary);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    background: var(--smartcare-light-gray);
+    color: var(--smartcare-text-primary);
+}
+
+.nav-item-icon {
+    margin-right: 0.75rem;
+    font-size: 1.1rem;
+}
+
+/* Main Content Area */
+.smartcare-main {
+    flex: 1;
+    margin-left: 240px;
+    background: var(--smartcare-light-gray);
+}
+
+/* Top Header */
+.smartcare-header {
+    background: var(--smartcare-white);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--smartcare-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.header-search {
+    display: flex;
+    align-items: center;
+    background: var(--smartcare-light-gray);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--smartcare-border);
+    width: 300px;
+}
+
+.header-search input {
+    border: none;
+    background: none;
+    outline: none;
+    flex: 1;
+    margin-left: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.header-search input::placeholder {
+    color: var(--smartcare-text-secondary);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.notification-icon {
+    position: relative;
+    background: var(--smartcare-light-gray);
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--smartcare-border);
+}
+
+.notification-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #ff6b6b;
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--smartcare-orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.user-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Content Layout */
+.smartcare-content {
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    margin-bottom: 2rem;
+    color: var(--smartcare-text-secondary);
+    font-size: 0.9rem;
+}
+
+.breadcrumb a {
+    color: var(--smartcare-text-secondary);
+    text-decoration: none;
+}
+
+/* Patient Card */
+.patient-card {
+    background: var(--smartcare-white);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: var(--smartcare-shadow);
+    margin-bottom: 2rem;
+}
+
+.patient-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.patient-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--smartcare-light-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.patient-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.patient-info h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.patient-name {
+    color: var(--smartcare-text-primary);
+}
+
+.view-profile {
+    background: var(--smartcare-light-gray);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+.patient-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    font-size: 0.9rem;
+}
+
+.patient-detail {
+    display: flex;
+    justify-content: space-between;
+}
+
+.detail-label {
+    color: var(--smartcare-text-secondary);
+}
+
+.detail-value {
+    font-weight: 500;
+}
+
+/* Medical Metrics Cards */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.metric-card {
+    background: var(--smartcare-white);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--smartcare-shadow);
+    position: relative;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.metric-card.dark {
+    background: var(--medical-black);
+    color: var(--smartcare-white);
+}
+
+.metric-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.metric-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.metric-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.metric-unit {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    margin-left: 0.25rem;
+}
+
+.metric-chart {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 60px;
+    height: 30px;
+    opacity: 0.3;
+}
+
+/* Analysis Chart */
+.analysis-section {
+    background: var(--smartcare-white);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--smartcare-shadow);
+    margin-bottom: 2rem;
+}
+
+.analysis-header {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--smartcare-text-primary);
+}
+
+.chart-container {
+    display: flex;
+    align-items: end;
+    gap: 1rem;
+    height: 120px;
+    margin-bottom: 1rem;
+}
+
+.chart-bar {
+    flex: 1;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+.chart-bar.orange {
+    background: var(--chart-orange);
+    height: 35%;
+}
+
+.chart-bar.purple {
+    background: var(--chart-purple);
+    height: 20%;
+}
+
+.chart-bar.blue {
+    background: var(--chart-blue);
+    height: 53%;
+}
+
+.chart-bar.gray {
+    background: var(--chart-gray);
+    height: 30%;
+}
+
+.chart-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--smartcare-text-secondary);
+}
+
+/* Medical Data Graph */
+.medical-data-section {
+    background: var(--smartcare-white);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--smartcare-shadow);
+}
+
+.medical-data-header {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--smartcare-text-primary);
+}
+
+.medical-graph {
+    height: 80px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 80'%3E%3Cpath d='M0,40 Q50,20 100,40 T200,40 Q250,60 300,40 T400,40 Q450,20 500,40 T600,40' stroke='%23ff6b9d' stroke-width='2' fill='none'/%3E%3C/svg%3E") no-repeat center;
+    background-size: 100% 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .smartcare-main {
+        margin-left: 0;
+    }
+    
+    .smartcare-sidebar {
+        transform: translateX(-100%);
+    }
+    
+    .smartcare-content {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+    
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .patient-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .patient-details {
+        grid-template-columns: 1fr;
+    }
+    
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Utility Classes */
+.ml-auto {
+    margin-left: auto;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.font-semibold {
+    font-weight: 600;
+}

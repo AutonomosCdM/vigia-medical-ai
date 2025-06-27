@@ -1,0 +1,601 @@
+/* 
+VIGIA Medical AI - Professional Medical Interface Styles
+======================================================
+
+Hospital-grade styling for medical professionals with WCAG 2.1 AA compliance
+*/
+
+/* CSS Variables for Modern Medical Theme */
+:root {
+    /* Modern Medical Color Palette - Based on Smart Care Design */
+    --medical-primary: #6366f1;        /* Modern Indigo */
+    --medical-secondary: #10b981;      /* Fresh Green */
+    --medical-accent: #f59e0b;         /* Vibrant Orange */
+    --medical-error: #ef4444;          /* Modern Red */
+    --medical-warning: #f59e0b;        /* Warning Orange */
+    --medical-success: #10b981;        /* Success Green */
+    --medical-purple: #8b5cf6;         /* Modern Purple */
+    --medical-pink: #ec4899;           /* Accent Pink */
+    
+    /* Modern Background Colors */
+    --medical-bg-primary: #ffffff;     /* Clean White */
+    --medical-bg-secondary: #f8fafc;   /* Very Light Gray */
+    --medical-bg-tertiary: #f1f5f9;    /* Light Blue Gray */
+    --medical-bg-dark: #1e293b;        /* Modern Dark */
+    --medical-bg-gradient: linear-gradient(135deg, #ff6b6b 0%, #8b5cf6 100%); /* Orange to Purple */
+    
+    /* Text Colors */
+    --medical-text-primary: #212121;   /* Dark Gray */
+    --medical-text-secondary: #757575; /* Medium Gray */
+    --medical-text-light: #ffffff;     /* White */
+    --medical-text-medical: #1976d2;   /* Medical Blue */
+    
+    /* Border and Shadow */
+    --medical-border: #e0e0e0;
+    --medical-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    --medical-shadow-hover: 0 4px 8px rgba(0,0,0,0.15);
+    
+    /* Spacing (Medical Touch Targets) */
+    --medical-spacing-xs: 4px;
+    --medical-spacing-sm: 8px;
+    --medical-spacing-md: 16px;
+    --medical-spacing-lg: 24px;
+    --medical-spacing-xl: 32px;
+    
+    /* Touch Targets for Medical Gloves */
+    --medical-touch-target: 56px;      /* Minimum for gloved operation */
+    --medical-touch-small: 48px;       /* Small elements */
+    --medical-touch-large: 64px;       /* Important actions */
+    
+    /* Medical Typography */
+    --medical-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    --medical-font-size-xs: 12px;
+    --medical-font-size-sm: 14px;
+    --medical-font-size-md: 16px;
+    --medical-font-size-lg: 18px;
+    --medical-font-size-xl: 24px;
+    --medical-font-size-xxl: 32px;
+    
+    /* Medical Animations */
+    --medical-transition: all 0.2s ease-in-out;
+    --medical-border-radius: 8px;
+}
+
+/* Base Medical Interface Styling */
+.medical-interface {
+    font-family: var(--medical-font-family);
+    background-color: var(--medical-bg-primary);
+    color: var(--medical-text-primary);
+    line-height: 1.6;
+    font-size: var(--medical-font-size-md);
+}
+
+/* Modern Medical Header Styling */
+.medical-header {
+    background: var(--medical-bg-gradient);
+    color: var(--medical-text-light);
+    padding: var(--medical-spacing-xl);
+    border-radius: 20px;
+    margin-bottom: var(--medical-spacing-lg);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.medical-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+    pointer-events: none;
+}
+
+.medical-header h1 {
+    margin: 0;
+    font-size: var(--medical-font-size-xxl);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: var(--medical-spacing-sm);
+}
+
+.medical-header .subtitle {
+    font-size: var(--medical-font-size-lg);
+    margin-top: var(--medical-spacing-sm);
+    opacity: 0.9;
+}
+
+/* System Status Indicators */
+.system-status {
+    display: flex;
+    align-items: center;
+    gap: var(--medical-spacing-sm);
+    margin-top: var(--medical-spacing-md);
+    padding: var(--medical-spacing-sm) var(--medical-spacing-md);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--medical-border-radius);
+    backdrop-filter: blur(10px);
+}
+
+.status-indicator {
+    padding: var(--medical-spacing-xs) var(--medical-spacing-sm);
+    border-radius: 20px;
+    font-size: var(--medical-font-size-sm);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.status-active {
+    background-color: var(--medical-success);
+    color: white;
+}
+
+.status-hybrid {
+    background-color: var(--medical-warning);
+    color: var(--medical-text-primary);
+}
+
+.status-demo {
+    background-color: var(--medical-accent);
+    color: white;
+}
+
+/* Modern Medical Form Styling */
+.medical-form {
+    background: var(--medical-bg-primary);
+    border: none;
+    border-radius: 16px;
+    padding: var(--medical-spacing-xl);
+    margin-bottom: var(--medical-spacing-lg);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: var(--medical-transition);
+}
+
+.medical-form:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+}
+
+.medical-form h2 {
+    color: var(--medical-primary);
+    margin-top: 0;
+    margin-bottom: var(--medical-spacing-md);
+    font-size: var(--medical-font-size-xl);
+    font-weight: 600;
+}
+
+.medical-form h3 {
+    color: var(--medical-text-primary);
+    margin-bottom: var(--medical-spacing-sm);
+    font-size: var(--medical-font-size-lg);
+    font-weight: 500;
+}
+
+/* Medical Input Styling */
+.medical-input {
+    min-height: var(--medical-touch-target);
+    padding: var(--medical-spacing-sm) var(--medical-spacing-md);
+    border: 2px solid var(--medical-border);
+    border-radius: var(--medical-border-radius);
+    font-size: var(--medical-font-size-md);
+    font-family: var(--medical-font-family);
+    transition: var(--medical-transition);
+    background: var(--medical-bg-primary);
+}
+
+.medical-input:focus {
+    outline: none;
+    border-color: var(--medical-primary);
+    box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+.medical-input:hover {
+    border-color: var(--medical-primary);
+}
+
+/* Medical Button Styling */
+.medical-button {
+    min-height: var(--medical-touch-target);
+    padding: var(--medical-spacing-sm) var(--medical-spacing-lg);
+    background: var(--medical-primary);
+    color: var(--medical-text-light);
+    border: none;
+    border-radius: var(--medical-border-radius);
+    font-size: var(--medical-font-size-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--medical-transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--medical-spacing-sm);
+    box-shadow: var(--medical-shadow);
+}
+
+.medical-button:hover {
+    background: #1565c0;
+    box-shadow: var(--medical-shadow-hover);
+    transform: translateY(-1px);
+}
+
+.medical-button:active {
+    transform: translateY(0);
+    box-shadow: var(--medical-shadow);
+}
+
+.medical-button-secondary {
+    background: var(--medical-secondary);
+}
+
+.medical-button-secondary:hover {
+    background: #2e7d32;
+}
+
+.medical-button-danger {
+    background: var(--medical-error);
+}
+
+.medical-button-danger:hover {
+    background: #c62828;
+}
+
+.medical-button-large {
+    min-height: var(--medical-touch-large);
+    font-size: var(--medical-font-size-lg);
+    padding: var(--medical-spacing-md) var(--medical-spacing-xl);
+}
+
+/* Medical Results Display */
+.medical-results {
+    background: var(--medical-bg-tertiary);
+    border: 1px solid var(--medical-primary);
+    border-radius: var(--medical-border-radius);
+    padding: var(--medical-spacing-lg);
+    margin-top: var(--medical-spacing-lg);
+}
+
+.medical-results h3 {
+    color: var(--medical-primary);
+    margin-top: 0;
+    font-size: var(--medical-font-size-xl);
+}
+
+.confidence-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--medical-spacing-xs);
+    padding: var(--medical-spacing-xs) var(--medical-spacing-sm);
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: var(--medical-font-size-sm);
+}
+
+.confidence-high {
+    background: rgba(56, 142, 60, 0.1);
+    color: var(--medical-success);
+    border: 1px solid var(--medical-success);
+}
+
+.confidence-medium {
+    background: rgba(245, 124, 0, 0.1);
+    color: var(--medical-accent);
+    border: 1px solid var(--medical-accent);
+}
+
+.confidence-low {
+    background: rgba(211, 47, 47, 0.1);
+    color: var(--medical-error);
+    border: 1px solid var(--medical-error);
+}
+
+/* Braden Scale Styling */
+.braden-scale {
+    background: var(--medical-bg-secondary);
+    border-radius: var(--medical-border-radius);
+    padding: var(--medical-spacing-md);
+    margin-bottom: var(--medical-spacing-md);
+}
+
+.braden-category {
+    margin-bottom: var(--medical-spacing-md);
+}
+
+.braden-category label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: var(--medical-spacing-xs);
+    color: var(--medical-text-primary);
+}
+
+.braden-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--medical-spacing-sm);
+}
+
+.braden-option {
+    display: flex;
+    align-items: center;
+    padding: var(--medical-spacing-sm);
+    background: var(--medical-bg-primary);
+    border: 2px solid var(--medical-border);
+    border-radius: var(--medical-border-radius);
+    cursor: pointer;
+    transition: var(--medical-transition);
+    min-height: var(--medical-touch-small);
+}
+
+.braden-option:hover {
+    border-color: var(--medical-primary);
+    background: var(--medical-bg-tertiary);
+}
+
+.braden-option input[type="radio"] {
+    margin-right: var(--medical-spacing-sm);
+    transform: scale(1.2);
+}
+
+.braden-score {
+    text-align: center;
+    padding: var(--medical-spacing-md);
+    background: var(--medical-primary);
+    color: var(--medical-text-light);
+    border-radius: var(--medical-border-radius);
+    font-size: var(--medical-font-size-lg);
+    font-weight: 600;
+    margin-top: var(--medical-spacing-md);
+}
+
+/* Risk Level Indicators */
+.risk-level {
+    padding: var(--medical-spacing-sm) var(--medical-spacing-md);
+    border-radius: var(--medical-border-radius);
+    font-weight: 600;
+    text-align: center;
+    margin-top: var(--medical-spacing-sm);
+}
+
+.risk-very-high {
+    background: var(--medical-error);
+    color: white;
+}
+
+.risk-high {
+    background: var(--medical-accent);
+    color: white;
+}
+
+.risk-moderate {
+    background: var(--medical-warning);
+    color: var(--medical-text-primary);
+}
+
+.risk-low {
+    background: var(--medical-success);
+    color: white;
+}
+
+/* Modern Medical Grid Layout */
+.medical-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--medical-spacing-lg);
+    margin-bottom: var(--medical-spacing-lg);
+}
+
+.medical-card {
+    background: var(--medical-bg-primary);
+    border: none;
+    border-radius: 20px;
+    padding: var(--medical-spacing-xl);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: var(--medical-transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.medical-card:hover {
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    transform: translateY(-4px);
+}
+
+.medical-card h3 {
+    margin-top: 0;
+    color: var(--medical-text-primary);
+    font-weight: 600;
+    font-size: var(--medical-font-size-lg);
+}
+
+/* Colorful Metric Cards */
+.metric-card {
+    background: var(--medical-bg-primary);
+    border-radius: 20px;
+    padding: var(--medical-spacing-lg);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: var(--medical-transition);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.metric-card-purple {
+    background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+    color: white;
+}
+
+.metric-card-orange {
+    background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+    color: white;
+}
+
+.metric-card-green {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+.metric-card-blue {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+}
+
+.metric-card-pink {
+    background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+    color: white;
+}
+
+.metric-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+}
+
+.metric-label {
+    font-size: 0.875rem;
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+.metric-icon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    opacity: 0.7;
+}
+
+/* Responsive Design for Medical Devices */
+@media (max-width: 1024px) {
+    /* Tablet Optimization */
+    .medical-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .medical-touch-target {
+        min-height: var(--medical-touch-large);
+    }
+    
+    .medical-header h1 {
+        font-size: var(--medical-font-size-xl);
+    }
+}
+
+@media (max-width: 768px) {
+    /* Mobile Medical Device Optimization */
+    .medical-interface {
+        padding: var(--medical-spacing-sm);
+    }
+    
+    .medical-header {
+        padding: var(--medical-spacing-md);
+        text-align: center;
+    }
+    
+    .medical-grid {
+        gap: var(--medical-spacing-md);
+    }
+    
+    .medical-form {
+        padding: var(--medical-spacing-md);
+    }
+    
+    .braden-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .system-status {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .status-indicator {
+        text-align: center;
+    }
+}
+
+/* High Contrast Mode for Bright Medical Environments */
+@media (prefers-contrast: high) {
+    :root {
+        --medical-border: #333333;
+        --medical-text-primary: #000000;
+        --medical-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    
+    .medical-input {
+        border-width: 3px;
+    }
+    
+    .medical-button {
+        border: 2px solid transparent;
+    }
+    
+    .medical-button:focus {
+        border-color: #000000;
+    }
+}
+
+/* Print Styles for Medical Records */
+@media print {
+    .medical-interface {
+        background: white;
+        color: black;
+        font-size: 12pt;
+    }
+    
+    .medical-header {
+        background: white !important;
+        color: black !important;
+        border: 2px solid black;
+    }
+    
+    .medical-button {
+        display: none;
+    }
+    
+    .medical-results {
+        border: 2px solid black;
+        background: white;
+    }
+    
+    .system-status {
+        display: none;
+    }
+}
+
+/* Accessibility Enhancements */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Focus Indicators for Keyboard Navigation */
+.medical-input:focus,
+.medical-button:focus,
+.braden-option:focus {
+    outline: 3px solid var(--medical-primary);
+    outline-offset: 2px;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
