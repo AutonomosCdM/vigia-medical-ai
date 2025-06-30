@@ -1,0 +1,120 @@
+{
+    "display_information": {
+        "name": "VIGIA Medical AI",
+        "description": "Medical-grade pressure injury detection system with HIPAA compliance",
+        "background_color": "#2c3e50",
+        "long_description": "VIGIA Medical AI is a production-ready medical system for pressure injury (LPP) detection and clinical decision support. Features NPUAP/EPUAP 2019 compliant grading, real-time analysis, and clinical team coordination."
+    },
+    "features": {
+        "app_home": {
+            "home_tab_enabled": true,
+            "messages_tab_enabled": true,
+            "messages_tab_read_only_enabled": false
+        },
+        "bot_user": {
+            "display_name": "VIGIA Medical AI",
+            "always_online": true
+        },
+        "slash_commands": [
+            {
+                "command": "/vigia-status",
+                "url": "https://vigia.autonomos.dev/slack/commands/status",
+                "description": "Check VIGIA Medical AI system status and active sessions",
+                "usage_hint": "[session_id]",
+                "should_escape": false
+            },
+            {
+                "command": "/vigia-case",
+                "url": "https://vigia.autonomos.dev/slack/commands/case",
+                "description": "Create or review a medical case with Batman token",
+                "usage_hint": "[batman_token] [action]",
+                "should_escape": false
+            },
+            {
+                "command": "/vigia-emergency",
+                "url": "https://vigia.autonomos.dev/slack/commands/emergency",
+                "description": "Trigger emergency medical protocol for critical LPP cases",
+                "usage_hint": "[batman_token] [grade] [location]",
+                "should_escape": false
+            },
+            {
+                "command": "/vigia-team",
+                "url": "https://vigia.autonomos.dev/slack/commands/team",
+                "description": "Coordinate medical team response and assignments",
+                "usage_hint": "[coordination_type] [priority]",
+                "should_escape": false
+            },
+            {
+                "command": "/vigia-audit",
+                "url": "https://vigia.autonomos.dev/slack/commands/audit",
+                "description": "Generate medical audit reports and compliance logs",
+                "usage_hint": "[report_type] [date_range]",
+                "should_escape": false
+            }
+        ]
+    },
+    "oauth_config": {
+        "redirect_urls": [
+            "https://vigia.autonomos.dev/slack/oauth/callback"
+        ],
+        "scopes": {
+            "bot": [
+                "app_mentions:read",
+                "bookmarks:read",
+                "bookmarks:write",
+                "channels:history",
+                "channels:join",
+                "channels:read",
+                "chat:write",
+                "chat:write.customize",
+                "chat:write.public",
+                "commands",
+                "files:read",
+                "files:write",
+                "groups:history",
+                "groups:read",
+                "im:history",
+                "im:read",
+                "mpim:history",
+                "mpim:read",
+                "reactions:read",
+                "reactions:write",
+                "team:read",
+                "users:read",
+                "users:read.email",
+                "workflow.steps:execute"
+            ]
+        }
+    },
+    "settings": {
+        "event_subscriptions": {
+            "request_url": "https://vigia.autonomos.dev/slack/events",
+            "bot_events": [
+                "app_home_opened",
+                "app_mention",
+                "channel_created",
+                "channel_deleted",
+                "channel_rename",
+                "file_public",
+                "file_shared",
+                "member_joined_channel",
+                "member_left_channel",
+                "message.channels",
+                "message.groups",
+                "message.im",
+                "message.mpim",
+                "reaction_added",
+                "reaction_removed",
+                "team_join",
+                "user_change"
+            ]
+        },
+        "interactivity": {
+            "is_enabled": true,
+            "request_url": "https://vigia.autonomos.dev/slack/interactions"
+        },
+        "org_deploy_enabled": false,
+        "socket_mode_enabled": false,
+        "token_rotation_enabled": false
+    }
+}

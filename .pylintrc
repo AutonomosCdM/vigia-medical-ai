@@ -1,0 +1,54 @@
+[MASTER]
+# Medical AI code quality configuration
+extension-pkg-whitelist=pydantic,torch,numpy,cv2
+
+[MESSAGES CONTROL]
+# Medical-specific disable rules
+disable=
+    too-many-arguments,          # Medical functions often need many parameters
+    too-many-locals,             # Medical processing can be complex
+    too-many-instance-attributes, # Medical data structures are comprehensive
+    too-few-public-methods,      # Some medical classes are data containers
+    logging-fstring-interpolation, # Medical logging uses f-strings for clarity
+    import-outside-toplevel,     # Some medical imports are conditional
+    broad-except,                # Medical error handling can be broad for safety
+    too-many-branches,           # Medical decision trees are complex
+    too-many-statements,         # Medical validation is thorough
+    duplicate-code,              # Some medical patterns are necessarily similar
+    unused-argument,             # Medical interfaces may have unused params
+    no-member                    # Dynamic attributes in medical classes
+
+[FORMAT]
+# Professional medical code formatting
+max-line-length=100
+good-names=i,j,k,ex,Run,_,id,ai,ml,cv,lpp,phi,mrn,api,db,ui,ux
+max-module-lines=2000  # Medical modules can be comprehensive
+
+[DESIGN]
+# Medical system complexity limits
+max-args=10           # Medical functions need comprehensive parameters
+max-locals=20         # Medical processing can be complex
+max-returns=8         # Medical decision functions return rich data
+max-branches=20       # Medical decision trees are complex
+max-statements=100    # Medical validation is thorough
+max-parents=10        # Medical inheritance can be deep
+max-attributes=20     # Medical data structures are comprehensive
+min-public-methods=1  # Medical data classes may have few methods
+max-public-methods=30 # Medical systems have many operations
+
+[SIMILARITIES]
+# Allow medical pattern repetition
+min-similarity-lines=10
+ignore-comments=yes
+ignore-docstrings=yes
+ignore-imports=yes
+
+[TYPECHECK]
+# Medical-specific type checking
+ignored-modules=torch,cv2,numpy,scipy,sklearn,pandas,matplotlib
+ignored-classes=torch.nn.Module,cv2.dnn_Net
+
+[VARIABLES]
+# Medical variable patterns
+valid-classmethod-first-arg=cls
+valid-metaclass-classmethod-first-arg=mcs

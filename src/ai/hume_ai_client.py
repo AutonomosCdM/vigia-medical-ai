@@ -114,7 +114,13 @@ class HumeAIClient:
         self.base_url = base_url
         self.audit_service = AuditService()
         self.supabase = SupabaseClient()
-        self.tokenization_service = PHITokenizationService()
+        # Import PHI tokenization service dynamically to avoid circular imports
+        try:
+            from src.core.phi_tokenization_client import PHITokenizationClient
+            self.tokenization_service = PHITokenizationClient()
+        except ImportError:
+            logger.warning("PHI tokenization service not available")
+            self.tokenization_service = None
         self.raw_outputs_client = RawOutputsClient()
         
         # Medical expression mappings for clinical analysis
@@ -170,15 +176,17 @@ class HumeAIClient:
         
         try:
             # Log analysis start with Batman token
+            from ..utils.audit_service import AuditEventType
             await self.audit_service.log_event(
-                event_type="voice_analysis_start",
-                patient_id=token_id,  # Batman token (HIPAA compliant)
+                event_type=AuditEventType.IMAGE_PROCESSED,  # Use existing enum
+                component="hume_ai_voice_analysis",
+                action="analysis_start",
                 details={
                     "analysis_id": analysis_id,
+                    "token_id": token_id,  # Batman token (HIPAA compliant)
                     "has_patient_context": patient_context is not None,
                     "tokenized_patient": True  # Confirm using Batman tokens
-                },
-                phi_safe=True  # No PHI in this analysis
+                }
             )
             
             # Prepare audio for Hume AI
@@ -249,31 +257,36 @@ class HumeAIClient:
             
             # Log successful analysis
             await self.audit_service.log_event(
-                event_type="voice_analysis_complete",
-                patient_id=token_id,
+                event_type=AuditEventType.MEDICAL_DECISION,
+                component="hume_ai_voice_analysis",
+                action="analysis_complete",
                 details={
                     "analysis_id": analysis_id,
+                    "token_id": token_id,
                     "alert_level": medical_indicators.alert_level,
                     "pain_score": medical_indicators.pain_score,
                     "confidence": medical_indicators.confidence_score
-                },
-                phi_safe=True
+                }
             )
             
             return result
             
         except Exception as e:
             # Log error with Batman token
-            await self.audit_service.log_event(
-                event_type="voice_analysis_error",
-                patient_id=token_id,
-                details={
-                    "analysis_id": analysis_id,
-                    "error_type": str(type(e).__name__),
-                    "error_message": str(e)
-                },
-                phi_safe=True
-            )
+            try:
+                await self.audit_service.log_event(
+                    event_type=AuditEventType.ERROR_OCCURRED,
+                    component="hume_ai_voice_analysis",
+                    action="analysis_error",
+                    details={
+                        "analysis_id": analysis_id,
+                        "token_id": token_id,
+                        "error_type": str(type(e).__name__),
+                        "error_message": str(e)
+                    }
+                )
+            except Exception as audit_error:
+                logger.warning(f"Audit logging failed: {audit_error}")
             
             logger.error(f"Voice analysis failed for token {token_id}: {e}")
             raise

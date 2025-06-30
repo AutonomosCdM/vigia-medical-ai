@@ -42,16 +42,29 @@ class SlackActionIds:
 
 class SlackChannels:
     """IDs de canales de Slack"""
+    # Working channel (migrated from existing setup)
+    DEFAULT: ClassVar[str] = "C08U2TB78E6"      # Working channel from environment
+    
+    # Legacy channels (preserved for compatibility)
     PROJECT_LPP: ClassVar[str] = "C08KK1SRE5S"  # #project-lpp
     VIGIA: ClassVar[str] = "C08TJHZFVD1"        # #vigia
+    
+    # Medical specialization channels (all route to default for now)
+    EMERGENCY_ROOM: ClassVar[str] = "C08U2TB78E6"  # Use working channel
+    CLINICAL_TEAM: ClassVar[str] = "C08U2TB78E6"   # Use working channel
+    LPP_SPECIALISTS: ClassVar[str] = "C08U2TB78E6" # Use working channel
+    NURSING_STAFF: ClassVar[str] = "C08U2TB78E6"   # Use working channel
+    SYSTEM_ALERTS: ClassVar[str] = "C08U2TB78E6"   # Use working channel
+    AUDIT_LOG: ClassVar[str] = "C08U2TB78E6"       # Use working channel
     
     # Método para obtener de configuración si existe
     @classmethod
     def get_channel(cls, name: str) -> str:
         """Obtiene el ID del canal, con fallback a valores por defecto"""
-        from config.settings import settings
-        return getattr(settings, f"slack_channel_{name.lower()}", 
-                      getattr(cls, name.upper(), cls.PROJECT_LPP))
+        import os
+        # Try environment variable first, then class attribute, then default
+        env_channel = os.getenv('SLACK_CHANNEL_IDS', cls.DEFAULT)
+        return getattr(cls, name.upper(), env_channel)
 
 
 # Mapeo de severidad de LPP para alertas

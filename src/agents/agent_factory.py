@@ -31,7 +31,7 @@ from src.agents.workflow_orchestration_agent import WorkflowOrchestrationAgent
 from src.agents.risk_assessment_agent import RiskAssessmentAgent
 from src.agents.monai_review_agent import MonaiReviewAgent
 from src.agents.diagnostic_agent import DiagnosticAgent
-from src.agents.adk.voice_analysis import VoiceAnalysisAgent
+from src.agents.voice_analysis_agent import VoiceAnalysisAgent
 
 # Import ADK agents
 from src.agents.communication_agent_adk import CommunicationAgentADKFactory

@@ -1,0 +1,117 @@
+# VIGIA Medical AI v1.0 - Production Docker Container
+# HIPAA-compliant medical AI system for AWS Fargate deployment
+
+FROM python:3.11-slim-bullseye
+
+# Metadata for medical system
+LABEL maintainer="VIGIA Medical AI Team"
+LABEL version="1.0"
+LABEL description="Production medical AI system for pressure injury detection"
+LABEL compliance="HIPAA"
+LABEL architecture="9-agent-coordination"
+
+# Set environment variables for production
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PIP_NO_CACHE_DIR=1
+ENV PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# Security: Create non-root user for medical processing
+RUN groupadd -r vigia && useradd -r -g vigia vigia
+
+# Install system dependencies for medical AI
+RUN apt-get update && apt-get install -y \
+    # Medical imaging libraries
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    libgomp1 \
+    # Network and security
+    curl \
+    wget \
+    # OpenCV dependencies
+    libopencv-dev \
+    python3-opencv \
+    # Audio processing (for voice analysis)
+    libsndfile1 \
+    ffmpeg \
+    # Medical document processing
+    poppler-utils \
+    # Cleanup
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create application directory
+WORKDIR /app
+
+# Copy requirements first for better Docker layer caching
+COPY requirements.txt .
+
+# Install Python dependencies with medical AI optimizations
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements.txt && \
+    # Install additional medical dependencies
+    pip install --no-cache-dir \
+        boto3>=1.34.0 \
+        awscli>=2.0.0 \
+        # Medical monitoring
+        prometheus-client>=0.19.0
+
+# Copy VIGIA Medical AI system
+COPY src/ ./src/
+COPY scripts/ ./scripts/
+COPY docs/ ./docs/
+
+# Copy configuration files
+COPY .env.example .env
+COPY pyproject.toml .
+
+# Create directories for medical data processing
+RUN mkdir -p /app/data/medical_images \
+             /app/data/voice_analysis \
+             /app/data/clinical_assessments \
+             /app/logs \
+             /app/tmp
+
+# Set proper permissions for medical data security
+RUN chown -R vigia:vigia /app && \
+    chmod -R 750 /app && \
+    # Secure medical data directories
+    chmod 700 /app/data/medical_images \
+            /app/data/voice_analysis \
+            /app/data/clinical_assessments
+
+# Create medical system validation script
+RUN echo '#!/bin/bash\n\
+echo "🏥 VIGIA Medical AI - System Health Check"\n\
+echo "Validating 9-agent medical system..."\n\
+python -c "import src.agents.master_medical_orchestrator; print(\"✅ Master Medical Orchestrator\")" || echo "❌ Master Medical Orchestrator"\n\
+python -c "import src.agents.image_analysis_agent; print(\"✅ Image Analysis Agent\")" || echo "❌ Image Analysis Agent"\n\
+python -c "import src.agents.voice_analysis_agent; print(\"✅ Voice Analysis Agent\")" || echo "❌ Voice Analysis Agent"\n\
+python -c "import src.agents.clinical_assessment_agent; print(\"✅ Clinical Assessment Agent\")" || echo "❌ Clinical Assessment Agent"\n\
+python -c "import src.core.phi_tokenization_client; print(\"✅ PHI Tokenization\")" || echo "❌ PHI Tokenization"\n\
+python -c "import src.interfaces.slack_orchestrator; print(\"✅ Slack Integration\")" || echo "❌ Slack Integration"\n\
+echo "🎯 Medical system validation complete"\n\
+' > /app/medical_health_check.sh && chmod +x /app/medical_health_check.sh
+
+# Switch to non-root user for security
+USER vigia
+
+# Expose ports for medical services
+# 8000: FastAPI medical API
+# 7860: Gradio medical interface  
+# 9090: Prometheus metrics
+EXPOSE 8000 7860 9090
+
+# Health check for medical system
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+# Default command for medical orchestrator
+CMD ["python", "-m", "src.main"]
+
+# Alternative commands for different medical services:
+# docker run vigia-medical-ai python -m src.agents.master_medical_orchestrator
+# docker run vigia-medical-ai python final_demo.py --share
+# docker run vigia-medical-ai python scripts/validate_medical_system.py

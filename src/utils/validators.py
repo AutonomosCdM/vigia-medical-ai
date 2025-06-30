@@ -130,7 +130,7 @@ class ImageValidator:
     """Validaciones para archivos de imagen"""
     
     VALID_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.bmp', '.tiff', '.tif', '.webp'}
-    MAX_FILE_SIZE = 20 * 1024 * 1024  # 20MB
+    MAX_FILE_SIZE = 50 * 1024 * 1024  # 50MB for medical images
     
     @staticmethod
     def is_valid_image(file_path: str) -> bool:

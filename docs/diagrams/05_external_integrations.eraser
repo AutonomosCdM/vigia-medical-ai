@@ -1,0 +1,156 @@
+# VIGIA Medical AI - External Integrations
+
+## Objetivo
+Dependencias y riesgos externos: Google Cloud ADK, Twilio WhatsApp, Slack API, MedGemma local, y servicios médicos críticos con sus puntos de falla.
+
+## Código Eraser.io
+```
+colorMode bold
+styleMode shadow
+direction down
+
+// VIGIA Core System
+VIGIA_Core [icon: server, color: blue] {
+  Master_Orchestrator [icon: hub, color: purple]
+  Medical_Dispatcher [icon: medical, color: red]
+  Agent_Factory [icon: cog, color: green]
+}
+
+// Google Cloud Services (CRITICAL)
+Google_Cloud [icon: cloud, color: blue] {
+  ADK_Agents [icon: users, color: purple] {
+    risk_level: "HIGH"
+    uptime: "99.9%"
+    backup: "Local Fallback"
+  }
+  
+  A2A_Protocol [icon: network, color: green] {
+    risk_level: "MEDIUM"
+    uptime: "99.95%"
+    backup: "Direct Agent Calls"
+  }
+  
+  Generative_AI [icon: brain, color: orange] {
+    risk_level: "LOW"
+    uptime: "99.5%"
+    backup: "MedGemma Local"
+  }
+}
+
+// Communication Integrations (CRITICAL)
+Communication_APIs [icon: network, color: green] {
+  Twilio_WhatsApp [icon: mobile, color: blue] {
+    risk_level: "HIGH"
+    uptime: "99.95%"
+    backup: "SMS Fallback"
+    cost_per_message: "$0.005"
+  }
+  
+  Slack_API [icon: slack, color: purple] {
+    risk_level: "MEDIUM"
+    uptime: "99.99%"
+    backup: "Email Alerts"
+    rate_limit: "50 req/min"
+  }
+}
+
+// Local AI Stack (RELIABLE)
+Local_AI_Stack [icon: brain, color: green] {
+  MedGemma_27B [icon: brain, color: purple] {
+    risk_level: "LOW"
+    deployment: "Local Ollama"
+    backup: "OpenAI API"
+    model_size: "27B params"
+  }
+  
+  MONAI_Framework [icon: medical, color: blue] {
+    risk_level: "LOW"
+    deployment: "Local PyTorch"
+    backup: "YOLOv5"
+    precision: "90-95%"
+  }
+  
+  YOLOv5_Backup [icon: eye, color: orange] {
+    risk_level: "VERY_LOW"
+    deployment: "Local Ultralytics"
+    backup: "Always Available"
+    precision: "85-90%"
+  }
+}
+
+// Medical Data Services (CRITICAL)
+Medical_Data_Services [icon: database, color: red] {
+  Supabase_Medical [icon: database, color: blue] {
+    risk_level: "HIGH"
+    uptime: "99.9%"
+    backup: "Local PostgreSQL"
+    compliance: "HIPAA Ready"
+  }
+  
+  Redis_Cache [icon: cache, color: orange] {
+    risk_level: "MEDIUM"
+    uptime: "99.99%"
+    backup: "In-Memory Cache"
+    persistence: "RDB Snapshots"
+  }
+}
+
+// Monitoring & Compliance (MEDIUM)
+Monitoring_Services [icon: monitor, color: orange] {
+  AgentOps_Monitoring [icon: chart, color: green] {
+    risk_level: "LOW"
+    uptime: "99.5%"
+    backup: "Local Telemetry"
+  }
+  
+  Medical_Telemetry [icon: medical, color: purple] {
+    risk_level: "LOW"
+    deployment: "Local Collection"
+    backup: "File Logging"
+  }
+}
+
+// External Medical APIs (FUTURE)
+Future_Medical_APIs [icon: medical, color: gray] {
+  FHIR_Endpoints [icon: api, color: blue] {
+    status: "PLANNED"
+    risk_level: "HIGH"
+    compliance: "HL7 FHIR R4"
+  }
+  
+  Hospital_EMR [icon: hospital, color: red] {
+    status: "INTEGRATION_READY"
+    risk_level: "CRITICAL"
+    protocols: "HL7, DICOM"
+  }
+}
+
+// Connection Flows with Risk Assessment
+VIGIA_Core > Google_Cloud: "Agent Coordination\n⚠️ HIGH RISK"
+VIGIA_Core > Communication_APIs: "Patient/Team Comm\n🚨 CRITICAL PATH"
+VIGIA_Core > Local_AI_Stack: "Medical Analysis\n✅ LOW RISK"
+VIGIA_Core > Medical_Data_Services: "Data Storage\n⚠️ HIGH RISK"
+VIGIA_Core > Monitoring_Services: "System Health\n✅ LOW RISK"
+
+// Backup Connections
+Google_Cloud .- Local_AI_Stack: "Fallback Processing"
+Communication_APIs .- Monitoring_Services: "Alert Fallbacks"
+Medical_Data_Services .- Local_AI_Stack: "Local Caching"
+
+// Risk Indicators
+note over Google_Cloud: "🔥 SPOF: ADK Agents\n💰 Cost: $0.02/request\n⏱️ Latency: 200-500ms"
+note over Communication_APIs: "🔥 SPOF: WhatsApp Business\n💰 Cost: $0.005/message\n📊 Rate Limits Apply"
+note over Medical_Data_Services: "🔥 SPOF: Database\n🔒 HIPAA Critical\n💾 Backup Strategy Required"
+```
+
+## Notas Clave
+- **Google Cloud ADK**: Single Point of Failure para coordinación de agentes (99.9% uptime)
+- **Local AI Redundancy**: MedGemma 27B local + MONAI + YOLOv5 para independencia externa
+- **Communication Risk**: Twilio WhatsApp crítico para pacientes (backup SMS disponible)
+- **Medical Data SPOF**: Supabase crítico para HIPAA compliance (backup PostgreSQL local)
+
+## Para Editar
+1. Copia el código anterior
+2. Ve a [eraser.io](https://eraser.io)
+3. Crea nuevo diagrama → Diagram-as-code
+4. Pega el código y edita

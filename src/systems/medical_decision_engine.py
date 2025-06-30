@@ -11,9 +11,10 @@ Referencias:
 - Evidence-Based Medicine Guidelines for Pressure Injury Care
 """
 
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Any, Optional, Tuple, Union, Protocol
 from datetime import datetime
 from enum import Enum
+from dataclasses import dataclass
 import logging
 
 logger = logging.getLogger(__name__)
@@ -48,20 +49,29 @@ class EvidenceLevel(Enum):
     LEVEL_C = "C"  # Limited evidence, expert opinion
 
 
+@dataclass
 class MedicalDecision:
     """
     Representa una decisión médica documentada con justificación científica.
-    """
     
-    def __init__(self, decision_type: str, recommendation: str, 
-                 evidence_level: EvidenceLevel, npuap_reference: str,
-                 clinical_rationale: str):
-        self.decision_type = decision_type
-        self.recommendation = recommendation
-        self.evidence_level = evidence_level
-        self.npuap_reference = npuap_reference
-        self.clinical_rationale = clinical_rationale
-        self.timestamp = datetime.now().isoformat()
+    Attributes:
+        decision_type: Tipo de decisión clínica
+        recommendation: Recomendación médica específica
+        evidence_level: Nivel de evidencia científica (NPUAP)
+        npuap_reference: Referencia específica a guías NPUAP
+        clinical_rationale: Justificación clínica de la decisión
+        timestamp: Marca temporal de la decisión
+    """
+    decision_type: str
+    recommendation: str
+    evidence_level: EvidenceLevel
+    npuap_reference: str
+    clinical_rationale: str
+    timestamp: str = None
+    
+    def __post_init__(self) -> None:
+        if self.timestamp is None:
+            self.timestamp = datetime.now().isoformat()
 
 
 class MedicalDecisionEngine:
@@ -72,11 +82,11 @@ class MedicalDecisionEngine:
     para cada decisión clínica automatizada.
     """
     
-    def __init__(self):
-        """Inicializa el motor con base de conocimiento médico"""
-        self.knowledge_base = self._load_medical_knowledge()
-        self.confidence_thresholds = self._define_confidence_thresholds()
-        self.escalation_rules = self._define_escalation_rules()
+    def __init__(self) -> None:
+        """Inicializa el motor con base de conocimiento médico."""
+        self.knowledge_base: Dict[str, Any] = self._load_medical_knowledge()
+        self.confidence_thresholds: Dict[str, float] = self._define_confidence_thresholds()
+        self.escalation_rules: Dict[str, Any] = self._define_escalation_rules()
         
     def make_clinical_decision(self, lpp_grade: int, confidence: float,
                              anatomical_location: str,

@@ -18,6 +18,11 @@ torchvision==0.18.0
 ultralytics==8.2.0
 yolov5==7.0.13
 
+# Dataset Integration (Hugging Face & Medical Datasets)
+datasets>=2.18.0
+huggingface-hub>=0.21.0
+scikit-learn>=1.4.0
+
 # Medical AI & Language Models
 ollama>=0.1.0                    # Local MedGemma 27B
 httpx==0.27.0                    # Async HTTP client
@@ -31,6 +36,7 @@ anthropic==0.25.7                # Claude agent integration
 
 # Medical Data & Security
 redis==5.0.4                     # Medical data caching
+aioredis>=2.0.1                  # Async Redis client
 redisvl==0.2.1                   # Vector search
 cryptography>=41.0.0             # PHI encryption
 pyjwt>=2.8.0                     # Medical audit tokens

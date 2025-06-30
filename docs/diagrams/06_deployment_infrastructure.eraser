@@ -1,0 +1,148 @@
+# VIGIA Medical AI - Deployment Infrastructure
+
+## Objetivo
+Cómo se despliega y ejecuta VIGIA Medical AI: arquitectura local-first con opciones cloud, containerización médica y configuración de producción.
+
+## Código Eraser.io
+```
+colorMode bold
+styleMode shadow
+direction down
+
+// Local Development Environment
+Local_Development [icon: desktop, color: green] {
+  MacOS_Linux [icon: desktop, color: blue] {
+    Python_3_11 [icon: python, color: green]
+    Docker_Optional [icon: docker, color: blue]
+    Ollama_Local [icon: brain, color: purple]
+  }
+  
+  Development_Services [icon: server, color: orange] {
+    Redis_Local [icon: cache, color: red]
+    PostgreSQL_Dev [icon: database, color: blue]
+    Gradio_Interface [icon: browser, color: green]
+  }
+}
+
+// Production Infrastructure Options
+Production_Cloud [icon: cloud, color: blue] {
+  Render_Deployment [icon: cloud, color: green] {
+    Web_Service [icon: server, color: blue]
+    Background_Workers [icon: cog, color: orange]
+    Redis_Cloud [icon: cache, color: red]
+    PostgreSQL_Managed [icon: database, color: purple]
+  }
+  
+  Alternative_Clouds [icon: cloud, color: gray] {
+    AWS_ECS [icon: aws, color: orange]
+    Google_Cloud_Run [icon: gcp, color: blue]
+    Railway_App [icon: train, color: green]
+  }
+}
+
+// Container Architecture
+Container_Stack [icon: docker, color: blue] {
+  Medical_AI_Container [icon: docker, color: green] {
+    Base_Python_3_11 [icon: python, color: blue]
+    Medical_Dependencies [icon: package, color: orange]
+    MONAI_PyTorch [icon: brain, color: purple]
+    Security_Libs [icon: shield, color: red]
+  }
+  
+  Services_Containers [icon: docker, color: purple] {
+    Redis_Container [icon: cache, color: red]
+    PostgreSQL_Container [icon: database, color: blue]
+    Nginx_Proxy [icon: server, color: green]
+  }
+}
+
+// Medical AI Services Stack
+Medical_Services [icon: medical, color: red] {
+  Core_Services [icon: server, color: blue] {
+    FastAPI_Server_0_110 [icon: api, color: green]
+    Celery_Workers_5_3 [icon: queue, color: orange]
+    Gradio_Interface_4_20 [icon: browser, color: purple]
+  }
+  
+  AI_Processing_Stack [icon: brain, color: purple] {
+    Ollama_MedGemma [icon: brain, color: green]
+    PyTorch_2_3_MONAI [icon: medical, color: blue]
+    YOLOv5_7_0_Backup [icon: eye, color: orange]
+  }
+}
+
+// Security & Monitoring Layer
+Security_Infrastructure [icon: shield, color: red] {
+  HIPAA_Compliance [icon: medical, color: blue] {
+    PHI_Encryption [icon: lock, color: red]
+    Audit_Logging [icon: clipboard, color: orange]
+    Access_Control [icon: key, color: green]
+  }
+  
+  Monitoring_Stack [icon: monitor, color: green] {
+    AgentOps_Telemetry [icon: chart, color: blue]
+    Medical_Metrics [icon: graph, color: purple]
+    Health_Checks [icon: heart, color: red]
+  }
+}
+
+// Network & Load Balancing
+Network_Layer [icon: network, color: green] {
+  Load_Balancer [icon: server, color: blue] {
+    Nginx_Reverse_Proxy [icon: server, color: green]
+    SSL_Termination [icon: lock, color: red]
+    Rate_Limiting [icon: shield, color: orange]
+  }
+  
+  External_Connections [icon: network, color: purple] {
+    WhatsApp_Webhooks [icon: mobile, color: green]
+    Slack_API_Calls [icon: slack, color: blue]
+    Google_ADK_Cloud [icon: cloud, color: orange]
+  }
+}
+
+// Storage & Backup Infrastructure
+Storage_Infrastructure [icon: storage, color: blue] {
+  Primary_Storage [icon: database, color: green] {
+    Supabase_Production [icon: database, color: blue]
+    Redis_Cluster [icon: cache, color: red]
+    Medical_Images_S3 [icon: storage, color: orange]
+  }
+  
+  Backup_Strategy [icon: backup, color: orange] {
+    Database_Backups [icon: database, color: gray]
+    Image_Replication [icon: copy, color: blue]
+    Config_Versioning [icon: git, color: green]
+  }
+}
+
+// Deployment Flow Connections
+Local_Development > Container_Stack: "Docker Build"
+Container_Stack > Production_Cloud: "Deploy Containers"
+Production_Cloud > Medical_Services: "Service Orchestration"
+Medical_Services > Security_Infrastructure: "Security Layer"
+Security_Infrastructure > Network_Layer: "Protected Access"
+Network_Layer > Storage_Infrastructure: "Data Persistence"
+
+// Infrastructure Dependencies
+Medical_Services <> External_Connections: "API Integrations"
+Storage_Infrastructure > Backup_Strategy: "Data Protection"
+Security_Infrastructure > Storage_Infrastructure: "Encrypted Storage"
+
+// Deployment Notes
+note over Local_Development: "🚀 One-command install\n./install.sh\n✅ Automatic service detection"
+note over Production_Cloud: "☁️ Production ready\n🔒 HIPAA compliant\n📊 Auto-scaling capable"
+note over Container_Stack: "🐳 Medical-grade containers\n🔒 Security hardened\n⚡ Optimized for AI workloads"
+```
+
+## Notas Clave
+- **Local-First Design**: Desarrollo completo local con `./install.sh` para máxima productividad
+- **Cloud-Ready**: Render.com optimizado con alternativas AWS/GCP para producción
+- **Medical Containers**: Stack Docker especializado para workloads de AI médico
+- **HIPAA Infrastructure**: Encryption, audit logging y access control en todas las capas
+
+## Para Editar
+1. Copia el código anterior
+2. Ve a [eraser.io](https://eraser.io)
+3. Crea nuevo diagrama → Diagram-as-code
+4. Pega el código y edita

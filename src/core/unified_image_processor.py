@@ -10,7 +10,7 @@ from datetime import datetime
 import uuid
 
 from config.settings import settings
-from .base_client_v2 import BaseClientV2
+from .base_client import BaseClient as BaseClientV2
 from ..cv_pipeline import Detector, Preprocessor
 from ..utils.image_utils import (
     is_valid_image, 
