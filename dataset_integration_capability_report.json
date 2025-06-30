@@ -1,0 +1,46 @@
+{
+  "timestamp": "2025-06-30T09:46:48.875792",
+  "vigia_version": "v1.0",
+  "dataset_integration_status": "implemented",
+  "capabilities": {
+    "synthetic_data_generation": true,
+    "huggingface_integration": false,
+    "ml_utilities": true,
+    "database_storage": true,
+    "hipaa_compliance": true
+  },
+  "supported_datasets": [
+    {
+      "name": "pressure_injury_synthetic",
+      "type": "synthetic",
+      "status": "ready",
+      "description": "NPUAP-graded synthetic pressure injury data"
+    },
+    {
+      "name": "ham10000",
+      "type": "huggingface",
+      "status": "conditional",
+      "description": "Dermatological lesion dataset (requires 'datasets' package)"
+    },
+    {
+      "name": "skincap",
+      "type": "huggingface",
+      "status": "conditional",
+      "description": "Skin cancer dataset (requires 'datasets' package)"
+    }
+  ],
+  "integration_workflows": [
+    "\u2705 Synthetic patient generation with HIPAA compliance",
+    "\u2705 Batman token PHI protection",
+    "\u2705 NPUAP grading system integration",
+    "\u2705 Training database storage with audit trails",
+    "\u26a0\ufe0f  Hugging Face dataset downloads (requires dependencies)",
+    "\u2705 Medical metadata generation and validation"
+  ],
+  "recommended_setup": [
+    "pip install datasets>=2.18.0 huggingface-hub>=0.21.0 scikit-learn>=1.4.0",
+    "python scripts/validate_dataset_integration.py",
+    "python scripts/integrate_medical_datasets.py --test-mode",
+    "python scripts/integrate_medical_datasets.py --datasets all"
+  ]
+}

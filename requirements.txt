@@ -36,6 +36,7 @@ anthropic==0.25.7                # Claude agent integration
 
 # Medical Data & Security
 redis==5.0.4                     # Medical data caching
+aioredis>=2.0.1                  # Async Redis client
 redisvl==0.2.1                   # Vector search
 cryptography>=41.0.0             # PHI encryption
 pyjwt>=2.8.0                     # Medical audit tokens
