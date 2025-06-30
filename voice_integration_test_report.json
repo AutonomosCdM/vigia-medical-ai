@@ -1,0 +1,10 @@
+{
+  "test_suite": "voice_agent_integration",
+  "timestamp": "2025-06-30T11:22:40.274975",
+  "total_tests": 3,
+  "passed_tests": 2,
+  "success_rate": "66.7%",
+  "integration_status": "partial_integration",
+  "hume_ai_available": false,
+  "9_agent_system_ready": true
+}

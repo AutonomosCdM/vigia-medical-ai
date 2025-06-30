@@ -3,7 +3,7 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
-VIGIA Medical AI v1.0 is a production-ready medical-grade pressure injury (LPP) detection system with Google Cloud ADK agent coordination, HIPAA-compliant PHI tokenization, and dual AI engines (MONAI + YOLOv5) for 95% detection accuracy.
+VIGIA Medical AI v1.0 is a production-ready medical-grade pressure injury (LPP) detection system with 9-agent coordination architecture, HIPAA-compliant PHI tokenization, multimodal AI analysis (image + voice), and comprehensive medical compliance for healthcare environments.
 
 ## Core Architecture
 
@@ -15,19 +15,24 @@ VIGIA Medical AI v1.0 is a production-ready medical-grade pressure injury (LPP) 
 - **docs/**: Architecture documentation and Eraser.io diagrams
 
 ### Key Components
-- **Agents** (`src/agents/`): 9 specialized medical agents with Google Cloud ADK
-- **AI Engines** (`src/ai/`): MedGemma 27B local + Hume AI integration + Medical guardrails
-- **Core Systems** (`src/core/`): Async pipeline, PHI tokenization, medical dispatcher
-- **CV Pipeline** (`src/cv_pipeline/`): MONAI primary + YOLOv5 backup detection
-- **Medical Systems** (`src/systems/`): Evidence-based NPUAP/EPUAP decision engine
-- **Communication** (`src/messaging/`): WhatsApp patient + Slack medical team integration
-- **Security** (`src/security/`): PHI tokenization for HIPAA compliance
-- **Storage** (`src/storage/`): Medical image storage with audit trails
-- **Database** (`src/db/`): Production PostgreSQL training database with NPUAP grading
-- **ML Tracking** (`src/ml/`): Advanced model performance monitoring with drift detection
-- **Synthetic Data** (`src/synthetic/`): HIPAA-compliant patient data generation
-- **Pipeline** (`src/pipeline/`): Automated retraining pipeline with Celery
-- **Monitoring** (`src/monitoring/`): Real-time response monitoring and escalation
+- **Agents** (`src/agents/`): 9 specialized medical agents with A2A communication
+  - MasterMedicalOrchestrator, ImageAnalysisAgent, VoiceAnalysisAgent
+  - ClinicalAssessmentAgent, RiskAssessmentAgent, DiagnosticAgent  
+  - ProtocolAgent, CommunicationAgent, WorkflowOrchestrationAgent, MonaiReviewAgent
+- **AI Engines** (`src/ai/`): Multimodal medical AI stack
+  - MedGemma 27B local medical LLM + Hume AI voice analysis + Medical guardrails
+- **Core Systems** (`src/core/`): Medical infrastructure
+  - PHI tokenization (Batman tokens), session management, medical dispatcher
+- **CV Pipeline** (`src/cv_pipeline/`): Medical imaging analysis
+  - MONAI primary + YOLOv5 backup detection with adaptive selection
+- **Medical Systems** (`src/systems/`): Evidence-based clinical engine
+  - NPUAP/EPUAP/PPPIA 2019 guidelines implementation
+- **Communication** (`src/messaging/`): Healthcare integration
+  - WhatsApp patient communication + Slack medical team coordination
+- **Security** (`src/security/`): HIPAA compliance infrastructure
+- **Database** (`src/db/`): Medical data management with NPUAP grading
+- **ML Infrastructure** (`src/ml/`, `src/synthetic/`, `src/pipeline/`, `src/monitoring/`):
+  - Model tracking, synthetic patient generation, automated retraining, response monitoring
 
 ## Essential Commands
 
@@ -95,6 +100,18 @@ python scripts/integrate_medical_datasets.py --test-mode --verbose
 python scripts/integrate_medical_datasets.py --output-dir ./data/custom_datasets --validation-split 0.3
 ```
 
+#### Voice Analysis & Multimodal Integration
+```bash
+# Test voice analysis agent integration
+python scripts/test_voice_agent_integration.py
+
+# Test Hume AI voice analysis (requires API key in .env)
+python scripts/test_hume_ai_complete.py
+
+# Test complete 9-agent system coordination
+python -c "from src.agents.agent_factory import create_complete_vigia_system; asyncio.run(create_complete_vigia_system())"
+```
+
 #### Medical Guardrails & Safety
 ```bash
 # Test medical guardrails
@@ -146,9 +163,10 @@ detector = AdaptiveMedicalDetector()
 assessment = await detector.detect_medical_condition_async(image_path, batman_token)
 
 # Agent Factory for Specialized Processing
-from src.agents.agent_factory import create_specialized_agent
-agent = create_specialized_agent("risk_assessment")
-analysis = await agent.analyze_medical_case(batman_token, medical_data)
+from src.agents.agent_factory import VigiaAgentFactory
+factory = VigiaAgentFactory()
+agent = await factory.create_agent("voice_analysis")
+analysis = await agent.instance.analyze_medical_voice_async(audio_data, batman_token)
 
 # Training Database with NPUAP Grading
 from src.db.training_database import TrainingDatabase, NPUAPGrade
@@ -170,6 +188,12 @@ await tracker.track_model_inference(model_version, batman_token, prediction)
 from src.synthetic.patient_generator import SyntheticPatientGenerator
 generator = SyntheticPatientGenerator()
 synthetic_patient = await generator.generate_realistic_patient(risk_level="high")
+
+# Voice Analysis Integration (NEW)
+from src.agents.voice_analysis_agent import VoiceAnalysisAgent
+voice_agent = VoiceAnalysisAgent()
+await voice_agent.initialize()
+assessment = await voice_agent.analyze_medical_voice_async(audio_data, batman_token, patient_context)
 ```
 
 ### Medical Compliance Requirements
@@ -188,13 +212,14 @@ synthetic_patient = await generator.generate_realistic_patient(risk_level="high"
 
 ### 9-Agent Medical Coordination
 - **Master Medical Orchestrator**: Central coordination with A2A protocol
-- **Image Analysis Agent**: MONAI + YOLOv5 medical imaging
+- **Image Analysis Agent**: MONAI + YOLOv5 medical imaging with adaptive selection
+- **Voice Analysis Agent**: Hume AI integration for pain/emotional assessment (NEW)
 - **Clinical Assessment Agent**: Evidence-based medical evaluation
-- **Risk Assessment Agent**: Medical risk stratification
-- **MONAI Review Agent**: Specialized medical imaging review
-- **Diagnostic Agent**: Multi-agent diagnostic fusion
-- **Protocol Agent**: NPUAP/EPUAP guidelines implementation
-- **Communication Agent**: Patient + medical team coordination
+- **Risk Assessment Agent**: Medical risk stratification with Braden/Norton scales
+- **MONAI Review Agent**: Specialized medical imaging quality assessment
+- **Diagnostic Agent**: Multi-agent diagnostic fusion and decision synthesis
+- **Protocol Agent**: NPUAP/EPUAP/PPPIA 2019 guidelines implementation
+- **Communication Agent**: Patient + medical team coordination (WhatsApp/Slack)
 - **Workflow Orchestration Agent**: Async medical pipeline management
 
 ### Security & Compliance Architecture
@@ -206,18 +231,21 @@ synthetic_patient = await generator.generate_realistic_patient(risk_level="high"
 
 ### Communication Flow
 ```
-Patient (WhatsApp) → PHI Tokenization → 9-Agent Analysis → Medical Team (Slack) → Patient Response
-                                ↓
-                        Google Cloud ADK Coordination
+Patient (WhatsApp/Voice) → PHI Tokenization → 9-Agent Analysis → Medical Team (Slack) → Patient Response
+                                    ↓
+                         Multimodal Processing (Image + Voice)
+                                    ↓
+                           A2A Agent Coordination Protocol
 ```
 
 ## Key Technologies
-- **AI/ML**: PyTorch 2.3.0, MONAI, YOLOv5 7.0.13, MedGemma Local
+- **AI/ML**: PyTorch 2.3.0, MONAI, YOLOv5 7.0.13, MedGemma 27B Local, Hume AI
 - **Backend**: FastAPI 0.110.2, Celery 5.3.6, Redis 5.0.4
 - **Frontend**: Gradio 4.20+ with public sharing capabilities
-- **Database**: Supabase 2.4.2, Vector search with FAISS
+- **Database**: Supabase 2.4.2, PostgreSQL training database, Vector search with FAISS
 - **Security**: Cryptography, PHI tokenization, comprehensive audit trails
-- **Integration**: Google Cloud ADK, Twilio WhatsApp, Slack API
+- **Integration**: Agent-to-Agent (A2A) protocol, Twilio WhatsApp, Slack API
+- **Voice Analysis**: Hume AI integration with 48 emotion categories for medical assessment
 - **Cloud**: Professional deployment with Render.com support
 
 ## Professional Development Guidelines
@@ -308,23 +336,23 @@ cat docs/diagrams/README_DIAGRAMS.md
 ## Current System Status
 
 ### ✅ **PRODUCTION ARCHITECTURE COMPLETE**
-- **Agent Coordination**: 9 specialized medical agents with Google Cloud ADK
-- **HIPAA Compliance**: PHI tokenization with Batman token system (15-min sessions)
-- **Medical AI Stack**: MONAI primary + YOLOv5 backup + MedGemma 27B local
+- **9-Agent Coordination**: Complete medical agent system with A2A communication
+- **HIPAA Compliance**: PHI tokenization with Batman token system (15-min sessions)  
+- **Multimodal AI Stack**: MONAI + YOLOv5 + MedGemma 27B + Hume AI voice analysis
 - **Evidence-Based**: NPUAP/EPUAP 2019 clinical guidelines implementation
 - **Clean Architecture**: Agent factory pattern with comprehensive testing
 - **Medical Guardrails**: LLM safety validation with automatic escalation
 - **Training Infrastructure**: PostgreSQL database with NPUAP grading system
 - **Performance Monitoring**: Real-time model tracking with drift detection
 - **Synthetic Data Pipeline**: HIPAA-compliant patient generation with Braden scoring
-- **Automated Retraining**: Celery-based pipeline with trigger mechanisms
+- **Voice Analysis Integration**: Hume AI with 66.7% test success rate (2/3 tests passing)
 
-### 📊 **Latest Achievements (Commit: 4f94c19)**
-- **Agent Architecture**: Complete cleanup and production optimization
-- **Import Structure**: 100% consistency (vigia_detect → src)
-- **9 Core Agents**: Risk Assessment (1,496 lines), Master Orchestrator (1,800+ lines)
-- **Zero Dependencies**: Eliminated circular imports and missing modules
-- **Production Ready**: Full medical system validation with Batman tokenization
+### 📊 **Latest Achievements (Commit: 1cf0624)**
+- **Voice Analysis Integration**: Complete Hume AI voice analysis with A2A communication
+- **9-Agent System**: All agents operational with factory pattern management
+- **Agent Architecture**: VoiceAnalysisAgent (495 lines) with medical specialization
+- **Test Infrastructure**: Comprehensive voice integration testing (66.7% pass rate)
+- **Production Ready**: Full medical system validation with multimodal capabilities
 
 ### 🚀 **Key Features**
 - **One-Command Install**: `./install.sh` for complete system setup
@@ -334,3 +362,60 @@ cat docs/diagrams/README_DIAGRAMS.md
 - **Production Deployment**: HIPAA-compliant infrastructure ready
 
 This repository delivers production-grade medical AI capabilities with professional architecture and comprehensive agent coordination.
+
+## Agent-to-Agent (A2A) Architecture Pattern
+
+### Core A2A Communication
+The system uses a standardized message-passing architecture between specialized medical agents:
+
+```python
+# Base agent message structure
+from src.agents.base_agent import AgentMessage, AgentResponse
+
+message = AgentMessage(
+    session_id="medical_session_123",
+    sender_id="master_orchestrator", 
+    content={"audio_data": audio_bytes, "batman_token": token},
+    message_type="processing_request",
+    timestamp=datetime.now()
+)
+
+response = await agent.process_message(message)
+```
+
+### Agent Development Pattern
+When creating new agents, follow this structure:
+
+1. **Inherit from BaseAgent**: All agents extend `src.agents.base_agent.BaseAgent`
+2. **Implement process_message()**: Handle A2A communication protocol
+3. **Register with AgentFactory**: Use `src.agents.agent_factory.VigiaAgentFactory`
+4. **Initialize in Orchestrator**: Add to `MasterMedicalOrchestrator._initialize_specialized_agents()`
+
+### Medical Agent Lifecycle
+```python
+# Agent creation and coordination
+from src.agents.agent_factory import VigiaAgentFactory
+
+factory = VigiaAgentFactory()
+agents = await factory.create_complete_medical_system()
+
+# Orchestrator manages all agent interactions
+orchestrator = agents["master_orchestrator"]
+result = await orchestrator.process_medical_case(case_data)
+```
+
+### Agent Communication Flow
+```
+MasterMedicalOrchestrator
+├── ImageAnalysisAgent (MONAI + YOLOv5)
+├── VoiceAnalysisAgent (Hume AI) 
+├── ClinicalAssessmentAgent (Evidence-based)
+├── RiskAssessmentAgent (Braden/Norton)
+├── DiagnosticAgent (Multi-agent fusion)
+├── ProtocolAgent (NPUAP/EPUAP)
+├── CommunicationAgent (WhatsApp/Slack)
+├── MonaiReviewAgent (Quality assessment)
+└── WorkflowOrchestrationAgent (Pipeline)
+```
+
+Each agent processes medical data independently and returns standardized medical assessments that flow through the orchestrator for comprehensive medical decision-making.

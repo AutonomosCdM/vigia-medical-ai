@@ -10,14 +10,27 @@ from dataclasses import dataclass, asdict
 from enum import Enum
 import json
 
-from src.agents.base_agent import BaseAgent, AgentCapability, AgentMessage, AgentResponse
+from src.agents.base_agent import BaseAgent, AgentMessage, AgentResponse
+
+# Define missing AgentCapability enum
+class AgentCapability(Enum):
+    """Agent capabilities for medical processing"""
+    IMAGE_ANALYSIS = "image_analysis"
+    CLINICAL_ASSESSMENT = "clinical_assessment"
+    PROTOCOL_CONSULTATION = "protocol_consultation"
+    MEDICAL_COMMUNICATION = "medical_communication"
+    WORKFLOW_ORCHESTRATION = "workflow_orchestration"
+    LPP_DETECTION = "lpp_detection"
+    EVIDENCE_BASED_DECISIONS = "evidence_based_decisions"
+    HIPAA_COMPLIANCE = "hipaa_compliance"
+    EMERGENCY_ALERTS = "emergency_alerts"
+    TEAM_COORDINATION = "team_coordination"
+    ESCALATION_MANAGEMENT = "escalation_management"
 from src.interfaces.slack_orchestrator import (
     SlackOrchestrator, SlackNotificationPriority as NotificationPriority
 )
-# Mock missing classes for compatibility
-class NotificationPayload: pass
-class NotificationType: pass
-class SlackChannel: pass
+# Import from updated slack orchestrator
+from src.interfaces.slack_orchestrator import NotificationPayload, NotificationType, SlackChannel
 from src.utils.secure_logger import SecureLogger
 
 logger = SecureLogger("communication_agent")
@@ -92,16 +105,19 @@ class CommunicationAgent(BaseAgent):
         """
         super().__init__(
             agent_id=agent_id,
-            name="Communication Agent",
-            description="Agente especializado en comunicaciones y notificaciones médicas",
-            capabilities=[
-                AgentCapability.MEDICAL_COMMUNICATION,
-                AgentCapability.EMERGENCY_ALERTS,
-                AgentCapability.TEAM_COORDINATION,
-                AgentCapability.ESCALATION_MANAGEMENT
-            ],
-            version="1.0.0"
+            agent_type="communication_agent"
         )
+        
+        # Additional properties for advanced agent
+        self.name = "Communication Agent"
+        self.description = "Agente especializado en comunicaciones y notificaciones médicas"
+        self.capabilities = [
+            AgentCapability.MEDICAL_COMMUNICATION,
+            AgentCapability.EMERGENCY_ALERTS,
+            AgentCapability.TEAM_COORDINATION,
+            AgentCapability.ESCALATION_MANAGEMENT
+        ]
+        self.version = "1.0.0"
         
         # Orquestador de comunicaciones
         self.slack_orchestrator = slack_orchestrator or SlackOrchestrator()
@@ -280,8 +296,8 @@ class CommunicationAgent(BaseAgent):
             # Crear payload de notificación Slack
             notification_payload = await self._create_slack_payload(request, message_id)
             
-            # Enviar a través del orquestador
-            slack_result = await self.slack_orchestrator.send_notification(notification_payload)
+            # Enviar a través del orquestador (sync method)
+            slack_result = self.slack_orchestrator.send_notification(notification_payload)
             
             if slack_result["success"]:
                 return CommunicationResult(
@@ -395,7 +411,7 @@ class CommunicationAgent(BaseAgent):
         notification_type_map = {
             CommunicationType.EMERGENCY_ALERT: NotificationType.EMERGENCY_ALERT,
             CommunicationType.CLINICAL_NOTIFICATION: NotificationType.CLINICAL_RESULT,
-            CommunicationType.TEAM_COORDINATION: NotificationType.HUMAN_REVIEW_REQUEST,
+            CommunicationType.TEAM_COORDINATION: NotificationType.TEAM_COORDINATION,
             CommunicationType.PATIENT_UPDATE: NotificationType.CLINICAL_RESULT,
             CommunicationType.SYSTEM_ALERT: NotificationType.SYSTEM_STATUS,
             CommunicationType.AUDIT_NOTIFICATION: NotificationType.AUDIT_ALERT,
@@ -627,11 +643,13 @@ class CommunicationAgent(BaseAgent):
             response_text = f"Error enviando comunicación: {', '.join(result.errors)}"
         
         return AgentResponse(
-            session_id=message.session_id,
-            agent_id=self.agent_id,
             success=success,
             content=response_content,
+            message=response_text,
+            timestamp=datetime.now(timezone.utc),
             metadata={
+                "session_id": message.session_id,
+                "agent_id": self.agent_id,
                 "processing_time": processing_time,
                 "communication_type": request.communication_type.value,
                 "channel": request.channel.value,
@@ -639,7 +657,6 @@ class CommunicationAgent(BaseAgent):
                 "requires_acknowledgment": request.requires_acknowledgment,
                 "timestamp": datetime.now(timezone.utc).isoformat()
             },
-            message=response_text,
             next_actions=result.next_actions,
             requires_human_review=not result.success
         )
@@ -678,19 +695,20 @@ class CommunicationAgent(BaseAgent):
             AgentResponse: Respuesta de error
         """
         return AgentResponse(
-            session_id=message.session_id,
-            agent_id=self.agent_id,
             success=False,
             content={
                 "error": error,
                 "status": "error",
                 "retry_available": True
             },
+            message=f"Error en comunicación: {error}",
+            timestamp=datetime.now(timezone.utc),
             metadata={
+                "session_id": message.session_id,
+                "agent_id": self.agent_id,
                 "error_occurred": True,
                 "timestamp": datetime.now(timezone.utc).isoformat()
             },
-            message=f"Error en comunicación: {error}",
             next_actions=["Verificar configuración", "Reintentar comunicación"],
             requires_human_review=True
         )
