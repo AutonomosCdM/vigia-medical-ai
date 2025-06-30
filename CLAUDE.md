@@ -16,13 +16,18 @@ VIGIA Medical AI v1.0 is a production-ready medical-grade pressure injury (LPP) 
 
 ### Key Components
 - **Agents** (`src/agents/`): 9 specialized medical agents with Google Cloud ADK
-- **AI Engines** (`src/ai/`): MedGemma 27B local + Hume AI integration
+- **AI Engines** (`src/ai/`): MedGemma 27B local + Hume AI integration + Medical guardrails
 - **Core Systems** (`src/core/`): Async pipeline, PHI tokenization, medical dispatcher
 - **CV Pipeline** (`src/cv_pipeline/`): MONAI primary + YOLOv5 backup detection
 - **Medical Systems** (`src/systems/`): Evidence-based NPUAP/EPUAP decision engine
 - **Communication** (`src/messaging/`): WhatsApp patient + Slack medical team integration
 - **Security** (`src/security/`): PHI tokenization for HIPAA compliance
 - **Storage** (`src/storage/`): Medical image storage with audit trails
+- **Database** (`src/db/`): Production PostgreSQL training database with NPUAP grading
+- **ML Tracking** (`src/ml/`): Advanced model performance monitoring with drift detection
+- **Synthetic Data** (`src/synthetic/`): HIPAA-compliant patient data generation
+- **Pipeline** (`src/pipeline/`): Automated retraining pipeline with Celery
+- **Monitoring** (`src/monitoring/`): Real-time response monitoring and escalation
 
 ## Essential Commands
 
@@ -50,6 +55,35 @@ python scripts/setup_medgemma.py
 # System validation
 python scripts/validate_medical_system.py
 python scripts/validate_post_refactor_simple.py --verbose
+```
+
+### Advanced Infrastructure Commands
+
+#### Database & Training Pipeline
+```bash
+# Initialize training database (PostgreSQL + Redis)
+python -c "from src.db.training_database import training_db; asyncio.run(training_db.initialize())"
+
+# Generate synthetic medical data
+python -c "from src.synthetic.patient_generator import SyntheticPatientGenerator; generator = SyntheticPatientGenerator(); asyncio.run(generator.generate_patient_cohort(100))"
+
+# Track model performance
+python -c "from src.ml.model_tracking import model_tracker; asyncio.run(model_tracker.generate_performance_dashboard())"
+
+# Run automated retraining pipeline
+python -c "from src.pipeline.training_pipeline import training_pipeline; asyncio.run(training_pipeline.trigger_retraining('accuracy_drop'))"
+```
+
+#### Medical Guardrails & Safety
+```bash
+# Test medical guardrails
+python -c "from src.ai.medical_guardrails import MedicalGuardrails; guardrails = MedicalGuardrails(); asyncio.run(guardrails.validate_response('Grade 4 pressure injury requires immediate surgical intervention'))"
+
+# Monitor response safety
+python -c "from src.monitoring.response_monitoring import ResponseMonitor; monitor = ResponseMonitor(); asyncio.run(monitor.start_monitoring())"
+
+# Check fallback mechanisms
+python -c "from src.ai.fallback_handler import FallbackHandler; fallback = FallbackHandler(); asyncio.run(fallback.get_safe_response('emergency_protocol'))"
 ```
 
 ### Testing
@@ -94,6 +128,27 @@ assessment = await detector.detect_medical_condition_async(image_path, batman_to
 from src.agents.agent_factory import create_specialized_agent
 agent = create_specialized_agent("risk_assessment")
 analysis = await agent.analyze_medical_case(batman_token, medical_data)
+
+# Training Database with NPUAP Grading
+from src.db.training_database import TrainingDatabase, NPUAPGrade
+db = TrainingDatabase()
+await db.initialize()
+await db.store_medical_image(image_path, NPUAPGrade.STAGE_2, batman_token)
+
+# Medical Guardrails for LLM Safety
+from src.ai.medical_guardrails import MedicalGuardrails
+guardrails = MedicalGuardrails()
+safety_result = await guardrails.validate_medical_response(llm_response, context)
+
+# Model Performance Tracking
+from src.ml.model_tracking import ModelPerformanceTracker
+tracker = ModelPerformanceTracker()
+await tracker.track_model_inference(model_version, batman_token, prediction)
+
+# Synthetic Patient Generation
+from src.synthetic.patient_generator import SyntheticPatientGenerator
+generator = SyntheticPatientGenerator()
+synthetic_patient = await generator.generate_realistic_patient(risk_level="high")
 ```
 
 ### Medical Compliance Requirements
@@ -102,6 +157,11 @@ analysis = await agent.analyze_medical_case(batman_token, medical_data)
 - **Evidence-Based Decisions**: NPUAP/EPUAP/PPPIA 2019 guidelines implementation
 - **Medical Audit Trail**: Complete decision traceability for regulatory compliance
 - **Local AI Processing**: MedGemma 27B runs locally for HIPAA compliance
+- **Medical Guardrails REQUIRED**: All LLM responses must pass safety validation
+- **Model Performance Monitoring**: Continuous drift detection and safety tracking
+- **Synthetic Data Only**: Use synthetic patients for training and testing
+- **Database NPUAP Compliance**: All medical images stored with proper grading
+- **Automated Escalation**: Safety violations trigger immediate medical review
 
 ## Production Architecture
 
@@ -143,6 +203,10 @@ Patient (WhatsApp) → PHI Tokenization → 9-Agent Analysis → Medical Team (S
 
 ### Requirements Structure
 - **requirements.txt**: Production dependencies with pinned versions
+- **pyproject.toml**: Package configuration with medical-specific development tools
+  - Black code formatting, pytest testing, mypy type checking
+  - Optional medical analysis dependencies (scikit-learn, matplotlib)
+  - Professional package structure for `vigia-medical-ai` v1.0.0
 - Professional medical-grade dependency management
 - HIPAA-compliant packages and security validations
 
@@ -160,10 +224,36 @@ pylint src/
 ```
 
 ### Medical Interface Options
+
+#### Core Medical Interfaces
 1. **Professional Demo**: `python final_demo.py` (Gradio with sharing)
 2. **Full Medical System**: `python demo/launch_medical_demo.py`
 3. **Simple Test Demo**: `python test_demo.py`
-4. **Testing Interface**: Medical functionality validation
+
+#### Smart Care Interface Collection
+4. **Smart Care Basic**: `python launch_smartcare.py` (Smart Care replica interface)
+5. **Integrated Smart Care**: `python launch_integrated_smartcare.py` (Smart Care + risk assessment)
+6. **Simple Smart Care**: `python launch_smartcare_simple.py` (Simplified Smart Care variant)
+
+#### Professional Interface Variants
+7. **Professional UI**: `python launch_professional_ui.py` (Advanced CLI options)
+8. **Quick Professional**: `python demo_professional_ui.py` (Quick professional demo)
+9. **Modern Interface**: `python launch_modern_ui.py` (Modern UI variant)
+
+#### Specialized Assessment Tools
+10. **Risk Assessment**: `python launch_risk_assessment.py` (Dedicated risk visualization on port 7862)
+
+#### Professional Interface CLI Options
+```bash
+# Advanced professional interface with full control
+python launch_professional_ui.py --share --port 7860 --debug
+
+# Disable public sharing
+python launch_professional_ui.py --no-share
+
+# Custom port configuration
+python launch_professional_ui.py --port 8080
+```
 
 ### Testing Standards
 - Medical functionality validation
@@ -202,6 +292,11 @@ cat docs/diagrams/README_DIAGRAMS.md
 - **Medical AI Stack**: MONAI primary + YOLOv5 backup + MedGemma 27B local
 - **Evidence-Based**: NPUAP/EPUAP 2019 clinical guidelines implementation
 - **Clean Architecture**: Agent factory pattern with comprehensive testing
+- **Medical Guardrails**: LLM safety validation with automatic escalation
+- **Training Infrastructure**: PostgreSQL database with NPUAP grading system
+- **Performance Monitoring**: Real-time model tracking with drift detection
+- **Synthetic Data Pipeline**: HIPAA-compliant patient generation with Braden scoring
+- **Automated Retraining**: Celery-based pipeline with trigger mechanisms
 
 ### 📊 **Latest Achievements (Commit: 4f94c19)**
 - **Agent Architecture**: Complete cleanup and production optimization
