@@ -334,6 +334,34 @@ class PHITokenizationClient:
         
         return response_data
     
+    async def create_token_async(self, hospital_mrn: str, patient_data: dict = None) -> str:
+        """
+        Compatibility wrapper for Hume AI integration.
+        Creates Batman token from hospital MRN.
+        """
+        try:
+            # Initialize session if not done
+            if not self.session:
+                await self.initialize()
+            
+            # Use tokenize_patient method
+            tokenized_patient = await self.tokenize_patient(
+                hospital_mrn=hospital_mrn,
+                request_purpose="voice_analysis_hume_ai",
+                urgency_level="routine"
+            )
+            
+            return tokenized_patient.token_id
+            
+        except Exception as e:
+            # If service fails, create mock token for development
+            import hashlib
+            import time
+            timestamp = int(time.time())
+            mock_token = f"BATMAN_MOCK_{hashlib.md5(f'{hospital_mrn}_{timestamp}'.encode()).hexdigest()[:12]}"
+            logger.warning(f"Using mock token {mock_token} due to service error: {e}")
+            return mock_token
+    
     async def get_tokenized_patient_by_token(self, token_id: str) -> Optional[TokenizedPatient]:
         """Get tokenized patient data by token ID"""
         # Check if token is valid first

@@ -40,7 +40,7 @@ from src.agents.workflow_orchestration_agent import WorkflowOrchestrationAgent
 from src.agents.risk_assessment_agent import RiskAssessmentAgent
 from src.agents.monai_review_agent import MonaiReviewAgent
 from src.agents.diagnostic_agent import DiagnosticAgent
-from src.agents.adk.voice_analysis import VoiceAnalysisAgent
+from src.agents.voice_analysis_agent import VoiceAnalysisAgent
 
 # AgentOps Monitoring Integration
 from src.monitoring.agentops_client import AgentOpsClient
@@ -1040,74 +1040,153 @@ class MasterMedicalOrchestrator:
             Voice analysis results with medical assessment
         """
         try:
-            # Import voice analysis components
-            from src.systems.voice_medical_analysis import VoiceMedicalAnalysisEngine
-            from src.ai.hume_ai_client import create_hume_ai_client
-            
-            # Extract voice data from case_data
-            audio_data = (
-                case_data.get('audio_data') or 
-                case_data.get('voice_data') or 
-                case_data.get('raw_content', {}).get('audio_data')
-            )
-            
-            if not audio_data:
-                return {
-                    'success': False,
-                    'error': 'No voice data available for analysis',
-                    'agent': 'voice_analysis'
-                }
-            
-            # Get patient context
-            token_id = case_data.get('token_id')
-            patient_context = case_data.get('patient_context', {})
-            
-            # Enhance patient context with image analysis results
-            enhanced_context = patient_context.copy()
-            if image_result.get('success'):
-                image_analysis = image_result.get('image_analysis', {})
-                enhanced_context.update({
-                    'has_lpp_detected': image_analysis.get('lpp_detected', False),
-                    'lpp_grade': image_analysis.get('lpp_grade', 0),
-                    'confidence_from_image': image_analysis.get('confidence', 0),
-                    'anatomical_location': image_analysis.get('anatomical_location'),
-                    'image_analysis_available': True
-                })
-            
-            # Initialize voice analysis components
-            voice_engine = VoiceMedicalAnalysisEngine()
-            hume_client = create_hume_ai_client()
-            
-            # Perform Hume AI voice analysis
-            voice_expressions_result = await hume_client.analyze_voice_expressions(
-                audio_data=audio_data,
-                token_id=token_id,
-                patient_context=enhanced_context
-            )
-            
-            # Generate comprehensive medical assessment
-            medical_assessment = voice_engine.analyze_patient_voice(
-                expressions=voice_expressions_result.expressions,
-                patient_context=enhanced_context,
-                token_id=token_id
-            )
-            
-            # Combine results
-            return {
-                'success': True,
-                'agent': 'voice_analysis',
-                'voice_expressions': voice_expressions_result,
-                'medical_assessment': medical_assessment.dict(),
-                'processing_timestamp': datetime.now().isoformat(),
-                'multimodal_context': enhanced_context,
-                'fase2_completed': True
-            }
+            # Use VoiceAnalysisAgent for A2A communication
+            if self.registered_agents['voice_analysis']:
+                from src.agents.base_agent import AgentMessage
+                
+                # Extract voice data from case_data
+                audio_data = (
+                    case_data.get('audio_data') or 
+                    case_data.get('voice_data') or 
+                    case_data.get('raw_content', {}).get('audio_data')
+                )
+                
+                if not audio_data:
+                    return {
+                        'success': False,
+                        'error': 'No voice data available for analysis',
+                        'agent': 'voice_analysis'
+                    }
+                
+                # Get patient context
+                token_id = case_data.get('token_id')
+                patient_context = case_data.get('patient_context', {})
+                
+                # Enhance patient context with image analysis results
+                enhanced_context = patient_context.copy()
+                if image_result.get('success'):
+                    image_analysis = image_result.get('image_analysis', {})
+                    enhanced_context.update({
+                        'has_lpp_detected': image_analysis.get('lpp_detected', False),
+                        'lpp_grade': image_analysis.get('lpp_grade', 0),
+                        'confidence_from_image': image_analysis.get('confidence', 0),
+                        'anatomical_location': image_analysis.get('anatomical_location'),
+                        'image_analysis_available': True
+                    })
+                
+                # Create A2A message for VoiceAnalysisAgent
+                message = AgentMessage(
+                    sender_id=self.orchestrator_id,
+                    recipient_id='voice_analysis_agent',
+                    action='analyze_medical_voice',
+                    data={
+                        'audio_data': audio_data,
+                        'batman_token': token_id,
+                        'patient_context': enhanced_context,
+                        'medical_history': case_data.get('medical_history', {})
+                    },
+                    message_type='request',
+                    priority='high'
+                )
+                
+                # Process through agent
+                response = await self.registered_agents['voice_analysis'].process_message(message)
+                
+                if response.success:
+                    return {
+                        'success': True,
+                        'agent': 'voice_analysis',
+                        'data': response.data,
+                        'processing_time': response.processing_time,
+                        'confidence': response.confidence,
+                        'processing_timestamp': datetime.now().isoformat(),
+                        'multimodal_context': enhanced_context,
+                        'fase2_completed': True,
+                        'method': 'a2a_communication'
+                    }
+                else:
+                    logger.error(f"Voice analysis agent failed: {response.message}")
+                    return {
+                        'success': False,
+                        'error': response.message,
+                        'agent': 'voice_analysis',
+                        'fase2_completed': False
+                    }
+            else:
+                # Fallback to mock voice analysis
+                return await self._mock_voice_analysis(case_data, image_result)
             
         except Exception as e:
             logger.error(f"Voice analysis coordination failed: {str(e)}")
             return {
                 'success': False,
                 'error': str(e),
+                'agent': 'voice_analysis',
+                'fase2_completed': False
+            }
+    
+    async def _mock_voice_analysis(self, case_data: Dict[str, Any], 
+                                 image_result: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Mock voice analysis for development/testing when VoiceAnalysisAgent is not available.
+        """
+        import random
+        import hashlib
+        
+        try:
+            token_id = case_data.get('token_id', 'unknown')
+            
+            # Generate deterministic mock data based on token
+            seed = hashlib.md5(token_id.encode()).hexdigest()
+            random.seed(int(seed[:8], 16))
+            
+            # Mock voice analysis results
+            mock_assessment = {
+                "batman_token": token_id,
+                "analysis_id": f"mock_voice_{seed[:12]}",
+                "pain_assessment": {
+                    "pain_score": random.uniform(0.2, 0.7),
+                    "pain_level": random.choice(["mild", "moderate", "severe"]),
+                    "empathic_pain": random.uniform(0.0, 0.6),
+                    "anguish": random.uniform(0.0, 0.4)
+                },
+                "emotional_distress": {
+                    "distress_score": random.uniform(0.1, 0.6),
+                    "anxiety_level": random.uniform(0.0, 0.5),
+                    "depression_markers": random.uniform(0.0, 0.3)
+                },
+                "stress_indicators": {
+                    "stress_level": random.uniform(0.1, 0.5),
+                    "tension": random.uniform(0.0, 0.4),
+                    "nervousness": random.uniform(0.0, 0.3)
+                },
+                "urgency_level": random.choice(["routine", "priority", "urgent"]),
+                "medical_recommendations": [
+                    "Mock voice analysis - monitoring recommended",
+                    "Consider patient comfort assessment",
+                    "(Development mode - real Hume AI integration pending)"
+                ],
+                "confidence_score": random.uniform(0.6, 0.8),
+                "timestamp": datetime.now().isoformat()
+            }
+            
+            return {
+                'success': True,
+                'agent': 'voice_analysis',
+                'data': mock_assessment,
+                'processing_time': random.uniform(1.0, 3.0),
+                'confidence': mock_assessment["confidence_score"],
+                'processing_timestamp': datetime.now().isoformat(),
+                'multimodal_context': case_data.get('patient_context', {}),
+                'fase2_completed': True,
+                'method': 'mock_fallback'
+            }
+            
+        except Exception as e:
+            logger.error(f"Mock voice analysis failed: {e}")
+            return {
+                'success': False,
+                'error': f"Mock voice analysis failed: {str(e)}",
                 'agent': 'voice_analysis',
                 'fase2_completed': False
             }
@@ -1284,35 +1363,7 @@ class MasterMedicalOrchestrator:
             },
             'uptime': datetime.now().isoformat()
         }
-
-
-# ADK Tools for Master Orchestrator
-def process_medical_case_orchestrated(case_data: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    ADK Tool function for processing medical cases through master orchestrator.
-    Can be used directly in ADK agents.
-    """
-    orchestrator = MasterMedicalOrchestrator()
     
-    # Run async processing in sync context
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    
-    try:
-        result = loop.run_until_complete(orchestrator.process_medical_case(case_data))
-        return result
-    finally:
-        loop.close()
-
-
-def get_orchestrator_status() -> Dict[str, Any]:
-    """
-    ADK Tool function for getting orchestrator status.
-    """
-    orchestrator = MasterMedicalOrchestrator()
-    return orchestrator.get_orchestrator_stats()
-
-
     async def _initialize_specialized_agents(self):
         """
         Initialize all specialized ADK agents for A2A communication.
@@ -1387,381 +1438,65 @@ def get_orchestrator_status() -> Dict[str, Any]:
             from src.a2a.base_infrastructure import AgentCard
             
             # Register each agent with A2A infrastructure
-            agent_cards = {
-                'image_analysis': AgentCard(
-                    agent_id='image_analysis_agent',
-                    name='Medical Image Analysis Agent',
-                    description='YOLOv5-based LPP detection and medical image processing',
-                    version='1.0.0',
-                    capabilities=['image_analysis', 'lpp_detection', 'cv_pipeline'],
-                    endpoints={'a2a': 'http://localhost:8081'},
-                    authentication={'method': 'api_key'},
-                    supported_modes=['request_response'],
-                    medical_specialization='wound_care',
-                    compliance_certifications=['HIPAA', 'MINSAL']
-                ),
-                'clinical_assessment': AgentCard(
-                    agent_id='clinical_assessment_agent',
-                    name='Clinical Assessment Agent',
-                    description='Evidence-based medical assessment and decision making',
-                    version='1.0.0',
-                    capabilities=['clinical_assessment', 'evidence_based_decisions', 'risk_scoring'],
-                    endpoints={'a2a': 'http://localhost:8082'},
-                    authentication={'method': 'api_key'},
-                    supported_modes=['request_response'],
-                    medical_specialization='clinical_decision_support',
-                    compliance_certifications=['NPUAP_EPUAP', 'MINSAL']
-                ),
-                'protocol': AgentCard(
-                    agent_id='protocol_agent',
-                    name='Medical Protocol Agent',
-                    description='NPUAP/EPUAP medical protocol consultation and guidelines',
-                    version='1.0.0',
-                    capabilities=['protocol_consultation', 'medical_guidelines', 'knowledge_base'],
-                    endpoints={'a2a': 'http://localhost:8083'},
-                    authentication={'method': 'api_key'},
-                    supported_modes=['request_response'],
-                    medical_specialization='medical_protocols',
-                    compliance_certifications=['NPUAP_EPUAP', 'MINSAL']
-                ),
-                'communication': AgentCard(
-                    agent_id='communication_agent',
-                    name='Medical Communication Agent',
-                    description='WhatsApp and Slack medical team notifications',
-                    version='1.0.0',
-                    capabilities=['medical_notifications', 'slack_integration', 'whatsapp_integration'],
-                    endpoints={'a2a': 'http://localhost:8084'},
-                    authentication={'method': 'api_key'},
-                    supported_modes=['request_response'],
-                    medical_specialization='medical_communications',
-                    compliance_certifications=['HIPAA']
-                ),
-                'workflow': AgentCard(
-                    agent_id='workflow_orchestration_agent',
-                    name='Workflow Orchestration Agent',
-                    description='Medical workflow orchestration and async pipeline management',
-                    version='1.0.0',
-                    capabilities=['workflow_orchestration', 'async_pipeline', 'medical_triage'],
-                    endpoints={'a2a': 'http://localhost:8085'},
-                    authentication={'method': 'api_key'},
-                    supported_modes=['request_response'],
-                    medical_specialization='workflow_management',
-                    compliance_certifications=['HIPAA', 'MINSAL']
-                ),
-                
-                # NEW SPECIALIZED MEDICAL AGENTS (FASE 1-3 implementation)
-                'risk_assessment': AgentCard(
-                    agent_id='risk_assessment_agent',
-                    name='Risk Assessment Agent',
-                    description='LPP risk analysis using Batman tokenized patient data with Braden/Norton scales',
-                    version='1.0.0',
-                    capabilities=['lpp_risk_assessment', 'braden_scale', 'norton_scale', 'predictive_modeling'],
-                    endpoints={'a2a': 'http://localhost:8086'},
-                    authentication={'method': 'api_key'},
-                    supported_modes=['request_response'],
-                    medical_specialization='risk_assessment',
-                    compliance_certifications=['HIPAA', 'MINSAL', 'NPUAP_EPUAP']
-                ),
-                'monai_review': AgentCard(
-                    agent_id='monai_review_agent',
-                    name='MONAI Review Agent',
-                    description='Raw MONAI output analysis and medical validation for research purposes',
-                    version='1.0.0',
-                    capabilities=['monai_analysis', 'confidence_map_analysis', 'segmentation_quality', 'research_validation'],
-                    endpoints={'a2a': 'http://localhost:8087'},
-                    authentication={'method': 'api_key'},
-                    supported_modes=['request_response'],
-                    medical_specialization='ai_model_validation',
-                    compliance_certifications=['HIPAA', 'FDA_RESEARCH', 'CE_MARKING']
-                ),
-                'diagnostic': AgentCard(
-                    agent_id='diagnostic_agent',
-                    name='Integrated Diagnostic Agent',
-                    description='Multi-agent diagnostic fusion (Risk + MONAI + Hume AI) for comprehensive medical diagnosis',
-                    version='1.0.0',
-                    capabilities=['integrated_diagnosis', 'multi_agent_fusion', 'confidence_weighting', 'treatment_planning'],
-                    endpoints={'a2a': 'http://localhost:8088'},
-                    authentication={'method': 'api_key'},
-                    supported_modes=['request_response'],
-                    medical_specialization='diagnostic_synthesis',
-                    compliance_certifications=['HIPAA', 'MINSAL', 'NPUAP_EPUAP']
-                ),
-                'voice_analysis': AgentCard(
-                    agent_id='voice_analysis_agent',
-                    name='Voice Analysis Agent',
-                    description='Medical voice expression analysis using Hume AI with Batman tokenization',
-                    version='1.0.0',
-                    capabilities=['voice_expression_analysis', 'emotional_analysis', 'pain_assessment_voice', 'hume_ai_integration'],
-                    endpoints={'a2a': 'http://localhost:8089'},
-                    authentication={'method': 'api_key'},
-                    supported_modes=['request_response'],
-                    medical_specialization='voice_medical_analysis',
-                    compliance_certifications=['HIPAA', 'MINSAL']
-                )
-            }
+            agent_cards = {}
             
-            # Store agent cards for reference
-            self.agent_cards = agent_cards
-            logger.info("🔗 A2A Agent Cards registradas exitosamente")
+            for agent_type, agent_instance in self.registered_agents.items():
+                if agent_instance:
+                    try:
+                        # Create agent card for A2A discovery
+                        card = AgentCard(
+                            agent_id=f"{agent_type}_agent",
+                            agent_type=agent_type,
+                            capabilities=getattr(agent_instance, 'capabilities', []),
+                            version="v1.0",
+                            metadata={
+                                "orchestrator_id": self.orchestrator_id,
+                                "registered_at": datetime.now().isoformat()
+                            }
+                        )
+                        agent_cards[agent_type] = card
+                        
+                        # Register agent discovery
+                        if hasattr(agent_instance, 'register_for_discovery'):
+                            await agent_instance.register_for_discovery(card)
+                            
+                    except Exception as e:
+                        logger.warning(f"Failed to register {agent_type} for A2A: {e}")
             
+            logger.info(f"A2A registration complete for {len(agent_cards)} agents")
+            
+        except ImportError:
+            logger.warning("A2A infrastructure not available - agents running in standalone mode")
         except Exception as e:
-            logger.error(f"Error registrando agents para A2A: {str(e)}")
+            logger.error(f"A2A registration failed: {e}")
+
+
+# ADK Tools for Master Orchestrator
+def process_medical_case_orchestrated(case_data: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    ADK Tool function for processing medical cases through master orchestrator.
+    Can be used directly in ADK agents.
+    """
+    orchestrator = MasterMedicalOrchestrator()
     
-    # NEW COORDINATION METHODS FOR SPECIALIZED MEDICAL AGENTS (FASE 4)
+    # Run async processing in sync context
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
     
-    async def _coordinate_risk_assessment(
-        self, 
-        case_data: Dict[str, Any], 
-        clinical_result: Dict[str, Any],
-        combined_analysis: Dict[str, Any]
-    ) -> Dict[str, Any]:
-        """Coordinate risk assessment analysis using RiskAssessmentAgent"""
-        try:
-            if self.registered_agents['risk_assessment']:
-                # Use A2A communication with RiskAssessmentAgent
-                from src.agents.base_agent import AgentMessage
-                
-                message = AgentMessage(
-                    sender_id=self.orchestrator_id,
-                    recipient_id='risk_assessment_agent',
-                    action='assess_lpp_risk',
-                    data={
-                        'token_id': case_data.get('token_id'),
-                        'patient_context': {
-                            'clinical_assessment': clinical_result,
-                            'image_analysis': combined_analysis,
-                            'medical_history': case_data.get('patient_context', {}),
-                            'anatomical_context': combined_analysis.get('anatomical_context', {})
-                        },
-                        'assessment_type': 'comprehensive'
-                    },
-                    message_type='request',
-                    priority='high'
-                )
-                
-                response = await self.registered_agents['risk_assessment'].process_message(message)
-                
-                if response.success:
-                    return {
-                        'success': True,
-                        'agent': 'risk_assessment',
-                        'data': response.data,
-                        'processing_time': datetime.now().isoformat(),
-                        'method': 'a2a_communication'
-                    }
-                else:
-                    logger.error(f"Risk assessment agent failed: {response.message}")
-                    return {
-                        'success': False,
-                        'error': response.message,
-                        'agent': 'risk_assessment',
-                        'fallback_attempted': False
-                    }
-            else:
-                # Fallback to mock risk assessment
-                return await self._mock_risk_assessment(case_data, clinical_result)
-                
-        except Exception as e:
-            logger.error(f"Error in risk assessment coordination: {str(e)}")
-            return {
-                'success': False,
-                'error': str(e),
-                'agent': 'risk_assessment',
-                'fallback_attempted': True
-            }
-    
-    async def _coordinate_monai_review(
-        self,
-        case_data: Dict[str, Any],
-        image_analysis_result: Dict[str, Any],
-        risk_assessment_result: Dict[str, Any]
-    ) -> Dict[str, Any]:
-        """Coordinate MONAI output review using MonaiReviewAgent"""
-        try:
-            if self.registered_agents['monai_review']:
-                # Get raw output ID from image analysis
-                raw_output_id = image_analysis_result.get('raw_output_id')
-                
-                if not raw_output_id:
-                    logger.warning("No raw MONAI output ID found, skipping MONAI review")
-                    return {
-                        'success': False,
-                        'error': 'No raw MONAI output available for review',
-                        'agent': 'monai_review',
-                        'skipped': True
-                    }
-                
-                from src.agents.base_agent import AgentMessage
-                
-                message = AgentMessage(
-                    sender_id=self.orchestrator_id,
-                    recipient_id='monai_review_agent',
-                    action='analyze_monai_outputs',
-                    data={
-                        'raw_output_id': raw_output_id,
-                        'analysis_context': {
-                            'case_data': case_data,
-                            'image_analysis': image_analysis_result,
-                            'risk_assessment': risk_assessment_result,
-                            'token_id': case_data.get('token_id')
-                        },
-                        'review_depth': 'comprehensive'
-                    },
-                    message_type='request',
-                    priority='medium'
-                )
-                
-                response = await self.registered_agents['monai_review'].process_message(message)
-                
-                if response.success:
-                    return {
-                        'success': True,
-                        'agent': 'monai_review',
-                        'data': response.data,
-                        'processing_time': datetime.now().isoformat(),
-                        'method': 'a2a_communication'
-                    }
-                else:
-                    logger.error(f"MONAI review agent failed: {response.message}")
-                    return {
-                        'success': False,
-                        'error': response.message,
-                        'agent': 'monai_review'
-                    }
-            else:
-                # Fallback to mock MONAI review
-                return await self._mock_monai_review(case_data, image_analysis_result)
-                
-        except Exception as e:
-            logger.error(f"Error in MONAI review coordination: {str(e)}")
-            return {
-                'success': False,
-                'error': str(e),
-                'agent': 'monai_review'
-            }
-    
-    async def _coordinate_integrated_diagnosis(
-        self,
-        case_data: Dict[str, Any],
-        agent_results: Dict[str, Any]
-    ) -> Dict[str, Any]:
-        """Coordinate integrated diagnosis using DiagnosticAgent"""
-        try:
-            if self.registered_agents['diagnostic']:
-                from src.agents.base_agent import AgentMessage
-                
-                message = AgentMessage(
-                    sender_id=self.orchestrator_id,
-                    recipient_id='diagnostic_agent',
-                    action='generate_integrated_diagnosis',
-                    data={
-                        'case_data': {
-                            'token_id': case_data.get('token_id'),
-                            'patient_context': case_data.get('patient_context', {}),
-                            'session_token': case_data.get('session_token'),
-                            'case_metadata': case_data.get('metadata', {})
-                        },
-                        'agent_results': agent_results,
-                        'diagnosis_mode': 'comprehensive'
-                    },
-                    message_type='request',
-                    priority='high'
-                )
-                
-                response = await self.registered_agents['diagnostic'].process_message(message)
-                
-                if response.success:
-                    return {
-                        'success': True,
-                        'agent': 'diagnostic',
-                        'data': response.data,
-                        'processing_time': datetime.now().isoformat(),
-                        'method': 'a2a_communication'
-                    }
-                else:
-                    logger.error(f"Diagnostic agent failed: {response.message}")
-                    return {
-                        'success': False,
-                        'error': response.message,
-                        'agent': 'diagnostic'
-                    }
-            else:
-                # Fallback to simple diagnosis synthesis
-                return await self._mock_integrated_diagnosis(case_data, agent_results)
-                
-        except Exception as e:
-            logger.error(f"Error in integrated diagnosis coordination: {str(e)}")
-            return {
-                'success': False,
-                'error': str(e),
-                'agent': 'diagnostic'
-            }
-    
-    def _monai_was_used(self, image_analysis_result: Dict[str, Any]) -> bool:
-        """Check if MONAI was used in image analysis"""
-        engine_used = image_analysis_result.get('data', {}).get('engine_used', '')
-        return 'monai' in engine_used.lower() or 'adaptive' in engine_used.lower()
-    
-    async def _mock_risk_assessment(
-        self,
-        case_data: Dict[str, Any],
-        clinical_result: Dict[str, Any]
-    ) -> Dict[str, Any]:
-        """Mock risk assessment for fallback"""
-        return {
-            'success': True,
-            'agent': 'risk_assessment',
-            'data': {
-                'risk_level': 'moderate',
-                'risk_percentage': 0.65,
-                'braden_score': 16,
-                'assessment_confidence': 0.8,
-                'contributing_factors': ['immobility', 'diabetes'],
-                'preventive_recommendations': ['Turn every 2 hours', 'Monitor skin daily']
-            },
-            'method': 'mock_fallback'
-        }
-    
-    async def _mock_monai_review(
-        self,
-        case_data: Dict[str, Any],
-        image_analysis_result: Dict[str, Any]
-    ) -> Dict[str, Any]:
-        """Mock MONAI review for fallback"""
-        return {
-            'success': True,
-            'agent': 'monai_review',
-            'data': {
-                'model_performance': 'good',
-                'confidence_analysis': {
-                    'mean_confidence': 0.75,
-                    'max_confidence': 0.92,
-                    'min_confidence': 0.45
-                },
-                'medical_validity': 'acceptable',
-                'research_insights': ['Model shows consistent performance on sacral region']
-            },
-            'method': 'mock_fallback'
-        }
-    
-    async def _mock_integrated_diagnosis(
-        self,
-        case_data: Dict[str, Any],
-        agent_results: Dict[str, Any]
-    ) -> Dict[str, Any]:
-        """Mock integrated diagnosis for fallback"""
-        return {
-            'success': True,
-            'agent': 'diagnostic',
-            'data': {
-                'primary_diagnosis': 'LPP Grade 2 - Sacral region',
-                'diagnostic_confidence': 'high',
-                'supporting_evidence': ['Visual assessment', 'Risk factors present'],
-                'treatment_plan': ['Pressure relief', 'Wound care', 'Nutritional support'],
-                'follow_up_schedule': {'initial': '24_hours', 'routine': '3_days'}
-            },
-            'method': 'mock_fallback'
-        }
+    try:
+        result = loop.run_until_complete(orchestrator.process_medical_case(case_data))
+        return result
+    finally:
+        loop.close()
+
+
+def get_orchestrator_status() -> Dict[str, Any]:
+    """
+    ADK Tool function for getting orchestrator status.
+    """
+    orchestrator = MasterMedicalOrchestrator()
+    return orchestrator.get_orchestrator_stats()
+
 
 
 async def register_all_agents() -> MasterMedicalOrchestrator:
