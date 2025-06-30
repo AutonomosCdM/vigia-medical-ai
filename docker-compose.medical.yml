@@ -1,0 +1,215 @@
+# VIGIA Medical AI v1.0 - Docker Compose for Medical Development
+# HIPAA-compliant development environment
+
+version: '3.8'
+
+services:
+  # VIGIA Medical AI Master Orchestrator
+  vigia-orchestrator:
+    build:
+      context: .
+      dockerfile: Dockerfile.medical
+    container_name: vigia-medical-orchestrator
+    restart: unless-stopped
+    ports:
+      - "8000:8000"  # Medical API
+      - "9090:9090"  # Prometheus metrics
+    environment:
+      - ENVIRONMENT=development
+      - LOG_LEVEL=INFO
+      - REDIS_URL=redis://vigia-redis:6379
+      - DATABASE_URL=postgresql://vigia:medical_secure_2024@vigia-postgres:5432/vigia_medical
+      - OLLAMA_HOST=http://vigia-ollama:11434
+    volumes:
+      - ./data/medical_images:/app/data/medical_images
+      - ./data/voice_analysis:/app/data/voice_analysis
+      - ./logs:/app/logs
+    depends_on:
+      - vigia-redis
+      - vigia-postgres
+      - vigia-ollama
+    networks:
+      - vigia-medical-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # VIGIA Medical Interface (Gradio)
+  vigia-interface:
+    build:
+      context: .
+      dockerfile: Dockerfile.medical
+    container_name: vigia-medical-interface
+    restart: unless-stopped
+    ports:
+      - "7860:7860"  # Gradio medical interface
+    environment:
+      - GRADIO_SERVER_NAME=0.0.0.0
+      - GRADIO_SERVER_PORT=7860
+      - GRADIO_SHARE=false
+    command: ["python", "final_demo.py", "--share"]
+    depends_on:
+      - vigia-orchestrator
+    networks:
+      - vigia-medical-network
+
+  # PostgreSQL Database for Medical Data
+  vigia-postgres:
+    image: postgres:15-alpine
+    container_name: vigia-medical-database
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=vigia_medical
+      - POSTGRES_USER=vigia
+      - POSTGRES_PASSWORD=medical_secure_2024
+    volumes:
+      - vigia_postgres_data:/var/lib/postgresql/data
+      - ./scripts/init_medical_db.sql:/docker-entrypoint-initdb.d/init_medical_db.sql
+    networks:
+      - vigia-medical-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vigia -d vigia_medical"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  # Redis for Medical Session Management
+  vigia-redis:
+    image: redis:7-alpine
+    container_name: vigia-medical-cache
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass medical_cache_2024 --appendonly yes
+    volumes:
+      - vigia_redis_data:/data
+    networks:
+      - vigia-medical-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  # Ollama for Local Medical LLM (MedGemma)
+  vigia-ollama:
+    image: ollama/ollama:latest
+    container_name: vigia-medical-llm
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - vigia_ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    networks:
+      - vigia-medical-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+
+  # Nginx Reverse Proxy for Medical Services
+  vigia-proxy:
+    image: nginx:alpine
+    container_name: vigia-medical-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/nginx.medical.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - vigia-orchestrator
+      - vigia-interface
+    networks:
+      - vigia-medical-network
+
+  # Medical System Monitor
+  vigia-monitor:
+    image: prom/prometheus:latest
+    container_name: vigia-medical-monitor
+    restart: unless-stopped
+    ports:
+      - "9091:9090"
+    volumes:
+      - ./config/prometheus.medical.yml:/etc/prometheus/prometheus.yml
+      - vigia_prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+    networks:
+      - vigia-medical-network
+
+# Docker volumes for persistent medical data
+volumes:
+  vigia_postgres_data:
+    driver: local
+    name: vigia_medical_postgres_data
+  vigia_redis_data:
+    driver: local
+    name: vigia_medical_redis_data
+  vigia_ollama_data:
+    driver: local
+    name: vigia_medical_ollama_data
+  vigia_prometheus_data:
+    driver: local
+    name: vigia_medical_prometheus_data
+
+# Secure medical network
+networks:
+  vigia-medical-network:
+    driver: bridge
+    name: vigia_medical_network
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# Additional development services (optional)
+# Uncomment for full development stack
+#
+#  # Medical Data Visualization
+#  vigia-grafana:
+#    image: grafana/grafana:latest
+#    container_name: vigia-medical-dashboard
+#    restart: unless-stopped
+#    ports:
+#      - "3000:3000"
+#    environment:
+#      - GF_SECURITY_ADMIN_PASSWORD=medical_dashboard_2024
+#    volumes:
+#      - vigia_grafana_data:/var/lib/grafana
+#      - ./config/grafana/dashboards:/etc/grafana/provisioning/dashboards
+#      - ./config/grafana/datasources:/etc/grafana/provisioning/datasources
+#    depends_on:
+#      - vigia-monitor
+#    networks:
+#      - vigia-medical-network
+#
+#  # Medical Image Storage (MinIO S3-compatible)
+#  vigia-storage:
+#    image: minio/minio:latest
+#    container_name: vigia-medical-storage
+#    restart: unless-stopped
+#    ports:
+#      - "9000:9000"
+#      - "9001:9001"
+#    environment:
+#      - MINIO_ROOT_USER=vigia_admin
+#      - MINIO_ROOT_PASSWORD=medical_storage_2024
+#    volumes:
+#      - vigia_minio_data:/data
+#    command: server /data --console-address ":9001"
+#    networks:
+#      - vigia-medical-network
