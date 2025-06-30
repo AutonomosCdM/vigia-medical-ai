@@ -74,6 +74,27 @@ python -c "from src.ml.model_tracking import model_tracker; asyncio.run(model_tr
 python -c "from src.pipeline.training_pipeline import training_pipeline; asyncio.run(training_pipeline.trigger_retraining('accuracy_drop'))"
 ```
 
+#### Medical Dataset Integration
+```bash
+# Install dataset integration dependencies
+pip install datasets>=2.18.0 huggingface-hub>=0.21.0 scikit-learn>=1.4.0
+
+# Test dataset integration system
+python scripts/test_dataset_integration.py
+
+# Integrate all medical datasets (production)
+python scripts/integrate_medical_datasets.py --datasets all
+
+# Integrate specific datasets with sample size
+python scripts/integrate_medical_datasets.py --datasets ham10000 skincap --sample-size 1000
+
+# Test mode integration (small samples)
+python scripts/integrate_medical_datasets.py --test-mode --verbose
+
+# Integration with custom output directory
+python scripts/integrate_medical_datasets.py --output-dir ./data/custom_datasets --validation-split 0.3
+```
+
 #### Medical Guardrails & Safety
 ```bash
 # Test medical guardrails
