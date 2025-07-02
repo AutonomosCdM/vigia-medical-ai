@@ -1,7 +1,7 @@
-# VIGIA Medical AI - Entity States
+# VIGIA Medical AI - AWS Serverless Entity States
 
 ## Objetivo
-Estados críticos del dominio médico: ciclo de vida de sesiones médicas, estados de análisis de agentes y transiciones de emergencia para compliance.
+Estados serverless del dominio médico: DynamoDB session lifecycle con TTL, Step Functions agent states y Lambda execution transitions para compliance.
 
 ## Código Eraser.io
 ```

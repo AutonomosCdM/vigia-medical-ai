@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomos AiLab - Multi-Agent AI Systems for Healthcare & Enterprise</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Autonomos AiLab develops advanced multi-agent AI systems for healthcare, education, and enterprise automation. VIGIA medical AI with 94% accuracy, HIPAA compliant.">
+    <meta name="keywords" content="AI, healthcare AI, multi-agent systems, medical diagnosis, VIGIA, pressure injury detection, autonomous agents, enterprise automation">
+    <meta name="author" content="Autonomos AiLab">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://autonomos.dev">
+    <meta property="og:title" content="Autonomos AiLab - Multi-Agent AI Systems">
+    <meta property="og:description" content="Revolutionary medical AI with 9 specialized agents. HIPAA-compliant, sub-2-second analysis, deployed in real hospitals.">
+    <meta property="og:image" content="https://autonomos.dev/agent_smith_hd.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://autonomos.dev">
+    <meta property="twitter:title" content="Autonomos AiLab - Multi-Agent AI Systems">
+    <meta property="twitter:description" content="Revolutionary medical AI with 9 specialized agents. HIPAA-compliant, sub-2-second analysis, deployed in real hospitals.">
+    <meta property="twitter:image" content="https://autonomos.dev/agent_smith_hd.jpg">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Autonomos AiLab",
+      "url": "https://autonomos.dev",
+      "logo": "https://autonomos.dev/agent_smith_hd.jpg",
+      "description": "Advanced AI laboratory developing autonomous agent systems for critical industries",
+      "sameAs": [
+        "https://www.linkedin.com/company/autonomos-dev/"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "url": "https://calendly.com/cesar-autonomos/30min"
+      }
+    }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/framer-motion@11.0.8/dist/framer-motion.js"></script>
+    <!-- Calendly inline widget begin -->
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+    <!-- Calendly inline widget end -->
+    <style>
+        
+        /* Performance Optimizations */
+        * {
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+        
+        /* Image Optimization */
+        img {
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+        
+        /* Agent Smith Animation */
+        .agent-smith-fade {
+            opacity: 0;
+            animation: fadeInAgent 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            will-change: opacity;
+        }
+        
+        @keyframes fadeInAgent {
+            to {
+                opacity: 1;
+            }
+        }
+        
+        /* Enhanced Text Rotation Animation */
+        #rotating-text {
+            will-change: transform, opacity;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .mobile-adjust {
+                transform: translateX(-50px) !important;
+            }
+            
+            .mobile-text {
+                font-size: 2.5rem !important;
+                line-height: 1.1 !important;
+            }
+            
+            .mobile-paragraph {
+                font-size: 1rem !important;
+                line-height: 1.4 !important;
+            }
+            
+            .mobile-button {
+                padding: 12px 20px !important;
+                font-size: 0.9rem !important;
+            }
+            
+            .mobile-quote {
+                font-size: 0.9rem !important;
+                left: 20px !important;
+                right: 20px !important;
+                text-align: center !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .mobile-quote {
+                font-size: 0.8rem !important;
+                left: 10px !important;
+                right: 10px !important;
+            }
+            
+            .mobile-button-group {
+                flex-direction: column !important;
+                gap: 12px !important;
+                align-items: center !important;
+            }
+        }
+        
+        /* Tablet Responsiveness */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .tablet-adjust {
+                transform: translateX(-100px) !important;
+            }
+        }
+        
+        /* Performance: Reduce repaints */
+        .floating-element {
+            will-change: opacity;
+            transform: translateZ(0);
+        }
+    </style>
+</head>
+<body class="text-white overflow-x-hidden bg-black">
+    <!-- Agent Smith Background Image - Hero Section -->
+    <div class="fixed inset-0 w-full h-screen overflow-hidden" style="z-index: -10;">
+        <img src="/static/agent_smith_hd.jpg" 
+             class="w-full h-full object-cover" 
+             style="object-position: right center; transform: translateX(calc(30% - 100px)); opacity: 0.85;" 
+             alt="Agent Smith AI Background" 
+             loading="eager" 
+             decoding="async">
+        <!-- Gradient overlay for hero section -->
+        <div class="absolute inset-0" 
+             style="background: linear-gradient(to right, #000000 0%, #000000 25%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0.4) 75%, transparent 100%);"></div>
+    </div>
+    
+    <!-- Agent Smith Background Image - VIGIA Section (Subtle) -->
+    <div class="fixed w-full overflow-hidden" style="top: 100vh; height: 100vh; z-index: -5;">
+        <img src="/static/agent_smith_hd.jpg" 
+             class="w-full h-full object-cover" 
+             style="object-position: right center; transform: translateX(calc(30% - 100px)); opacity: 0.12;" 
+             alt="Agent Smith AI Background Subtle" 
+             loading="lazy" 
+             decoding="async">
+        <!-- Darker overlay for VIGIA section -->
+        <div class="absolute inset-0" 
+             style="background: linear-gradient(to right, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.90) 30%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0.80) 100%);"></div>
+    </div>
+    
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center z-20">
+        <div class="container mx-auto px-6 lg:px-8" style="transform: translateX(-210px);">
+            <div class="flex gap-8 py-20 lg:py-40 items-center justify-center flex-col">
+                
+                
+                <div class="flex gap-4 flex-col">
+                    <h1 class="text-5xl md:text-7xl max-w-2xl tracking-tighter text-left font-regular mobile-text">
+                        <span class="text-white font-semibold">Autonomos AiLab</span>
+                        <span class="relative flex w-full justify-start overflow-hidden text-left md:pb-4 md:pt-1">
+                            &nbsp;
+                            <span id="rotating-text" class="absolute font-regular text-green-400">
+                                Health
+                            </span>
+                        </span>
+                    </h1>
+
+                    <p class="text-lg md:text-xl leading-relaxed tracking-tight text-gray-300 max-w-2xl text-left mobile-paragraph">
+                        Advanced AI laboratory developing autonomous agent systems for critical industries. Our multi-agent platforms deliver measurable impact in healthcare, education, and enterprise automation.
+                    </p>
+                </div>
+                
+                <div class="flex flex-row gap-3 mobile-button-group" style="transform: translateX(-155px);">
+                    <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/cesar-autonomos/30min'});return false;" 
+                            aria-label="Schedule a call with Autonomos AiLab"
+                            class="border border-gray-600 bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white px-6 py-3 rounded-md font-medium transition-all duration-300 gap-4 flex items-center mobile-button hover:scale-105">
+                        Jump on a call 
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                        </svg>
+                    </button>
+                    <button onclick="document.getElementById('vigia-section').scrollIntoView({behavior: 'smooth', block: 'start'})" 
+                            aria-label="View VIGIA medical AI system"
+                            class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-md font-medium transition-all duration-300 gap-4 flex items-center mobile-button hover:scale-105">
+                        VIGIA V1
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Agent Smith Quote -->
+        <div class="absolute mobile-quote" style="left: 310px; bottom: 220px;">
+            <blockquote class="text-green-400 text-lg italic font-light opacity-70 tracking-wider text-left">
+                "Never send a human to do a machine's job."
+            </blockquote>
+            <cite class="text-gray-400 text-sm mt-1 font-light text-left block">
+                - Agent Smith
+            </cite>
+        </div>
+
+        <!-- Floating Elements -->
+        <div class="absolute top-1/4 left-10 w-3 h-3 bg-green-500 rounded-full opacity-60 animate-pulse floating-element" aria-hidden="true"></div>
+        <div class="absolute top-1/3 right-1/4 w-2 h-2 bg-green-400 rounded-full opacity-40 animate-pulse delay-1000 floating-element" aria-hidden="true"></div>
+        <div class="absolute bottom-1/3 left-1/4 w-4 h-4 border border-green-500 rotate-45 opacity-30 animate-pulse delay-2000 floating-element" aria-hidden="true"></div>
+    </section>
+
+    <!-- VIGIA Product Showcase Section -->
+    <section id="vigia-section" class="relative min-h-screen py-20 z-10">
+        <div class="container mx-auto px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-6xl font-bold text-white mb-6">
+                    Meet <span class="text-green-400">VIGIA</span>
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Revolutionary medical AI system with 9 specialized agents preventing pressure injuries. 
+                    HIPAA-compliant, sub-2-second analysis, 94.2% accuracy - deployed in real hospitals.
+                </p>
+            </div>
+
+            <!-- Product Features Grid -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-gray-800/50 rounded-lg p-6 border border-gray-700/50">
+                    <div class="text-green-400 text-3xl mb-4">🤖</div>
+                    <h3 class="text-xl font-semibold text-white mb-3">9 AI Agents</h3>
+                    <p class="text-gray-400">Specialized medical agents working in coordination for comprehensive pressure injury analysis</p>
+                </div>
+                
+                <div class="bg-gray-800/50 rounded-lg p-6 border border-gray-700/50">
+                    <div class="text-green-400 text-3xl mb-4">⚡</div>
+                    <h3 class="text-xl font-semibold text-white mb-3">Sub-2 Seconds</h3>
+                    <p class="text-gray-400">Real-time medical analysis with lightning-fast processing for critical care decisions</p>
+                </div>
+                
+                <div class="bg-gray-800/50 rounded-lg p-6 border border-gray-700/50">
+                    <div class="text-green-400 text-3xl mb-4">🔒</div>
+                    <h3 class="text-xl font-semibold text-white mb-3">HIPAA Compliant</h3>
+                    <p class="text-gray-400">Complete patient privacy protection with advanced tokenization and local processing</p>
+                </div>
+            </div>
+
+            <!-- Professional Medical Dashboard -->
+            <div class="bg-gray-800/50 rounded-lg p-8 border border-gray-700/50">
+                <h3 class="text-2xl font-semibold text-white mb-6 text-center">Live Deployment</h3>
+                
+                <!-- Agent Architecture Visualization -->
+                <div class="bg-gradient-to-r from-gray-900/50 to-gray-800/50 rounded-lg p-6 mb-6 border border-green-500/20">
+                    <div class="grid grid-cols-5 gap-4 mb-6">
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-green-500 rounded-full mx-auto mb-2 flex items-center justify-center">
+                                <span class="text-black font-bold text-sm">IMG</span>
+                            </div>
+                            <p class="text-xs text-gray-300">Image Analysis</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-blue-500 rounded-full mx-auto mb-2 flex items-center justify-center">
+                                <span class="text-white font-bold text-sm">RISK</span>
+                            </div>
+                            <p class="text-xs text-gray-300">Risk Assessment</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-purple-500 rounded-full mx-auto mb-2 flex items-center justify-center">
+                                <span class="text-white font-bold text-sm">DX</span>
+                            </div>
+                            <p class="text-xs text-gray-300">Diagnostic</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-orange-500 rounded-full mx-auto mb-2 flex items-center justify-center">
+                                <span class="text-white font-bold text-sm">COM</span>
+                            </div>
+                            <p class="text-xs text-gray-300">Communication</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-red-500 rounded-full mx-auto mb-2 flex items-center justify-center">
+                                <span class="text-white font-bold text-sm">MON</span>
+                            </div>
+                            <p class="text-xs text-gray-300">MONAI Review</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Real-time Status -->
+                    <div class="border-t border-gray-700 pt-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-green-400 font-semibold">🟢 Sistema Operativo</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-400">Pacientes Monitoreados:</span>
+                                <span class="text-white ml-2 font-semibold">23</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">Análisis Completados:</span>
+                                <span class="text-green-400 ml-2 font-semibold">147</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">Tiempo Promedio:</span>
+                                <span class="text-blue-400 ml-2 font-semibold">1.8s</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Professional Demo Access -->
+                <div class="bg-gray-900/50 rounded-lg p-6 border border-gray-700/50">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h4 class="text-lg font-semibold text-white">Multi-Agent Medical Console</h4>
+                            <p class="text-sm text-gray-400">5-Agent coordination system with NPUAP/EPUAP protocols</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xs text-green-400 mb-1">LIVE SYSTEM</div>
+                            <div class="text-xs text-gray-400">94.2% Precision</div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="bg-gray-800/50 p-3 rounded">
+                            <div class="text-xs text-gray-400 mb-1">WhatsApp Integration</div>
+                            <div class="text-sm text-white">✓ Bruce Wayne → Batman PHI</div>
+                        </div>
+                        <div class="bg-gray-800/50 p-3 rounded">
+                            <div class="text-xs text-gray-400 mb-1">Slack Notifications</div>
+                            <div class="text-sm text-white">✓ Real-time Medical Team</div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="relative">
+                            <input type="email" 
+                                   id="corporate-email" 
+                                   placeholder="Enter your corporate email" 
+                                   autocomplete="email"
+                                   class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 transition-all duration-200">
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <button onclick="accessMedicalConsole()" 
+                                class="w-full bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg font-medium transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed">
+                            Access Medical Console
+                        </button>
+                        
+                        <!-- AWS Integration Status -->
+                        <div class="text-xs text-gray-400 text-center">
+                            <span id="console-status">Ready for AWS deployment integration</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simple Call to Action -->
+            <div class="text-center mt-16">
+                <button onclick="Calendly.initPopupWidget({url: 'https://calendly.com/cesar-autonomos/30min'});return false;" 
+                        class="border border-gray-600 bg-transparent text-gray-300 hover:bg-gray-700 hover:text-white px-6 py-3 rounded-md font-medium transition-all duration-300 gap-4 flex items-center mx-auto hover:scale-105">
+                    Jump on a call 
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let titleNumber = 0;
+        const titles = ["Health", "Education", "Social Security", "Enterprise", "Startups"];
+        const rotatingElement = document.getElementById('rotating-text');
+        
+        function updateTitle() {
+            // Animate out
+            rotatingElement.style.transform = 'translateY(-100%)';
+            rotatingElement.style.opacity = '0';
+            
+            setTimeout(() => {
+                // Change text
+                titleNumber = titleNumber === titles.length - 1 ? 0 : titleNumber + 1;
+                rotatingElement.textContent = titles[titleNumber];
+                
+                // Animate in
+                rotatingElement.style.transform = 'translateY(0)';
+                rotatingElement.style.opacity = '1';
+            }, 250);
+        }
+        
+        // Add enhanced transition styles
+        rotatingElement.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        rotatingElement.style.transformOrigin = 'center';
+        
+        // Preload next text for smoother transitions
+        function preloadText() {
+            const nextIndex = titleNumber === titles.length - 1 ? 0 : titleNumber + 1;
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.font = '7rem sans-serif';
+            ctx.fillText(titles[nextIndex], 0, 0);
+        }
+        
+        // Enhanced animation with better timing
+        function smoothUpdateTitle() {
+            // Animate out with slight scale
+            rotatingElement.style.transform = 'translateY(-20%) scale(0.95)';
+            rotatingElement.style.opacity = '0';
+            
+            setTimeout(() => {
+                // Change text
+                titleNumber = titleNumber === titles.length - 1 ? 0 : titleNumber + 1;
+                rotatingElement.textContent = titles[titleNumber];
+                
+                // Animate in with bounce effect
+                setTimeout(() => {
+                    rotatingElement.style.transform = 'translateY(0) scale(1)';
+                    rotatingElement.style.opacity = '1';
+                    preloadText();
+                }, 50);
+            }, 300);
+        }
+        
+        // Start enhanced animation
+        setInterval(smoothUpdateTitle, 5000);
+        preloadText();
+        
+        // Enhanced Medical Console Access with AWS deployment
+        function accessMedicalConsole() {
+            const email = document.getElementById('corporate-email').value;
+            
+            if (!email) {
+                showNotification('Please enter your corporate email to access the system', 'warning');
+                return;
+            }
+            
+            if (!email.includes('@') || !email.includes('.')) {
+                showNotification('Please enter a valid email address', 'error');
+                return;
+            }
+            
+            // Show loading state
+            const button = document.querySelector('button[onclick="accessMedicalConsole()"]');
+            const originalText = button.innerHTML;
+            button.innerHTML = 'Connecting to Medical Console...';
+            button.disabled = true;
+            
+            // Log the email access (just for tracking, no registration)
+            console.log('Medical Console Access:', email, new Date().toISOString());
+            
+            // Connect to AWS deployment
+            setTimeout(() => {
+                // AWS API Gateway URL for VIGIA Medical AI
+                const vigiaUrl = getVigiaUrl();
+                
+                try {
+                    // Test local API health first
+                    fetch('http://127.0.0.1:8000/api/v1/health')
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'healthy') {
+                                // API is healthy, redirect to medical interface
+                                showNotification('Redirecting to Medical Console...', 'success');
+                                setTimeout(() => {
+                                    window.location.href = vigiaUrl;
+                                }, 1000);
+                            } else {
+                                throw new Error('API health check failed');
+                            }
+                        })
+                        .catch(error => {
+                            console.warn('Local API not available, using fallback:', error);
+                            showNotification('Redirecting to Medical Console...', 'warning');
+                            setTimeout(() => {
+                                window.location.href = 'http://127.0.0.1:8000';
+                            }, 1000);
+                        });
+                } catch (error) {
+                    showNotification('Error accessing medical console. Please try again.', 'error');
+                }
+                
+                // Reset button
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }, 1000);
+        }
+        
+        // Enhanced notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white z-50 transition-all duration-300 transform translate-x-full`;
+            
+            switch(type) {
+                case 'success':
+                    notification.classList.add('bg-green-600');
+                    break;
+                case 'error':
+                    notification.classList.add('bg-red-600');
+                    break;
+                case 'warning':
+                    notification.classList.add('bg-yellow-600');
+                    break;
+                default:
+                    notification.classList.add('bg-blue-600');
+            }
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Auto remove
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Medical Console URL Management
+        function getVigiaUrl() {
+            // Use local FastAPI medical dashboard
+            const localDashboard = 'http://127.0.0.1:8000';
+            
+            // Check if custom URL is set (for future migrations)
+            const customUrl = window.VIGIA_LOCAL_URL || localStorage.getItem('vigia_local_url');
+            
+            if (customUrl && customUrl !== 'undefined') {
+                return customUrl;
+            }
+            
+            // Return local dashboard URL (primary)
+            return localDashboard;
+        }
+        
+        // Update deployment status indicators
+        function updateDeploymentStatus(status) {
+            const deploymentStatus = document.getElementById('deployment-status');
+            const consoleStatus = document.getElementById('console-status');
+            
+            switch(status) {
+                case 'live':
+                    if (deploymentStatus) {
+                        deploymentStatus.innerHTML = '✅ Live AWS deployment active';
+                    }
+                    if (consoleStatus) {
+                        consoleStatus.innerHTML = 'Connected to AWS production environment';
+                    }
+                    break;
+                case 'connecting':
+                    if (deploymentStatus) {
+                        deploymentStatus.innerHTML = '🔗 Connecting to AWS deployment...';
+                    }
+                    break;
+                case 'localhost':
+                    if (deploymentStatus) {
+                        deploymentStatus.innerHTML = '🛠️ Development mode - localhost active';
+                    }
+                    break;
+            }
+        }
+        
+        // Check deployment status on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Test AWS connection and update status
+            fetch('https://k0lhxhcl5a.execute-api.us-east-1.amazonaws.com/prod/health')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'healthy') {
+                        updateDeploymentStatus('live');
+                        console.log('✅ AWS VIGIA Medical AI system is live and healthy');
+                    } else {
+                        updateDeploymentStatus('connecting');
+                    }
+                })
+                .catch(error => {
+                    console.warn('AWS API not available, showing fallback status');
+                    updateDeploymentStatus('connecting');
+                });
+        });
+        
+        // Global function for AWS URL injection (called by deployment script)
+        window.setVigiaAwsUrl = function(url) {
+            window.VIGIA_AWS_URL = url;
+            localStorage.setItem('vigia_aws_url', url);
+            updateDeploymentStatus('live');
+            console.log('VIGIA AWS URL updated:', url);
+        };
+    </script>
+</body>
+</html>

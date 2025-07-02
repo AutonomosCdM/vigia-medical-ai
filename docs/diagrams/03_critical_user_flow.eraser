@@ -1,82 +1,112 @@
-# VIGIA Medical AI - Critical User Flow
+# VIGIA Medical AI - AWS Serverless Critical User Flow
 
 ## Objetivo
-El happy path más importante: paciente envía imagen médica por WhatsApp → análisis AI de 9 agentes → equipo médico recibe resultados por Slack → respuesta al paciente.
+Happy path serverless: paciente envía imagen → API Gateway → Step Functions coordina 9 Lambda agents → DynamoDB state → equipo médico vía Slack → autonomos.dev response.
 
 ## Código Eraser.io
 ```
 autoNumber on
 colorMode bold
 
-// Actors
+// AWS Serverless Actors
 Patient [icon: user, color: blue]  
 WhatsApp_Bot [icon: mobile, color: green]
-PHI_Tokenizer [icon: shield, color: red]
-Master_Orchestrator [icon: hub, color: purple]
-Medical_Agents [icon: users, color: blue]
-MONAI_Engine [icon: brain, color: green]
+API_Gateway [icon: aws-apigateway, color: purple]
+Lambda_PHI_Tokenizer [icon: aws-lambda, color: red]
+Step_Functions_Orchestrator [icon: aws-stepfunctions, color: purple]
+Lambda_Medical_Agents [icon: aws-lambda, color: blue]
+AWS_Bedrock_MONAI [icon: aws-bedrock, color: green]
+DynamoDB_State [icon: aws-dynamodb, color: orange]
 Medical_Team [icon: users, color: orange]
-Slack_Bot [icon: slack, color: purple]
+Lambda_Slack_Integration [icon: slack, color: purple]
 
-// Phase 1: Patient Input & PHI Tokenization
+// Phase 1: Patient Input & AWS Serverless Processing
 Patient > WhatsApp_Bot: "🖼️ Pressure ulcer image\n📝 MRN: BW-2025-001"
 activate WhatsApp_Bot
-WhatsApp_Bot > PHI_Tokenizer: "Patient data validation"
-activate PHI_Tokenizer
-PHI_Tokenizer > PHI_Tokenizer: "Bruce Wayne → Batman token\nbatman_TC001_abc123"
-PHI_Tokenizer > WhatsApp_Bot: "✅ Token created\n⏱️ 15min session"
-deactivate PHI_Tokenizer
-WhatsApp_Bot > Patient: "✅ Image received\n🔄 Medical analysis starting..."
+WhatsApp_Bot > API_Gateway: "🌐 autonomos.dev/medical/analyze"
+activate API_Gateway
+API_Gateway > Lambda_PHI_Tokenizer: "☁️ Lambda cold start (2s)\n🔒 Patient data validation"
+activate Lambda_PHI_Tokenizer
+Lambda_PHI_Tokenizer > DynamoDB_State: "Bruce Wayne → Batman token\nbatman_TC001_abc123"
+activate DynamoDB_State
+DynamoDB_State > Lambda_PHI_Tokenizer: "✅ Token stored\n⏱️ 15min session TTL"
+deactivate DynamoDB_State
+Lambda_PHI_Tokenizer > API_Gateway: "✅ Token created\n🔐 KMS encrypted"
+deactivate Lambda_PHI_Tokenizer
+API_Gateway > WhatsApp_Bot: "✅ AWS processing initiated"
+deactivate API_Gateway
+WhatsApp_Bot > Patient: "✅ Image received\n☁️ AWS medical analysis starting..."
 deactivate WhatsApp_Bot
 
-// Phase 2: Medical Orchestration
-activate Master_Orchestrator
-Master_Orchestrator > Medical_Agents: "🚀 Coordinate 9-agent analysis\n🏥 Priority: URGENT"
-activate Medical_Agents
+// Phase 2: Step Functions Medical Orchestration
+activate Step_Functions_Orchestrator
+Step_Functions_Orchestrator > Lambda_Medical_Agents: "🔄 Step Functions workflow\n🚀 9-agent Lambda coordination"
+activate Lambda_Medical_Agents
 
-// Parallel Medical Analysis
-par [label: "Multi-Agent Medical Analysis"] {
-  Medical_Agents > MONAI_Engine: "🔬 Primary medical imaging analysis"
-  activate MONAI_Engine
-  MONAI_Engine > Medical_Agents: "📊 MONAI: Grade 4 LPP detected\n🎯 Confidence: 94%"
-  deactivate MONAI_Engine
+// Parallel AWS Medical Analysis
+par [label: "Step Functions Parallel Execution"] {
+  Lambda_Medical_Agents > AWS_Bedrock_MONAI: "🔬 Bedrock + SageMaker MONAI analysis"
+  activate AWS_Bedrock_MONAI
+  AWS_Bedrock_MONAI > Lambda_Medical_Agents: "📊 MONAI: Grade 4 LPP detected\n🎯 Confidence: 94%"
+  deactivate AWS_Bedrock_MONAI
 }
 and {
-  Medical_Agents > Medical_Agents: "🩺 Clinical assessment\n⚠️ Risk factors analysis"
+  Lambda_Medical_Agents > DynamoDB_State: "🩺 Clinical assessment state\n⚠️ Risk factors analysis"
+  activate DynamoDB_State
+  DynamoDB_State > Lambda_Medical_Agents: "✅ State updated"
+  deactivate DynamoDB_State
 }
 and {
-  Medical_Agents > Medical_Agents: "📋 NPUAP protocol review\n📖 Evidence-based recommendations"
+  Lambda_Medical_Agents > Lambda_Medical_Agents: "📋 NPUAP protocol Lambda\n📖 Evidence-based recommendations"
 }
 
-Medical_Agents > Master_Orchestrator: "🚨 CRITICAL: Grade 4 LPP\n⏰ Urgent surgical evaluation required"
-deactivate Medical_Agents
-deactivate Master_Orchestrator
+Lambda_Medical_Agents > Step_Functions_Orchestrator: "🚨 CRITICAL: Grade 4 LPP\n⏰ Step Functions: surgical evaluation required"
+deactivate Lambda_Medical_Agents
+Step_Functions_Orchestrator > DynamoDB_State: "💾 Final medical state stored"
+activate DynamoDB_State
+DynamoDB_State > Step_Functions_Orchestrator: "✅ Audit trail complete"
+deactivate DynamoDB_State
+deactivate Step_Functions_Orchestrator
 
-// Phase 3: Medical Team Communication
-activate Slack_Bot
-Slack_Bot > Medical_Team: "🚨 URGENT MEDICAL ALERT\n👤 Patient: batman_TC001\n📊 Grade 4 LPP detected\n🎯 Confidence: 94%\n⏰ Response needed: <15min"
+// Phase 3: Lambda Slack Medical Team Communication
+activate Lambda_Slack_Integration
+Lambda_Slack_Integration > Medical_Team: "🚨 URGENT MEDICAL ALERT\n👤 Patient: batman_TC001\n📊 Grade 4 LPP detected\n🎯 Confidence: 94%\n☁️ Source: AWS Lambda analysis\n⏰ Response needed: <15min"
 activate Medical_Team
-Medical_Team > Slack_Bot: "✅ Dr. Smith reviewing\n📞 Contacting patient now"
+Medical_Team > Lambda_Slack_Integration: "✅ Dr. Smith reviewing\n📞 Contacting patient now"
+Lambda_Slack_Integration > DynamoDB_State: "👨‍⚕️ Dr. Smith response logged"
+activate DynamoDB_State
+DynamoDB_State > Lambda_Slack_Integration: "✅ Response tracked"
+deactivate DynamoDB_State
 deactivate Medical_Team
-Slack_Bot > Master_Orchestrator: "✅ Medical team notified\n👨‍⚕️ Dr. Smith responding"
-deactivate Slack_Bot
+Lambda_Slack_Integration > Step_Functions_Orchestrator: "✅ Medical team notified\n👨‍⚕️ Dr. Smith responding"
+deactivate Lambda_Slack_Integration
 
-// Phase 4: Patient Response
+// Phase 4: Patient Response via autonomos.dev
 activate WhatsApp_Bot
-WhatsApp_Bot > Patient: "🏥 URGENT MEDICAL ALERT\n📊 Grade 4 pressure injury detected\n👨‍⚕️ Dr. Smith will contact you\n📞 Call: (555) 123-4567\n⏰ Immediate evaluation required"
+WhatsApp_Bot > Patient: "🏥 URGENT MEDICAL ALERT\n📊 Grade 4 pressure injury detected\n👨‍⚕️ Dr. Smith will contact you\n📞 Call: (555) 123-4567\n🌐 Track: autonomos.dev\n⏰ Immediate evaluation required"
 Patient > WhatsApp_Bot: "✅ Understood, thank you"
-WhatsApp_Bot > Patient: "🔄 Medical case logged\n📋 Reference: batman_TC001"
+WhatsApp_Bot > API_Gateway: "🌐 autonomos.dev case reference\n📋 Reference: batman_TC001"
+activate API_Gateway
+API_Gateway > DynamoDB_State: "📝 Patient acknowledgment logged"
+activate DynamoDB_State
+DynamoDB_State > API_Gateway: "✅ Final state updated"
+deactivate DynamoDB_State
+API_Gateway > WhatsApp_Bot: "✅ Case logged in AWS"
+deactivate API_Gateway
+WhatsApp_Bot > Patient: "✅ Medical case logged\n📋 Reference: batman_TC001\n🌐 Status: autonomos.dev"
 deactivate WhatsApp_Bot
 
-// Audit Trail
-note over PHI_Tokenizer, Slack_Bot: "📝 Complete audit trail maintained\n🔒 HIPAA compliance verified\n⏱️ Total response time: <3 minutes"
+// AWS Serverless Audit Trail
+note over Lambda_PHI_Tokenizer, Lambda_Slack_Integration: "📝 Complete DynamoDB audit trail\n🔒 AWS KMS HIPAA compliance\n☁️ Step Functions workflow logged\n⏱️ Total serverless response: <3 minutes"
 ```
 
 ## Notas Clave
-- **Sub-3 minutos**: Tiempo total desde imagen hasta alerta médica crítica
-- **9 Agentes Coordinados**: Análisis médico paralelo con Master Orchestrator
-- **NPUAP Grade 4**: Detección automática de lesiones críticas que requieren cirugía urgente
-- **Comunicación Bidireccional**: WhatsApp paciente ↔ Slack equipo médico con audit completo
+- **Sub-3 minutos serverless**: AWS Lambda + Step Functions response time
+- **9 Lambda Agents**: Step Functions coordina análisis médico paralelo
+- **AWS AI Stack**: Bedrock + SageMaker MONAI para Grade 4 LPP detection
+- **DynamoDB State Management**: Complete audit trail con KMS encryption
+- **Production Domain**: autonomos.dev tracking con API Gateway integration
+- **HIPAA Serverless**: AWS KMS, DynamoDB encryption, Lambda execution roles
 
 ## Para Editar
 1. Copia el código anterior

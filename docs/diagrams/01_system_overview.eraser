@@ -1,7 +1,7 @@
 # VIGIA Medical AI - System Overview
 
 ## Objetivo
-Entender VIGIA Medical AI en 5 minutos: arquitectura médica completa con PHI tokenización, 9 agentes especializados, análisis multimodal (imagen + voz) y comunicación bidireccional WhatsApp↔Slack.
+Entender VIGIA Medical AI en 5 minutos: arquitectura médica serverless con AWS Lambda, PHI tokenización, 9 agentes especializados, análisis multimodal (imagen + voz) y comunicación bidireccional WhatsApp↔Slack desplegada en producción.
 
 ## Código Eraser.io
 ```
@@ -14,7 +14,7 @@ Patient_Interface [icon: mobile, color: green] {
   WhatsApp_Bot [icon: mobile, color: blue]
   Voice_Messages [icon: mic, color: orange]
   Medical_Images [icon: camera, color: purple]
-  Gradio_Interface [icon: browser, color: green]
+  Web_Interface_autonomos_dev [icon: browser, color: green]
 }
 
 // Security & Tokenization Layer
@@ -25,39 +25,54 @@ PHI_Tokenization [icon: shield, color: red] {
   HIPAA_Compliance [icon: medical, color: red]
 }
 
-// Core Medical AI System
+// AWS Serverless Infrastructure (Production)
+AWS_Serverless_Core [icon: aws-lambda, color: purple] {
+  API_Gateway_Medical [icon: aws-apigateway, color: blue]
+  Step_Functions_Orchestrator [icon: aws-stepfunctions, color: purple]
+  Lambda_Agent_Factory [icon: aws-lambda, color: green]
+  DynamoDB_Medical_State [icon: aws-dynamodb, color: orange]
+}
+
+// Core Medical AI System (Lambda-based)
 Medical_AI_Core [icon: server, color: blue] {
-  Master_Medical_Orchestrator [icon: hub, color: purple]
-  Agent_Factory [icon: cog, color: green]
-  Medical_Dispatcher [icon: medical, color: red]
-  A2A_Communication [icon: network, color: blue]
+  Master_Medical_Orchestrator_Lambda [icon: hub, color: purple]
+  Agent_Factory_Serverless [icon: cog, color: green]
+  Medical_Dispatcher_Lambda [icon: medical, color: red]
+  A2A_Communication_StepFunctions [icon: network, color: blue]
 }
 
-// Complete 9-Agent Medical Architecture
-Medical_Agents_Tier1 [icon: users, color: purple] {
-  Image_Analysis_Agent [icon: eye, color: blue]
-  Voice_Analysis_Agent [icon: mic, color: orange]
-  Clinical_Assessment_Agent [icon: medical, color: red]
+// Complete 9-Agent Medical Architecture (AWS Lambda)
+Medical_Agents_Tier1_Lambda [icon: aws-lambda, color: purple] {
+  Image_Analysis_Agent_Lambda [icon: eye, color: blue]
+  Voice_Analysis_Agent_Lambda [icon: mic, color: orange]
+  Clinical_Assessment_Agent_Lambda [icon: medical, color: red]
 }
 
-Medical_Agents_Tier2 [icon: users, color: green] {
-  Risk_Assessment_Agent [icon: warning, color: orange]
-  Diagnostic_Agent [icon: stethoscope, color: green]
-  MONAI_Review_Agent [icon: brain, color: purple]
+Medical_Agents_Tier2_Lambda [icon: aws-lambda, color: green] {
+  Risk_Assessment_Agent_Lambda [icon: warning, color: orange]
+  Diagnostic_Agent_Lambda [icon: stethoscope, color: green]
+  MONAI_Review_Agent_Lambda [icon: brain, color: purple]
 }
 
-Medical_Agents_Tier3 [icon: users, color: blue] {
-  Protocol_Agent [icon: clipboard, color: red]
-  Communication_Agent [icon: slack, color: green]
-  Workflow_Orchestration_Agent [icon: hub, color: blue]
+Medical_Agents_Tier3_Lambda [icon: aws-lambda, color: blue] {
+  Protocol_Agent_Lambda [icon: clipboard, color: red]
+  Communication_Agent_Lambda [icon: slack, color: green]
+  Workflow_Orchestration_Agent_Lambda [icon: hub, color: blue]
 }
 
-// Multimodal AI Engines
-AI_Engines [icon: brain, color: blue] {
-  MONAI_Primary [icon: medical, color: green]
-  YOLOv5_Backup [icon: eye, color: orange]
-  MedGemma_27B_Local [icon: brain, color: purple]
-  Hume_AI_Voice [icon: mic, color: blue]
+// AWS AI Services (Production)
+AWS_AI_Services [icon: aws-bedrock, color: blue] {
+  AWS_Bedrock_Medical_LLM [icon: brain, color: purple]
+  AWS_Transcribe_Medical [icon: mic, color: orange]
+  SageMaker_MONAI [icon: aws-sagemaker, color: green]
+  Local_YOLOv5_Backup [icon: eye, color: blue]
+}
+
+// External AI Services
+External_AI_Services [icon: brain, color: orange] {
+  Hume_AI_Voice_Analysis [icon: mic, color: blue]
+  MedGemma_27B_Fallback [icon: brain, color: purple]
+  Medical_Guardrails_Engine [icon: shield, color: red]
 }
 
 // Medical Team Communication
@@ -68,12 +83,12 @@ Team_Communication [icon: slack, color: green] {
   WhatsApp_Patient_Updates [icon: mobile, color: orange]
 }
 
-// Medical Storage & Compliance
-Medical_Storage [icon: database, color: blue] {
-  Aurora_PostgreSQL [icon: database, color: green]
-  Redis_PHI_Cache [icon: cache, color: orange]
+// AWS Medical Storage & Compliance
+AWS_Medical_Storage [icon: aws-s3, color: blue] {
+  DynamoDB_Medical_State [icon: aws-dynamodb, color: green]
+  S3_Medical_Imaging [icon: aws-s3, color: orange]
   NPUAP_Grading_System [icon: medical, color: red]
-  Complete_Audit_Trail [icon: clipboard, color: purple]
+  Complete_Audit_Trail_DynamoDB [icon: clipboard, color: purple]
 }
 
 // Medical Decision Engine
@@ -84,32 +99,39 @@ Clinical_Engine [icon: medical, color: red] {
   Safety_Monitoring [icon: monitor, color: orange]
 }
 
-// Connections - Primary Flow
+// Primary AWS Serverless Flow
 Patient_Interface > PHI_Tokenization: "Patient Data + Voice"
-PHI_Tokenization > Medical_AI_Core: "Batman Tokens"
-Medical_AI_Core > Medical_Agents_Tier1: "Multimodal Analysis"
-Medical_Agents_Tier1 > Medical_Agents_Tier2: "A2A Coordination"
-Medical_Agents_Tier2 > Medical_Agents_Tier3: "Clinical Synthesis"
+PHI_Tokenization > AWS_Serverless_Core: "Batman Tokens"
+AWS_Serverless_Core > Medical_AI_Core: "Lambda Orchestration"
+Medical_AI_Core > Medical_Agents_Tier1_Lambda: "Step Functions Workflow"
 
-// AI Processing Flow
-Medical_Agents_Tier1 > AI_Engines: "AI Processing"
-AI_Engines > Clinical_Engine: "Medical Analysis"
+// Lambda Agent Coordination Flow
+Medical_Agents_Tier1_Lambda > Medical_Agents_Tier2_Lambda: "A2A via Step Functions"
+Medical_Agents_Tier2_Lambda > Medical_Agents_Tier3_Lambda: "Clinical Synthesis"
+
+// AWS AI Processing Flow
+Medical_Agents_Tier1_Lambda > AWS_AI_Services: "Bedrock + SageMaker"
+Medical_Agents_Tier1_Lambda > External_AI_Services: "Hume AI + Guardrails"
+AWS_AI_Services > Clinical_Engine: "Medical Analysis"
+External_AI_Services > Clinical_Engine: "Voice + Safety Analysis"
 Clinical_Engine > Team_Communication: "Clinical Results"
 
-// Storage & Compliance
-Team_Communication > Medical_Storage: "Audit Trail"
-Medical_Storage > PHI_Tokenization: "Compliance Data"
-Clinical_Engine > Medical_Storage: "NPUAP Grading"
+// AWS Storage & State Management
+AWS_Serverless_Core <> AWS_Medical_Storage: "DynamoDB State"
+Team_Communication > AWS_Medical_Storage: "Audit Trail"
+Clinical_Engine > AWS_Medical_Storage: "NPUAP Grading"
 
-// Bidirectional Communication
+// Production Endpoints & Communication
 Team_Communication <> Patient_Interface: "Medical Updates"
-Medical_AI_Core <> Medical_Storage: "Session Management"
+AWS_Serverless_Core > Patient_Interface: "autonomos.dev Response"
 ```
 
 ## Notas Clave
+- **AWS Serverless Production**: Lambda + Step Functions + DynamoDB architecture
 - **PHI Tokenización**: Bruce Wayne → Batman tokens para HIPAA compliance
-- **9 Agentes Médicos**: Análisis especializado con Google Cloud ADK
-- **Dual AI Engine**: MONAI (primario) + YOLOv5 (backup) para 95% precision
+- **9 Agentes Lambda**: Análisis especializado con Step Functions coordination
+- **AWS AI Stack**: Bedrock + SageMaker + Transcribe Medical + Hume AI external
+- **Production Endpoints**: autonomos.dev domain with API Gateway integration
 - **Comunicación Bidireccional**: WhatsApp pacientes ↔ Slack equipos médicos
 
 ## Para Editar

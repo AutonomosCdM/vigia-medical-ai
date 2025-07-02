@@ -67,7 +67,7 @@ static_dir.mkdir(exist_ok=True)
 
 templates = Jinja2Templates(directory=str(templates_dir))
 
-# Mount static files
+# Mount static files AFTER routes are defined to avoid conflicts
 app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
 
 # Add custom template functions
@@ -322,6 +322,24 @@ async def settings_page(request: Request):
         "title": "Settings",
         "vigia_available": VIGIA_SYSTEM_AVAILABLE
     })
+
+@app.get("/agent-smith", response_class=HTMLResponse)
+async def agent_smith_landing(request: Request):
+    """Agent Smith themed landing page."""
+    # Read the Agent Smith HTML file
+    agent_smith_file = static_dir / "hero-agent-smith.html"
+    if agent_smith_file.exists():
+        with open(agent_smith_file, 'r') as f:
+            content = f.read()
+        return HTMLResponse(content)
+    else:
+        raise HTTPException(status_code=404, detail="Agent Smith page not found")
+
+@app.get("/landing", response_class=HTMLResponse)
+async def landing_redirect(request: Request):
+    """Redirect to Agent Smith landing page."""
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url="/agent-smith", status_code=302)
 
 @app.get("/case/{case_id}/analysis", response_class=HTMLResponse)
 async def case_analysis(request: Request, case_id: str):

@@ -1,7 +1,7 @@
-# VIGIA Medical AI - Data Model
+# VIGIA Medical AI - AWS DynamoDB Data Model
 
 ## Objetivo
-Entidades y relaciones clave del sistema médico: PHI tokenización, sesiones médicas, análisis de agentes y audit trail para compliance HIPAA.
+Esquema DynamoDB para sistema médico serverless: PHI tokenización con KMS, sesiones médicas con TTL, Lambda execution state y audit trail para compliance HIPAA.
 
 ## Código Eraser.io
 ```

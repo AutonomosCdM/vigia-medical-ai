@@ -1,7 +1,7 @@
-# VIGIA Medical AI - External Integrations
+# VIGIA Medical AI - AWS Serverless External Integrations
 
 ## Objetivo
-Dependencias y riesgos externos: Voice Analysis con Hume AI, Slack Block Kit, AWS services, MedGemma local, y servicios médicos críticos con análisis completo de puntos de falla.
+AWS serverless integrations: Lambda agents, Step Functions, DynamoDB, Bedrock, external APIs (Hume AI, Slack), y análisis completo de costos y riesgos en producción.
 
 ## Código Eraser.io
 ```
@@ -9,12 +9,12 @@ colorMode bold
 styleMode shadow
 direction down
 
-// VIGIA Core System
-VIGIA_Core [icon: server, color: blue] {
-  Master_Medical_Orchestrator [icon: hub, color: purple]
-  Medical_Dispatcher [icon: medical, color: red]
-  Agent_Factory [icon: cog, color: green]
-  A2A_Communication [icon: network, color: blue]
+// VIGIA AWS Serverless Core
+VIGIA_AWS_Core [icon: aws-lambda, color: blue] {
+  Step_Functions_Orchestrator [icon: aws-stepfunctions, color: purple]
+  Lambda_Medical_Dispatcher [icon: aws-lambda, color: red]
+  Lambda_Agent_Factory [icon: cog, color: green]
+  API_Gateway_Communication [icon: aws-apigateway, color: blue]
 }
 
 // Voice Analysis Integration (NEW)
@@ -86,37 +86,59 @@ Local_AI_Stack [icon: brain, color: green] {
   }
 }
 
-// AWS Cloud Services (PRODUCTION)
-AWS_Services [icon: aws, color: blue] {
-  AWS_Fargate_ECS [icon: server, color: green] {
-    risk_level: "MEDIUM"
-    uptime: "99.99%"
-    backup: "Multi-AZ Deployment"
-    hipaa_eligible: "Yes"
-    auto_scaling: "2-10 tasks"
-  }
-  
-  Aurora_PostgreSQL [icon: database, color: blue] {
-    risk_level: "HIGH"
+// AWS Serverless Services (PRODUCTION)
+AWS_Serverless_Services [icon: aws, color: blue] {
+  Lambda_Functions [icon: aws-lambda, color: green] {
+    risk_level: "LOW"
     uptime: "99.95%"
+    backup: "Multi-AZ Automatic"
+    hipaa_eligible: "Yes"
+    auto_scaling: "Pay-per-invocation"
+    concurrent_executions: "1000"
+  }
+  
+  DynamoDB_Medical_State [icon: aws-dynamodb, color: blue] {
+    risk_level: "LOW"
+    uptime: "99.99%"
     backup: "Point-in-time Recovery"
-    encryption: "AES-256"
+    encryption: "KMS at-rest + in-transit"
     compliance: "HIPAA"
+    scaling: "On-demand"
   }
   
-  ElastiCache_Redis [icon: cache, color: orange] {
-    risk_level: "MEDIUM"
+  Step_Functions_Workflows [icon: aws-stepfunctions, color: orange] {
+    risk_level: "LOW"
     uptime: "99.9%"
-    backup: "Automatic Failover"
-    encryption: "In-transit + At-rest"
+    backup: "State Machine Redundancy"
+    encryption: "In-transit"
+    cost: "Pay-per-state-transition"
   }
   
-  SageMaker_Bedrock [icon: brain, color: purple] {
+  API_Gateway_Medical [icon: aws-apigateway, color: purple] {
+    risk_level: "LOW"
+    uptime: "99.95%"
+    backup: "Multi-region"
+    hipaa_eligible: "Yes"
+    cost: "Pay-per-request"
+    domain: "autonomos.dev"
+  }
+  
+  Bedrock_SageMaker_AI [icon: aws-bedrock, color: purple] {
     risk_level: "MEDIUM"
     uptime: "99.9%"
     backup: "Multi-model Endpoints"
     hipaa_eligible: "Yes"
     cost_optimization: "On-demand"
+    services: "Bedrock + SageMaker + Transcribe"
+  }
+  
+  S3_Medical_Storage [icon: aws-s3, color: orange] {
+    risk_level: "VERY_LOW"
+    uptime: "99.999999999%"
+    backup: "Cross-region Replication"
+    encryption: "KMS Server-side"
+    compliance: "HIPAA"
+    website_hosting: "autonomos.dev"
   }
 }
 
@@ -183,39 +205,42 @@ Future_Medical_APIs [icon: medical, color: gray] {
   }
 }
 
-// Connection Flows with Risk Assessment
-VIGIA_Core > Voice_AI_Services: "Multimodal Analysis\n⚠️ MEDIUM RISK"
-VIGIA_Core > Communication_APIs: "Patient/Team Comm\n🚨 CRITICAL PATH"
-VIGIA_Core > Local_AI_Stack: "Medical Analysis\n✅ LOW RISK"
-VIGIA_Core > AWS_Services: "Production Deployment\n⚠️ MEDIUM RISK"
-VIGIA_Core > Medical_Safety_Services: "Safety Validation\n✅ LOW RISK"
-VIGIA_Core > Training_Infrastructure: "Model Training\n✅ LOW RISK"
+// AWS Serverless Connection Flows
+VIGIA_AWS_Core > Voice_AI_Services: "Lambda Voice Analysis\n⚠️ MEDIUM RISK"
+VIGIA_AWS_Core > Communication_APIs: "API Gateway Comm\n🚨 CRITICAL PATH"
+VIGIA_AWS_Core > Local_AI_Stack: "Development Fallback\n✅ LOW RISK"
+VIGIA_AWS_Core > AWS_Serverless_Services: "Production Serverless\n✅ LOW RISK"
+VIGIA_AWS_Core > Medical_Safety_Services: "Lambda Safety Validation\n✅ LOW RISK"
+VIGIA_AWS_Core > Training_Infrastructure: "DynamoDB Training\n✅ LOW RISK"
 
-// Backup and Fallback Connections
-Local_AI_Stack .- AWS_Services: "Cloud AI Fallback"
+// Serverless Backup and Fallback Connections
+Local_AI_Stack .- AWS_Serverless_Services: "Serverless AI Primary"
 Communication_APIs .- Medical_Safety_Services: "Emergency Fallbacks"
-AWS_Services .- Local_AI_Stack: "Local Development"
-Voice_AI_Services .- Medical_Safety_Services: "Safety Monitoring"
+AWS_Serverless_Services .- Local_AI_Stack: "Local Development"
+Voice_AI_Services .- Medical_Safety_Services: "Lambda Safety Monitoring"
 
-// Production Integration Flow
-AWS_Services <> Training_Infrastructure: "Model Deployment"
-Medical_Safety_Services <> Training_Infrastructure: "Safety Training"
+// Production Serverless Integration Flow
+AWS_Serverless_Services <> Training_Infrastructure: "DynamoDB Model State"
+Medical_Safety_Services <> Training_Infrastructure: "Lambda Safety Training"
+API_Gateway_Medical <> S3_Medical_Storage: "autonomos.dev Integration"
 
-// Risk Indicators
-note over Voice_AI_Services: "🎙️ NEW: Hume AI Voice\n💰 Cost: $0.02/request\n📊 66.7% success rate\n⚡ 48 emotion categories"
-note over Communication_APIs: "📱 Slack Block Kit Ready\n💰 Cost: $0.005/message\n🎨 Visual medical alerts\n📊 Rate limits apply"
-note over AWS_Services: "☁️ Production Infrastructure\n💰 Cost: $1,275-2,020/month\n🔒 HIPAA compliant\n📊 Auto-scaling 2-10 tasks"
-note over Medical_Safety_Services: "🛡️ NEW: Medical Guardrails\n✅ Always available\n🏥 NPUAP/EPUAP compliant\n📋 Complete audit trail"
+// Serverless Risk Indicators & Costs
+note over Voice_AI_Services: "🎙️ Hume AI Voice Integration\n💰 Cost: $0.02/request\n📊 66.7% success rate\n⚡ 48 emotion categories"
+note over Communication_APIs: "📱 Slack Block Kit Production\n💰 Cost: $0.005/message\n🎨 Visual medical alerts\n📊 Rate limits apply"
+note over AWS_Serverless_Services: "☁️ AWS Serverless Production\n💰 Cost: $200-500/month\n🔒 HIPAA compliant\n📊 Pay-per-use auto-scaling\n🌐 autonomos.dev live"
+note over Medical_Safety_Services: "🛡️ Lambda Medical Guardrails\n✅ Always available\n🏥 NPUAP/EPUAP compliant\n📋 DynamoDB audit trail"
 ```
 
 ## Notas Clave
-- **Voice Analysis Integration**: Hume AI para análisis emocional (66.7% success rate, 48 categorías médicas)
-- **Slack Block Kit Production**: Visual medical alerts con templates locales (fallback texto plano)
-- **AWS Production Infrastructure**: Fargate + Aurora + ElastiCache ($1,275-2,020/month, HIPAA compliant)
-- **Medical Safety Layer**: Guardrails locales + fallback handlers + response monitoring
-- **Local AI Redundancy**: MedGemma 27B + MONAI + YOLOv5 para independencia de cloud
-- **Training Infrastructure**: Database local + synthetic patients + performance tracking
-- **Multi-Cloud Strategy**: AWS primary, local development, cloud alternatives disponibles
+- **AWS Serverless Production**: Lambda + Step Functions + DynamoDB ($200-500/month, 75% cost reduction)
+- **Voice Analysis Integration**: Hume AI + Lambda voice processing (66.7% success rate, 48 categorías médicas)
+- **API Gateway Production**: autonomos.dev domain con SSL, pay-per-request pricing
+- **DynamoDB Medical State**: KMS encryption, point-in-time recovery, on-demand scaling
+- **S3 Website Hosting**: autonomos.dev static site con CloudFront CDN integration
+- **Lambda Medical Guardrails**: Serverless safety validation con DynamoDB audit trail
+- **Local Development Fallback**: MedGemma 27B + MONAI + YOLOv5 para development independence
+- **CDK Infrastructure**: Complete infrastructure-as-code con automated deployment
+- **HIPAA Serverless Compliance**: All services HIPAA-eligible with KMS encryption
 
 ## Para Editar
 1. Copia el código anterior

@@ -1,7 +1,7 @@
-# VIGIA Medical AI - Technical Architecture
+# VIGIA Medical AI - AWS Serverless Technical Architecture
 
 ## Objetivo
-Decisiones técnicas principales: stack médico-grado con MONAI+PyTorch, Google Cloud ADK, y arquitectura de 3 capas para procesamiento médico seguro.
+Stack técnico serverless: AWS Lambda + Step Functions + Bedrock para 9 agentes médicos, con arquitectura de 3 capas para procesamiento médico HIPAA-compliant en producción.
 
 ## Código Eraser.io
 ```
@@ -9,109 +9,118 @@ colorMode bold
 styleMode shadow
 direction down
 
-// Layer 1: Multimodal Input Isolation
-Input_Layer [icon: shield, color: green] {
+// Layer 1: AWS Serverless Input & Validation
+AWS_Input_Layer [icon: aws-apigateway, color: green] {
   Patient_Interfaces [icon: mobile, color: blue] {
     WhatsApp_Bot [icon: mobile, color: green]
-    Gradio_Interface [icon: browser, color: blue]
+    autonomos_dev_Web [icon: browser, color: blue]
     Voice_Input [icon: mic, color: orange]
+    API_Gateway_Medical [icon: aws-apigateway, color: purple]
   }
   
-  Input_Processing [icon: filter, color: purple] {
-    Image_Validation [icon: camera, color: green]
-    Voice_Preprocessing [icon: mic, color: orange]
-    Format_Sanitization [icon: filter, color: blue]
-    PHI_Tokenization [icon: key, color: red]
+  Serverless_Input_Processing [icon: aws-lambda, color: purple] {
+    Lambda_Image_Validation [icon: camera, color: green]
+    Lambda_Voice_Preprocessing [icon: mic, color: orange]
+    Lambda_Format_Sanitization [icon: filter, color: blue]
+    Lambda_PHI_Tokenization [icon: key, color: red]
   }
 }
 
-// Layer 2: Medical Orchestration
-Orchestration_Layer [icon: hub, color: purple] {
-  Master_Medical_Orchestrator [icon: server, color: blue] {
-    Agent_Factory [icon: cog, color: green]
-    Session_Manager_15min [icon: clock, color: orange]
-    Medical_Dispatcher [icon: medical, color: red]
-    A2A_Communication [icon: network, color: purple]
+// Layer 2: AWS Step Functions Medical Orchestration
+AWS_Orchestration_Layer [icon: aws-stepfunctions, color: purple] {
+  Step_Functions_Medical_Workflow [icon: aws-stepfunctions, color: blue] {
+    Lambda_Agent_Factory [icon: cog, color: green]
+    DynamoDB_Session_Manager [icon: aws-dynamodb, color: orange]
+    Lambda_Medical_Dispatcher [icon: medical, color: red]
+    Step_Functions_A2A_Communication [icon: network, color: purple]
   }
   
-  Agent_Coordination [icon: users, color: green] {
-    Tier1_Agents [icon: eye, color: blue]
-    Tier2_Agents [icon: medical, color: red]
-    Tier3_Agents [icon: slack, color: green]
-    Sequential_Processing [icon: arrow-right, color: orange]
+  Lambda_Agent_Coordination [icon: aws-lambda, color: green] {
+    Tier1_Lambda_Agents [icon: eye, color: blue]
+    Tier2_Lambda_Agents [icon: medical, color: red]
+    Tier3_Lambda_Agents [icon: slack, color: green]
+    Step_Functions_Sequential_Processing [icon: arrow-right, color: orange]
   }
 }
 
-// Layer 3: Complete Medical Processing
-Processing_Layer [icon: medical, color: red] {
-  Multimodal_AI_Stack [icon: brain, color: purple] {
-    MONAI_Primary [icon: medical, color: green]
-    YOLOv5_Backup [icon: eye, color: orange]
-    MedGemma_27B_Local [icon: brain, color: blue]
-    Hume_AI_Voice [icon: mic, color: purple]
-    Adaptive_Model_Selection [icon: cog, color: red]
+// Layer 3: AWS AI Services Medical Processing
+AWS_Processing_Layer [icon: aws-bedrock, color: red] {
+  AWS_Multimodal_AI_Stack [icon: aws-bedrock, color: purple] {
+    AWS_Bedrock_Medical_LLM [icon: brain, color: blue]
+    SageMaker_MONAI_Primary [icon: aws-sagemaker, color: green]
+    Lambda_YOLOv5_Backup [icon: eye, color: orange]
+    AWS_Transcribe_Medical [icon: mic, color: purple]
+    Hume_AI_Voice_External [icon: mic, color: red]
+    Lambda_Adaptive_Model_Selection [icon: cog, color: red]
   }
   
-  Complete_Medical_Agents [icon: users, color: blue] {
-    Image_Analysis_Agent [icon: camera, color: green]
-    Voice_Analysis_Agent [icon: mic, color: orange]
-    Clinical_Assessment_Agent [icon: stethoscope, color: red]
-    Risk_Assessment_Agent [icon: warning, color: blue]
-    Diagnostic_Agent [icon: hub, color: purple]
-    MONAI_Review_Agent [icon: medical, color: green]
-    Protocol_Agent [icon: clipboard, color: red]
-    Communication_Agent [icon: slack, color: blue]
-    Workflow_Orchestration_Agent [icon: cog, color: orange]
+  Complete_Lambda_Medical_Agents [icon: aws-lambda, color: blue] {
+    Lambda_Image_Analysis_Agent [icon: camera, color: green]
+    Lambda_Voice_Analysis_Agent [icon: mic, color: orange]
+    Lambda_Clinical_Assessment_Agent [icon: stethoscope, color: red]
+    Lambda_Risk_Assessment_Agent [icon: warning, color: blue]
+    Lambda_Diagnostic_Agent [icon: hub, color: purple]
+    Lambda_MONAI_Review_Agent [icon: medical, color: green]
+    Lambda_Protocol_Agent [icon: clipboard, color: red]
+    Lambda_Communication_Agent [icon: slack, color: blue]
+    Lambda_Workflow_Orchestration_Agent [icon: cog, color: orange]
   }
 }
 
-// Data & Security Infrastructure
-Data_Infrastructure [icon: database, color: blue] {
-  PHI_Tokenization [icon: key, color: red] {
-    Cryptography_41 [icon: lock, color: red]
-    JWT_Tokens [icon: key, color: orange]
-    Session_Encryption [icon: shield, color: green]
+// AWS Serverless Data & Security Infrastructure
+AWS_Data_Infrastructure [icon: aws-dynamodb, color: blue] {
+  AWS_PHI_Tokenization [icon: key, color: red] {
+    AWS_KMS_Encryption [icon: lock, color: red]
+    Lambda_JWT_Tokens [icon: key, color: orange]
+    DynamoDB_Session_Encryption [icon: shield, color: green]
+    AWS_Secrets_Manager [icon: lock, color: purple]
   }
   
-  Medical_Storage [icon: storage, color: green] {
-    Supabase_2_4 [icon: database, color: blue]
-    Redis_5_0 [icon: cache, color: orange]
-    Vector_Search [icon: search, color: purple]
+  AWS_Medical_Storage [icon: aws-s3, color: green] {
+    DynamoDB_Medical_State [icon: aws-dynamodb, color: blue]
+    S3_Medical_Imaging [icon: aws-s3, color: orange]
+    DynamoDB_Vector_Search [icon: search, color: purple]
+    CloudWatch_Audit_Logs [icon: aws-cloudwatch, color: red]
   }
 }
 
-// Communication Infrastructure
-Communication_Stack [icon: network, color: green] {
+// AWS Serverless Communication Infrastructure
+AWS_Communication_Stack [icon: aws-apigateway, color: green] {
   Patient_Comm [icon: mobile, color: blue] {
     Twilio_WhatsApp [icon: mobile, color: green]
-    FastAPI_0_110 [icon: api, color: blue]
-    Celery_5_3 [icon: queue, color: orange]
+    API_Gateway_Medical [icon: aws-apigateway, color: blue]
+    EventBridge_Async_Processing [icon: aws-eventbridge, color: orange]
+    Lambda_Communication_Handler [icon: aws-lambda, color: purple]
   }
   
   Medical_Team_Comm [icon: slack, color: purple] {
-    Slack_SDK [icon: slack, color: green]
-    Block_Kit_UI [icon: layout, color: blue]
-    Real_Time_Updates [icon: notification, color: orange]
+    Lambda_Slack_Integration [icon: slack, color: green]
+    DynamoDB_Block_Kit_State [icon: layout, color: blue]
+    EventBridge_Real_Time_Updates [icon: notification, color: orange]
+    S3_autonomos_dev_Frontend [icon: browser, color: red]
   }
 }
 
-// Connections
-Input_Layer > Orchestration_Layer: "Validated Input"
-Orchestration_Layer > Processing_Layer: "Agent Coordination"
-Processing_Layer > Data_Infrastructure: "Medical Analysis"
-Data_Infrastructure > Communication_Stack: "Results Distribution"
-Communication_Stack > Input_Layer: "Feedback Loop"
+// AWS Serverless Connections
+AWS_Input_Layer > AWS_Orchestration_Layer: "API Gateway → Step Functions"
+AWS_Orchestration_Layer > AWS_Processing_Layer: "Lambda Agent Coordination"
+AWS_Processing_Layer > AWS_Data_Infrastructure: "Medical Analysis Results"
+AWS_Data_Infrastructure > AWS_Communication_Stack: "DynamoDB → EventBridge"
+AWS_Communication_Stack > AWS_Input_Layer: "autonomos.dev Feedback Loop"
 
-// Security Connections
-PHI_Tokenization <> Medical_Storage: "Encrypted Data"
-Google_Cloud_ADK <> Medical_Agents: "A2A Protocol"
+// AWS Security Connections
+AWS_PHI_Tokenization <> AWS_Medical_Storage: "KMS Encrypted Data"
+Step_Functions_Medical_Workflow <> Complete_Lambda_Medical_Agents: "Step Functions A2A Protocol"
+AWS_Bedrock_Medical_LLM <> Lambda_Medical_Agents: "Bedrock AI Processing"
 ```
 
 ## Notas Clave
-- **3-Layer Security**: Input isolation → Medical orchestration → Specialized processing
-- **Google Cloud ADK**: A2A protocol para coordinación de agentes médicos
-- **Medical AI Stack**: MONAI (primario) + PyTorch 2.3 + YOLOv5 (backup)
-- **HIPAA Architecture**: PHI tokenización con cryptography 41.0+ y audit completo
+- **AWS Serverless 3-Layer**: API Gateway → Step Functions → Lambda agents
+- **Step Functions A2A**: Serverless protocol para coordinación de 9 agentes médicos
+- **AWS AI Stack**: Bedrock + SageMaker MONAI + Transcribe Medical + Hume AI external
+- **HIPAA Serverless**: KMS encryption, DynamoDB audit trail, Lambda execution roles
+- **Production Domain**: autonomos.dev con S3 static website y API Gateway endpoints
+- **Cost Efficient**: Pay-per-use serverless vs traditional container infrastructure
 
 ## Para Editar
 1. Copia el código anterior
