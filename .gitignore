@@ -1,0 +1,176 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Medical Data (IMPORTANT: Never commit real medical data)
+*.dcm
+*.dicom
+patient_data/
+medical_images/
+phi_data/
+hospital_records/
+
+# Configuration (Security: Never commit credentials)
+.env
+.env.local
+.env.production
+config/secrets/
+credentials/
+keys/
+*.pem
+*.key
+*.crt
+
+# Logs
+logs/
+*.log
+audit_logs/
+medical_audit/
+
+# Cache
+.cache/
+*.cache
+redis-dump.rdb
+
+# Models (Large files)
+models/
+weights/
+checkpoints/
+*.pt
+*.pth
+*.h5
+*.pb
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+database_backups/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+.tmp/
+
+# Documentation builds
+docs/_build/
+site/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Medical AI specific
+ollama_models/
+medgemma_cache/
+medical_protocols_cache/
+
+# Claude Code and Development Tools (NEVER COMMIT TO PUBLIC)
+CLAUDE.md
+MEMORY_GRAPH_SUMMARY.md
+SIE_MEMORY_GRAPH.json
+SLACK_*.md
+validate_memory.py
+basic_rag.py
+rag_enhanced.py
+rag_builder.py
+rag_cli.py
+setup_rag.py
+test_rag.py
+data_mineduc/*_extracted.txt
+data_mineduc/extract_*.py
+data_mineduc/section*.txt
+storage/
+
+# HF Spaces specific
+flagged/
+requirements_spaces.txt
+
+# AWS Lambda Dependencies (too large for git repository)
+lambda/*/boto3/
+lambda/*/botocore/
+lambda/*/botocore-*/
+lambda/*/boto3-*/
+lambda/*/dateutil/
+lambda/*/jmespath/
+lambda/*/python_dateutil-*/
+lambda/*/s3transfer/
+lambda/*/six.py
+lambda/*/six-*/
+lambda/*/urllib3/
+lambda/*/urllib3-*/
+lambda/*/bin/
+lambda/*/PIL/
+lambda/*/numpy/
+lambda/*/numpy-*/
+lambda/*/pillow-*/
+
+# AWS CDK generated files
+infrastructure/cdk.out/
+
+# Sensitive files (use environment variables)
+apprunner_*.json
+deploy_apprunner.py
+AWS_MONITORING_ARCHITECTURE.md
+aws_monitoring_init.py
+
+# Development and testing artifacts
+test_*.html
+*_test_report.json
+*_capability_report.json
+aws_deployment_validation_report.md
+dataset_integration_*.json
+voice_integration_test_report.json
+hume_ai_test_report.json
+TESTING_RESULTS.md

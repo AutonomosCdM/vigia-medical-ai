@@ -1,0 +1,303 @@
+{% extends "base.html" %}
+
+{% block page_title %}Patients{% endblock %}
+{% block page_subtitle %}Patient management and medical records{% endblock %}
+
+{% block content %}
+<div class="p-6">
+    <!-- Patient Statistics -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="medical-metric">
+            <div class="metric-icon vigia-gradient">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="metric-value">247</div>
+            <div class="metric-label">Total Patients</div>
+        </div>
+        
+        <div class="medical-metric">
+            <div class="metric-icon" style="background-color: #10b981;">
+                <i class="fas fa-user-check"></i>
+            </div>
+            <div class="metric-value">34</div>
+            <div class="metric-label">Active Cases</div>
+        </div>
+        
+        <div class="medical-metric">
+            <div class="metric-icon" style="background-color: #f59e0b;">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="metric-value">8</div>
+            <div class="metric-label">High Risk</div>
+        </div>
+        
+        <div class="medical-metric">
+            <div class="metric-icon" style="background-color: #ef4444;">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <div class="metric-value">3</div>
+            <div class="metric-label">Critical</div>
+        </div>
+    </div>
+
+    <!-- Patient Management -->
+    <div class="medical-card">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold text-gray-900">Patient Directory</h3>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Search patients..." 
+                               class="border border-gray-300 rounded-lg pl-10 pr-4 py-2 w-64 text-sm">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                        <option>All Patients</option>
+                        <option>Active Cases</option>
+                        <option>High Risk</option>
+                        <option>Recently Added</option>
+                    </select>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm">
+                        <i class="fas fa-plus mr-2"></i>Add Patient
+                    </button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for patient in patients %}
+                {% set patient_case_info = patient_cases.get(patient.id, {}) %}
+                {% set latest_case = patient_case_info.get('latest_case') %}
+                {% set risk_level = latest_case.risk_level if latest_case else 'low' %}
+                {% set initials = patient.name.split() %}
+                {% set avatar_text = (initials[0][0] + (initials[1][0] if initials|length > 1 else ''))|upper %}
+                
+                <!-- Patient Card -->
+                <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer" onclick="viewPatient('{{ patient.id }}')">
+                    <div class="flex items-center mb-4">
+                        {% set avatar_colors = {
+                            'critical': 'bg-red-500',
+                            'high': 'bg-orange-500', 
+                            'medium': 'bg-yellow-500',
+                            'low': 'bg-green-500'
+                        } %}
+                        <div class="w-12 h-12 {{ avatar_colors.get(risk_level, 'bg-blue-500') }} rounded-full flex items-center justify-center">
+                            <span class="text-white font-semibold">{{ avatar_text }}</span>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-lg font-semibold text-gray-900">{{ patient.name }}</h4>
+                            <p class="text-sm text-gray-500">ID: {{ patient.id }} • Age {{ patient.age }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Risk Level</span>
+                            {% set risk_colors = {
+                                'critical': 'bg-red-100 text-red-800',
+                                'high': 'bg-orange-100 text-orange-800',
+                                'medium': 'bg-yellow-100 text-yellow-800',
+                                'low': 'bg-green-100 text-green-800'
+                            } %}
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ risk_colors.get(risk_level, 'bg-gray-100 text-gray-800') }}">
+                                {{ risk_level.title() }}
+                            </span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Last Assessment</span>
+                            <span class="text-sm text-gray-900">
+                                {% if latest_case %}
+                                    {% set days_ago = (now() - latest_case.updated_at).days %}
+                                    {% if days_ago == 0 %}Today
+                                    {% elif days_ago == 1 %}Yesterday
+                                    {% else %}{{ days_ago }} days ago{% endif %}
+                                {% else %}Never{% endif %}
+                            </span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Conditions</span>
+                            <span class="text-sm text-gray-900">
+                                {% set conditions = [] %}
+                                {% if patient.diabetes %}{% set _ = conditions.append('Diabetes') %}{% endif %}
+                                {% if patient.hypertension %}{% set _ = conditions.append('Hypertension') %}{% endif %}
+                                {{ conditions|join(', ') if conditions else 'None' }}
+                            </span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Braden Score</span>
+                            {% set braden_score = 23 - (patient.mobility_score * 2) - (5 if patient.diabetes else 0) - (3 if patient.hypertension else 0) - (patient.age // 10) %}
+                            {% set score_color = 'text-red-600' if braden_score <= 15 else ('text-orange-600' if braden_score <= 18 else 'text-green-600') %}
+                            <span class="text-sm font-semibold {{ score_color }}">{{ braden_score }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 flex space-x-2">
+                        <a href="/patient/{{ patient.id }}" class="flex-1 bg-blue-600 text-white text-center py-2 px-3 rounded-lg text-sm hover:bg-blue-700">
+                            View Profile
+                        </a>
+                        <button class="flex-1 {% if risk_level == 'critical' %}bg-red-100 text-red-700 hover:bg-red-200{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %} py-2 px-3 rounded-lg text-sm">
+                            {% if risk_level == 'critical' %}Urgent{% else %}New Case{% endif %}
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                <!-- Add Patient Card -->
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-blue-500 transition-colors cursor-pointer">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-plus text-gray-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-700 mb-2">Add New Patient</h4>
+                        <p class="text-sm text-gray-500 mb-4">Create a new patient profile and medical record</p>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+                            Create Patient
+                        </button>
+                    </div>
+                </div>
+                
+                {% if not patients %}
+                <div class="col-span-full text-center py-12">
+                    <i class="fas fa-users text-gray-400 text-4xl mb-4"></i>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">No Patients Found</h3>
+                    <p class="text-gray-500">Start by adding your first patient to the system.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+        <div class="medical-card">
+            <div class="p-6">
+                <h4 class="text-lg font-semibold text-gray-900 mb-4">Recent Patient Activity</h4>
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user-plus text-green-600 text-sm"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">New patient registered</p>
+                            <p class="text-xs text-gray-500">Elena Silva - 15 minutes ago</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-edit text-blue-600 text-sm"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">Profile updated</p>
+                            <p class="text-xs text-gray-500">Carlos Mendoza - 1 hour ago</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-exclamation-triangle text-orange-600 text-sm"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">Risk level increased</p>
+                            <p class="text-xs text-gray-500">Ana Rodriguez - 2 hours ago</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="medical-card">
+            <div class="p-6">
+                <h4 class="text-lg font-semibold text-gray-900 mb-4">Patient Analytics</h4>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-600">Age Distribution</span>
+                            <span class="text-sm text-gray-900">65+ years: 78%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 78%"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-600">High Risk Patients</span>
+                            <span class="text-sm text-gray-900">32%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-orange-500 h-2 rounded-full" style="width: 32%"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-600">Active Monitoring</span>
+                            <span class="text-sm text-gray-900">14%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 14%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    function viewPatient(patientId) {
+        // Navigate to patient profile page
+        window.location.href = `/patient/${patientId}`;
+    }
+    
+    // Initialize patient list functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        // Search functionality
+        const searchInput = document.querySelector('input[placeholder="Search patients..."]');
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const patientCards = document.querySelectorAll('.border.border-gray-200.rounded-lg');
+                
+                patientCards.forEach(card => {
+                    const patientName = card.querySelector('h4')?.textContent.toLowerCase() || '';
+                    const patientId = card.querySelector('p')?.textContent.toLowerCase() || '';
+                    
+                    if (patientName.includes(searchTerm) || patientId.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        }
+        
+        // Filter functionality
+        const filterSelect = document.querySelector('select');
+        if (filterSelect) {
+            filterSelect.addEventListener('change', function(e) {
+                const filterValue = e.target.value;
+                const patientCards = document.querySelectorAll('.border.border-gray-200.rounded-lg');
+                
+                patientCards.forEach(card => {
+                    const riskLevel = card.querySelector('.inline-flex.items-center.px-2\\.5')?.textContent.trim().toLowerCase();
+                    
+                    if (filterValue === 'All Patients' ||
+                        (filterValue === 'High Risk' && (riskLevel === 'high' || riskLevel === 'critical')) ||
+                        (filterValue === 'Active Cases' && riskLevel) ||
+                        (filterValue === 'Recently Added')) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}

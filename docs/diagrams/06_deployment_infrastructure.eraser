@@ -1,0 +1,196 @@
+# VIGIA Medical AI - Deployment Infrastructure
+
+## Objetivo
+Cómo se despliega y ejecuta VIGIA Medical AI: arquitectura local-first con AWS Fargate production-ready, containerización médica HIPAA-compliant y configuración escalable.
+
+## Código Eraser.io
+```
+colorMode bold
+styleMode shadow
+direction down
+
+// Local Development Environment
+Local_Development [icon: desktop, color: green] {
+  One_Command_Setup [icon: terminal, color: green] {
+    Install_Script [icon: file, color: blue]
+    Docker_Compose_Medical [icon: docker, color: orange]
+    Auto_Service_Detection [icon: cog, color: purple]
+  }
+  
+  Development_Services [icon: server, color: orange] {
+    Redis_Local [icon: cache, color: red]
+    PostgreSQL_Dev [icon: database, color: blue]
+    Gradio_Interface_7860 [icon: browser, color: green]
+    Ollama_MedGemma [icon: brain, color: purple]
+  }
+}
+
+// AWS Production Infrastructure (Primary)
+AWS_Production [icon: aws, color: blue] {
+  ECS_Fargate_Cluster [icon: server, color: green] {
+    Master_Orchestrator_Service [icon: hub, color: purple]
+    Image_Analysis_Service [icon: eye, color: blue]
+    Voice_Analysis_Service [icon: mic, color: orange]
+    Clinical_Assessment_Service [icon: medical, color: red]
+    Communication_Service [icon: slack, color: green]
+  }
+  
+  AWS_Managed_Services [icon: cloud, color: blue] {
+    Aurora_PostgreSQL [icon: database, color: green]
+    ElastiCache_Redis [icon: cache, color: red]
+    Application_Load_Balancer [icon: server, color: orange]
+    CloudWatch_Monitoring [icon: monitor, color: purple]
+  }
+  
+  AI_ML_Services [icon: brain, color: purple] {
+    SageMaker_MONAI [icon: medical, color: green]
+    SageMaker_YOLOv5 [icon: eye, color: orange]
+    Bedrock_Medical_LLM [icon: brain, color: blue]
+    Transcribe_Medical [icon: mic, color: red]
+  }
+}
+
+// Alternative Cloud Options
+Alternative_Clouds [icon: cloud, color: gray] {
+  Render_Deployment [icon: cloud, color: green] {
+    Web_Service [icon: server, color: blue]
+    Background_Workers [icon: cog, color: orange]
+  }
+  
+  Backup_Options [icon: cloud, color: orange] {
+    Google_Cloud_Run [icon: gcp, color: blue]
+    Railway_App [icon: train, color: green]
+    DigitalOcean_Apps [icon: server, color: purple]
+  }
+}
+
+// HIPAA-Compliant Container Architecture
+Container_Stack [icon: docker, color: blue] {
+  Dockerfile_Medical [icon: docker, color: green] {
+    Python_3_11_Slim [icon: python, color: blue]
+    Medical_AI_Dependencies [icon: package, color: orange]
+    MONAI_PyTorch_2_3 [icon: brain, color: purple]
+    Security_Hardened [icon: shield, color: red]
+    Non_Root_User [icon: user, color: green]
+  }
+  
+  Docker_Compose_Medical [icon: docker, color: purple] {
+    Orchestrator_Container [icon: hub, color: blue]
+    Interface_Container [icon: browser, color: green]
+    PostgreSQL_Container [icon: database, color: orange]
+    Redis_Container [icon: cache, color: red]
+    Ollama_Container [icon: brain, color: purple]
+    Nginx_Proxy [icon: server, color: green]
+  }
+}
+
+// AWS Security & Compliance
+AWS_Security [icon: shield, color: red] {
+  HIPAA_Compliance [icon: medical, color: blue] {
+    VPC_Private_Subnets [icon: network, color: green]
+    KMS_Encryption [icon: key, color: red]
+    Secrets_Manager [icon: lock, color: orange]
+    CloudTrail_Audit [icon: clipboard, color: purple]
+  }
+  
+  Security_Groups [icon: shield, color: orange] {
+    ALB_Security_Group [icon: server, color: blue]
+    ECS_Security_Group [icon: docker, color: green]
+    RDS_Security_Group [icon: database, color: red]
+  }
+}
+
+// AWS Monitoring & Operations
+AWS_Monitoring [icon: monitor, color: green] {
+  CloudWatch_Stack [icon: chart, color: blue] {
+    Medical_Metrics [icon: graph, color: purple]
+    Log_Aggregation [icon: clipboard, color: orange]
+    Custom_Alarms [icon: warning, color: red]
+    Dashboards [icon: monitor, color: green]
+  }
+  
+  Performance_Monitoring [icon: chart, color: purple] {
+    ECS_Service_Health [icon: heart, color: red]
+    Database_Performance [icon: database, color: blue]
+    AI_Model_Latency [icon: brain, color: orange]
+    Response_Time_Tracking [icon: clock, color: green]
+  }
+}
+
+// AWS Network Architecture
+AWS_Network [icon: network, color: green] {
+  VPC_Architecture [icon: network, color: blue] {
+    Public_Subnets_2AZ [icon: server, color: green]
+    Private_Subnets_2AZ [icon: lock, color: red]
+    Internet_Gateway [icon: cloud, color: orange]
+    NAT_Gateway [icon: server, color: purple]
+  }
+  
+  Load_Balancing [icon: server, color: blue] {
+    Application_Load_Balancer [icon: server, color: green]
+    Target_Groups [icon: hub, color: orange]
+    SSL_ACM_Certificate [icon: lock, color: red]
+    Health_Checks [icon: heart, color: purple]
+  }
+}
+
+// External Integrations
+External_Services [icon: network, color: purple] {
+  Communication_APIs [icon: mobile, color: green] {
+    WhatsApp_Business_API [icon: mobile, color: blue]
+    Slack_Block_Kit_API [icon: slack, color: green]
+    Twilio_Integration [icon: phone, color: orange]
+  }
+  
+  AI_Services [icon: brain, color: orange] {
+    Hume_AI_Voice_Analysis [icon: mic, color: blue]
+    Local_MedGemma_Fallback [icon: brain, color: green]
+    Medical_Guardrails [icon: shield, color: red]
+  }
+}
+
+// Cost Optimization
+Cost_Management [icon: dollar, color: orange] {
+  Auto_Scaling [icon: scale, color: green] {
+    ECS_Target_Tracking [icon: target, color: blue]
+    Min_2_Max_10_Tasks [icon: server, color: orange]
+    CPU_Memory_Based [icon: chart, color: purple]
+  }
+  
+  Cost_Monitoring [icon: chart, color: blue] {
+    Monthly_Budget_1275_2020 [icon: dollar, color: red]
+    Cost_Alerts [icon: warning, color: orange]
+    Resource_Tagging [icon: tag, color: green]
+  }
+}
+
+// Deployment Flow Connections
+Local_Development > Container_Stack: "Docker Build & Test"
+Container_Stack > AWS_Production: "ECR Push & Deploy"
+AWS_Production > AWS_Security: "HIPAA Compliance"
+AWS_Security > AWS_Network: "Secure Networking"
+AWS_Network > AWS_Monitoring: "Operational Visibility"
+
+// External Integration Flow
+AWS_Production <> External_Services: "Medical APIs"
+AWS_Monitoring > Cost_Management: "Cost Optimization"
+Alternative_Clouds > AWS_Production: "Migration Path"
+
+// Production Notes
+note over Local_Development: "🚀 One-command install\n./install.sh\n🐳 docker-compose.medical.yml\n✅ Complete local stack"
+note over AWS_Production: "☁️ AWS Fargate production\n🔒 HIPAA compliant\n📊 Auto-scaling 2-10 tasks\n💰 $1,275-2,020/month"
+note over Container_Stack: "🐳 Medical-grade containers\n🔒 Security hardened\n⚡ 9-agent architecture\n🏥 NPUAP/EPUAP compliant"
+note over AWS_Security: "🛡️ HIPAA-eligible services\n🔐 End-to-end encryption\n📋 Complete audit trail\n🎯 Medical compliance"
+```
+
+## Notas Clave
+- **Local-First Design**: Desarrollo completo local con `./install.sh` para máxima productividad
+- **Cloud-Ready**: Render.com optimizado con alternativas AWS/GCP para producción
+- **Medical Containers**: Stack Docker especializado para workloads de AI médico
+- **HIPAA Infrastructure**: Encryption, audit logging y access control en todas las capas
+
+## Para Editar
+1. Copia el código anterior
+2. Ve a [eraser.io](https://eraser.io)
+3. Crea nuevo diagrama → Diagram-as-code
+4. Pega el código y edita

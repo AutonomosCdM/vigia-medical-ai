@@ -1,0 +1,9 @@
+# VIGIA Medical AI - CDK Infrastructure Dependencies
+
+# AWS CDK Core
+aws-cdk-lib==2.100.0
+constructs>=10.0.0,<11.0.0
+
+# Utilities
+boto3>=1.26.0
+rich>=13.0.0

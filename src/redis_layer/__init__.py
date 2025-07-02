@@ -1,0 +1,1 @@
+# Redis layer module init

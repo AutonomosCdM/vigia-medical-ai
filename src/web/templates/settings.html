@@ -1,0 +1,391 @@
+{% extends "base.html" %}
+
+{% block page_title %}Settings{% endblock %}
+{% block page_subtitle %}System configuration and preferences{% endblock %}
+
+{% block content %}
+<div class="p-6">
+    <!-- Settings Navigation -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Settings Menu -->
+        <div class="lg:col-span-1">
+            <div class="medical-card">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Settings</h3>
+                    <nav class="space-y-2">
+                        <a href="#general" class="block px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-medium">
+                            <i class="fas fa-cog mr-2"></i>General
+                        </a>
+                        <a href="#medical" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50">
+                            <i class="fas fa-heartbeat mr-2"></i>Medical System
+                        </a>
+                        <a href="#agents" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50">
+                            <i class="fas fa-robot mr-2"></i>AI Agents
+                        </a>
+                        <a href="#security" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50">
+                            <i class="fas fa-shield-alt mr-2"></i>Security
+                        </a>
+                        <a href="#notifications" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50">
+                            <i class="fas fa-bell mr-2"></i>Notifications
+                        </a>
+                        <a href="#integrations" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50">
+                            <i class="fas fa-plug mr-2"></i>Integrations
+                        </a>
+                        <a href="#backup" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50">
+                            <i class="fas fa-database mr-2"></i>Backup
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Settings Content -->
+        <div class="lg:col-span-3">
+            <!-- General Settings -->
+            <div id="general" class="medical-card mb-8">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-6">General Settings</h3>
+                    
+                    <form class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">System Name</label>
+                                <input type="text" value="VIGIA Medical AI v1.0" 
+                                       class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Time Zone</label>
+                                <select class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                    <option>UTC-5 (Eastern Time)</option>
+                                    <option>UTC-6 (Central Time)</option>
+                                    <option>UTC-7 (Mountain Time)</option>
+                                    <option>UTC-8 (Pacific Time)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Language</label>
+                                <select class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                    <option>English (US)</option>
+                                    <option>Spanish</option>
+                                    <option>French</option>
+                                    <option>Portuguese</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Date Format</label>
+                                <select class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                    <option>MM/DD/YYYY</option>
+                                    <option>DD/MM/YYYY</option>
+                                    <option>YYYY-MM-DD</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Theme</label>
+                            <div class="flex space-x-4">
+                                <label class="flex items-center">
+                                    <input type="radio" name="theme" value="light" checked class="mr-2">
+                                    <span class="text-sm">Light</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="theme" value="dark" class="mr-2">
+                                    <span class="text-sm">Dark</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="theme" value="auto" class="mr-2">
+                                    <span class="text-sm">Auto</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                                Save General Settings
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Medical System Settings -->
+            <div id="medical" class="medical-card mb-8">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-6">Medical System Configuration</h3>
+                    
+                    <form class="space-y-6">
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <div>
+                                    <h4 class="font-medium text-green-900">VIGIA System Status</h4>
+                                    <p class="text-sm text-green-700">All medical components are operational</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">LPP Grading System</label>
+                                <select class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                    <option>NPUAP/EPUAP/PPPIA 2019</option>
+                                    <option>NPUAP 2016</option>
+                                    <option>Custom Classification</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Risk Assessment Tool</label>
+                                <select class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                    <option>Braden Scale</option>
+                                    <option>Norton Scale</option>
+                                    <option>Waterlow Scale</option>
+                                    <option>Combined Assessment</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Analysis Confidence Threshold</label>
+                                <input type="range" min="0.5" max="1.0" step="0.05" value="0.85" 
+                                       class="w-full">
+                                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                    <span>50%</span>
+                                    <span>85%</span>
+                                    <span>100%</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Auto-Processing</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" checked class="mr-2">
+                                        <span class="text-sm">Enable automatic case processing</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2">
+                                        <span class="text-sm">Auto-generate reports</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+                                Save Medical Settings
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- AI Agents Settings -->
+            <div id="agents" class="medical-card mb-8">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-6">AI Agents Configuration</h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Agent Status Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="font-medium text-gray-900">Image Analysis</h4>
+                                    <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-3">MONAI + YOLOv5</p>
+                                <button class="text-blue-600 hover:text-blue-800 text-sm">Configure</button>
+                            </div>
+                            
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="font-medium text-gray-900">Voice Analysis</h4>
+                                    <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-3">Hume AI Integration</p>
+                                <button class="text-blue-600 hover:text-blue-800 text-sm">Configure</button>
+                            </div>
+                            
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="font-medium text-gray-900">Clinical Assessment</h4>
+                                    <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-3">Evidence-based</p>
+                                <button class="text-blue-600 hover:text-blue-800 text-sm">Configure</button>
+                            </div>
+                            
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="font-medium text-gray-900">Risk Assessment</h4>
+                                    <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-3">Braden/Norton</p>
+                                <button class="text-blue-600 hover:text-blue-800 text-sm">Configure</button>
+                            </div>
+                            
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="font-medium text-gray-900">Diagnostic Agent</h4>
+                                    <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-3">Multi-agent fusion</p>
+                                <button class="text-blue-600 hover:text-blue-800 text-sm">Configure</button>
+                            </div>
+                            
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="font-medium text-gray-900">Protocol Agent</h4>
+                                    <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-3">NPUAP Guidelines</p>
+                                <button class="text-blue-600 hover:text-blue-800 text-sm">Configure</button>
+                            </div>
+                        </div>
+                        
+                        <div class="border-t pt-6">
+                            <h4 class="font-medium text-gray-900 mb-4">Agent Coordination</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Processing Mode</label>
+                                    <select class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                        <option>Parallel Processing</option>
+                                        <option>Sequential Processing</option>
+                                        <option>Hybrid Mode</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Timeout (seconds)</label>
+                                    <input type="number" value="30" min="10" max="300" 
+                                           class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security Settings -->
+            <div id="security" class="medical-card mb-8">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-6">Security & Compliance</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-shield-alt text-blue-500 mr-3"></i>
+                                <div>
+                                    <h4 class="font-medium text-blue-900">HIPAA Compliance</h4>
+                                    <p class="text-sm text-blue-700">PHI tokenization and audit trail active</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Session Timeout (minutes)</label>
+                                <input type="number" value="15" min="5" max="60" 
+                                       class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                <p class="text-xs text-gray-500 mt-1">Batman token expiration time</p>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Audit Level</label>
+                                <select class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                    <option>Full Audit Trail</option>
+                                    <option>Medical Actions Only</option>
+                                    <option>Critical Events</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-3">Security Features</h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" checked disabled class="mr-2">
+                                    <span class="text-sm">PHI Tokenization (Batman Tokens)</span>
+                                    <span class="ml-2 text-xs text-green-600">Required</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" checked disabled class="mr-2">
+                                    <span class="text-sm">End-to-end Encryption</span>
+                                    <span class="ml-2 text-xs text-green-600">Required</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" checked class="mr-2">
+                                    <span class="text-sm">Two-factor Authentication</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" checked class="mr-2">
+                                    <span class="text-sm">API Rate Limiting</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- System Info -->
+            <div class="medical-card">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-6">System Information</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-3">Version Information</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">VIGIA Medical AI</span>
+                                    <span class="text-gray-900">v1.0.0</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">FastAPI</span>
+                                    <span class="text-gray-900">0.110.2</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">MedGemma</span>
+                                    <span class="text-gray-900">27B Local</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">MONAI</span>
+                                    <span class="text-gray-900">1.3.0</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-3">System Status</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Uptime</span>
+                                    <span class="text-green-600">2d 14h 32m</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Memory Usage</span>
+                                    <span class="text-gray-900">4.2 GB / 16 GB</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Active Sessions</span>
+                                    <span class="text-gray-900">3</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Database</span>
+                                    <span class="text-green-600">Connected</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

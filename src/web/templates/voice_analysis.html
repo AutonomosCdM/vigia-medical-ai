@@ -1,0 +1,336 @@
+{% extends "base.html" %}
+
+{% block page_title %}Voice Analysis{% endblock %}
+{% block page_subtitle %}Hume AI voice analysis and emotional assessment{% endblock %}
+
+{% block content %}
+<div class="p-6">
+    <!-- Voice Analysis Statistics -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="medical-metric">
+            <div class="metric-icon vigia-gradient">
+                <i class="fas fa-microphone"></i>
+            </div>
+            <div class="metric-value">156</div>
+            <div class="metric-label">Recordings</div>
+        </div>
+        
+        <div class="medical-metric">
+            <div class="metric-icon" style="background-color: #10b981;">
+                <i class="fas fa-brain"></i>
+            </div>
+            <div class="metric-value">48</div>
+            <div class="metric-label">Emotions Detected</div>
+        </div>
+        
+        <div class="medical-metric">
+            <div class="metric-icon" style="background-color: #f59e0b;">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="metric-value">23</div>
+            <div class="metric-label">Pain Indicators</div>
+        </div>
+        
+        <div class="medical-metric">
+            <div class="metric-icon" style="background-color: #ef4444;">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <div class="metric-value">92%</div>
+            <div class="metric-label">Accuracy</div>
+        </div>
+    </div>
+
+    <!-- Voice Recording Interface -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div class="medical-card">
+            <div class="p-6">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">Voice Recording</h3>
+                
+                <!-- Recording Interface -->
+                <div class="text-center mb-6">
+                    <div class="w-32 h-32 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4 cursor-pointer hover:shadow-lg transition-shadow" id="recordButton">
+                        <i class="fas fa-microphone text-white text-4xl"></i>
+                    </div>
+                    <p class="text-gray-600 mb-2">Click to start recording</p>
+                    <p class="text-sm text-gray-500">Maximum duration: 5 minutes</p>
+                </div>
+                
+                <!-- Recording Controls -->
+                <div class="flex justify-center space-x-4 mb-6">
+                    <button class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 disabled:opacity-50" disabled>
+                        <i class="fas fa-stop mr-2"></i>Stop
+                    </button>
+                    <button class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                        <i class="fas fa-pause mr-2"></i>Pause
+                    </button>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        <i class="fas fa-upload mr-2"></i>Upload File
+                    </button>
+                </div>
+                
+                <!-- Recording Status -->
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-gray-600">Status</span>
+                        <span class="text-sm font-medium text-gray-900">Ready to Record</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-gray-600">Duration</span>
+                        <span class="text-sm font-medium text-gray-900">00:00</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">Quality</span>
+                        <span class="text-sm font-medium text-green-600">High</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="medical-card">
+            <div class="p-6">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">Real-time Analysis</h3>
+                
+                <!-- Waveform Visualization -->
+                <div class="bg-gray-900 rounded-lg p-4 mb-6 h-32 flex items-center justify-center">
+                    <div class="flex items-end space-x-1">
+                        <div class="w-2 bg-blue-400 rounded-t" style="height: 20px;"></div>
+                        <div class="w-2 bg-blue-400 rounded-t" style="height: 35px;"></div>
+                        <div class="w-2 bg-blue-400 rounded-t" style="height: 25px;"></div>
+                        <div class="w-2 bg-blue-400 rounded-t" style="height: 45px;"></div>
+                        <div class="w-2 bg-blue-400 rounded-t" style="height: 30px;"></div>
+                        <div class="w-2 bg-green-400 rounded-t" style="height: 50px;"></div>
+                        <div class="w-2 bg-green-400 rounded-t" style="height: 40px;"></div>
+                        <div class="w-2 bg-yellow-400 rounded-t" style="height: 60px;"></div>
+                        <div class="w-2 bg-orange-400 rounded-t" style="height: 35px;"></div>
+                        <div class="w-2 bg-red-400 rounded-t" style="height: 25px;"></div>
+                    </div>
+                </div>
+                
+                <!-- Emotion Indicators -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-blue-50 rounded-lg p-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-blue-900">Calm</span>
+                            <span class="text-sm text-blue-700">65%</span>
+                        </div>
+                        <div class="w-full bg-blue-200 rounded-full h-2 mt-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 65%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-50 rounded-lg p-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-green-900">Confident</span>
+                            <span class="text-sm text-green-700">42%</span>
+                        </div>
+                        <div class="w-full bg-green-200 rounded-full h-2 mt-2">
+                            <div class="bg-green-600 h-2 rounded-full" style="width: 42%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-yellow-50 rounded-lg p-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-yellow-900">Discomfort</span>
+                            <span class="text-sm text-yellow-700">28%</span>
+                        </div>
+                        <div class="w-full bg-yellow-200 rounded-full h-2 mt-2">
+                            <div class="bg-yellow-600 h-2 rounded-full" style="width: 28%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-red-50 rounded-lg p-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-red-900">Distress</span>
+                            <span class="text-sm text-red-700">15%</span>
+                        </div>
+                        <div class="w-full bg-red-200 rounded-full h-2 mt-2">
+                            <div class="bg-red-600 h-2 rounded-full" style="width: 15%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Voice Analyses -->
+    <div class="medical-card">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold text-gray-900">Recent Voice Analyses</h3>
+                <div class="flex items-center space-x-4">
+                    <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                        <option>All Analyses</option>
+                        <option>High Pain Indicators</option>
+                        <option>Emotional Distress</option>
+                        <option>Today's Recordings</option>
+                    </select>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm">
+                        <i class="fas fa-download mr-2"></i>Export Report
+                    </button>
+                </div>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- Analysis Entry 1 -->
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-sm transition-shadow">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-pink-500 rounded-full flex items-center justify-center">
+                                <span class="text-white font-medium">MG</span>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">María González</h4>
+                                <p class="text-sm text-gray-500 mb-2">Case: VIG-2024-001 • 2 minutes ago</p>
+                                <p class="text-sm text-gray-700">"The pain is getting worse, especially when I try to move..."</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 mb-2">
+                                High Pain Detected
+                            </span>
+                            <p class="text-sm text-gray-500">Duration: 1:23</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 grid grid-cols-4 gap-4">
+                        <div class="text-center">
+                            <div class="text-lg font-semibold text-red-600">73%</div>
+                            <div class="text-xs text-gray-500">Distress</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-lg font-semibold text-orange-600">68%</div>
+                            <div class="text-xs text-gray-500">Discomfort</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-lg font-semibold text-yellow-600">45%</div>
+                            <div class="text-xs text-gray-500">Fatigue</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-lg font-semibold text-blue-600">32%</div>
+                            <div class="text-xs text-gray-500">Anxiety</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 flex justify-end space-x-2">
+                        <button class="text-blue-600 hover:text-blue-800 text-sm">
+                            <i class="fas fa-play mr-1"></i>Play
+                        </button>
+                        <button class="text-green-600 hover:text-green-800 text-sm">
+                            <i class="fas fa-download mr-1"></i>Download
+                        </button>
+                        <button class="text-gray-600 hover:text-gray-800 text-sm">
+                            <i class="fas fa-share mr-1"></i>Share
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Analysis Entry 2 -->
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-sm transition-shadow">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                                <span class="text-white font-medium">CM</span>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Carlos Mendoza</h4>
+                                <p class="text-sm text-gray-500 mb-2">Case: VIG-2024-002 • 1 hour ago</p>
+                                <p class="text-sm text-gray-700">"I feel much better today, the treatment is working well..."</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mb-2">
+                                Positive Sentiment
+                            </span>
+                            <p class="text-sm text-gray-500">Duration: 0:45</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 grid grid-cols-4 gap-4">
+                        <div class="text-center">
+                            <div class="text-lg font-semibold text-green-600">78%</div>
+                            <div class="text-xs text-gray-500">Optimism</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-lg font-semibold text-blue-600">65%</div>
+                            <div class="text-xs text-gray-500">Relief</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-lg font-semibold text-purple-600">52%</div>
+                            <div class="text-xs text-gray-500">Confidence</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-lg font-semibold text-yellow-600">25%</div>
+                            <div class="text-xs text-gray-500">Concern</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 flex justify-end space-x-2">
+                        <button class="text-blue-600 hover:text-blue-800 text-sm">
+                            <i class="fas fa-play mr-1"></i>Play
+                        </button>
+                        <button class="text-green-600 hover:text-green-800 text-sm">
+                            <i class="fas fa-download mr-1"></i>Download
+                        </button>
+                        <button class="text-gray-600 hover:text-gray-800 text-sm">
+                            <i class="fas fa-share mr-1"></i>Share
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hume AI Integration Status -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+        <div class="medical-card">
+            <div class="p-6">
+                <h4 class="text-lg font-semibold text-gray-900 mb-4">Hume AI Integration</h4>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">API Status</span>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            Connected
+                        </span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Emotion Categories</span>
+                        <span class="font-semibold">48 Available</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Analysis Accuracy</span>
+                        <span class="font-semibold text-green-600">92.3%</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Response Time</span>
+                        <span class="font-semibold">2.1s avg</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="medical-card">
+            <div class="p-6">
+                <h4 class="text-lg font-semibold text-gray-900 mb-4">Analysis Summary</h4>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Total Analyses Today</span>
+                        <span class="font-semibold">23</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Pain Indicators Detected</span>
+                        <span class="font-semibold text-orange-600">8</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Emotional Distress Cases</span>
+                        <span class="font-semibold text-red-600">3</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Average Confidence</span>
+                        <span class="font-semibold text-blue-600">89.2%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

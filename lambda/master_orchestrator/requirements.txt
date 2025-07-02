@@ -1,0 +1,5 @@
+# Master Medical Orchestrator Lambda Dependencies
+
+boto3>=1.26.0
+numpy>=1.21.0
+python-dateutil>=2.8.0

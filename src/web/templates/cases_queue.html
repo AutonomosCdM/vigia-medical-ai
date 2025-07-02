@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+
+{% block page_title %}Cases Queue{% endblock %}
+{% block page_subtitle %}Active medical cases and analysis queue{% endblock %}
+
+{% block content %}
+<div class="p-6">
+    <!-- Queue Statistics -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="medical-metric">
+            <div class="metric-icon vigia-gradient">
+                <i class="fas fa-clipboard-list"></i>
+            </div>
+            <div class="metric-value">8</div>
+            <div class="metric-label">Active Cases</div>
+        </div>
+        
+        <div class="medical-metric">
+            <div class="metric-icon" style="background-color: #f59e0b;">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="metric-value">3</div>
+            <div class="metric-label">Pending Analysis</div>
+        </div>
+        
+        <div class="medical-metric">
+            <div class="metric-icon" style="background-color: #3b82f6;">
+                <i class="fas fa-cogs"></i>
+            </div>
+            <div class="metric-value">2</div>
+            <div class="metric-label">Processing</div>
+        </div>
+        
+        <div class="medical-metric">
+            <div class="metric-icon" style="background-color: #ef4444;">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="metric-value">1</div>
+            <div class="metric-label">Urgent</div>
+        </div>
+    </div>
+
+    <!-- Cases Table -->
+    <div class="medical-card">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold text-gray-900">Medical Cases Queue</h3>
+                <div class="flex items-center space-x-4">
+                    <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                        <option>All Cases</option>
+                        <option>Pending</option>
+                        <option>Processing</option>
+                        <option>Completed</option>
+                        <option>Urgent</option>
+                    </select>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm">
+                        <i class="fas fa-plus mr-2"></i>New Case
+                    </button>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Patient</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Case ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Priority</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Progress</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Assigned</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center">
+                                        <span class="text-white font-medium">MG</span>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">María González</div>
+                                        <div class="text-sm text-gray-500">Age 78</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">VIG-2024-001</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                    Analyzing
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                                    High
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 75%"></div>
+                                    </div>
+                                    <span class="ml-2 text-sm text-gray-600">75%</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dr. Demo</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <a href="/case/VIG-2024-001/analysis" class="text-blue-600 hover:text-blue-900 mr-3">View</a>
+                                <button class="text-green-600 hover:text-green-900">Complete</button>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                                        <span class="text-white font-medium">CM</span>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Carlos Mendoza</div>
+                                        <div class="text-sm text-gray-500">Age 65</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">VIG-2024-002</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    Completed
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    Medium
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-green-600 h-2 rounded-full" style="width: 100%"></div>
+                                    </div>
+                                    <span class="ml-2 text-sm text-gray-600">100%</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dr. Demo</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <a href="/case/VIG-2024-002/analysis" class="text-blue-600 hover:text-blue-900 mr-3">View</a>
+                                <button class="text-gray-400">Complete</button>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
+                                        <span class="text-white font-medium">AR</span>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">Ana Rodriguez</div>
+                                        <div class="text-sm text-gray-500">Age 82</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">VIG-2024-003</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                    Critical
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                    Urgent
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-red-600 h-2 rounded-full" style="width: 90%"></div>
+                                    </div>
+                                    <span class="ml-2 text-sm text-gray-600">90%</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dr. Demo</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <a href="/case/VIG-2024-003/analysis" class="text-blue-600 hover:text-blue-900 mr-3">View</a>
+                                <button class="text-green-600 hover:text-green-900">Complete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Queue Actions -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+        <div class="medical-card">
+            <div class="p-6">
+                <h4 class="text-lg font-semibold text-gray-900 mb-4">Batch Actions</h4>
+                <div class="space-y-3">
+                    <button class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-play mr-2"></i>Process All Pending
+                    </button>
+                    <button class="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors">
+                        <i class="fas fa-download mr-2"></i>Export Queue Report
+                    </button>
+                    <button class="w-full bg-orange-600 text-white py-3 px-4 rounded-lg hover:bg-orange-700 transition-colors">
+                        <i class="fas fa-filter mr-2"></i>Advanced Filters
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="medical-card">
+            <div class="p-6">
+                <h4 class="text-lg font-semibold text-gray-900 mb-4">Queue Statistics</h4>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Average Processing Time</span>
+                        <span class="font-semibold">4.2 min</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Success Rate</span>
+                        <span class="font-semibold text-green-600">96.8%</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Cases Today</span>
+                        <span class="font-semibold">15</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Critical Cases</span>
+                        <span class="font-semibold text-red-600">1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,224 @@
+# VIGIA Medical AI - External Integrations
+
+## Objetivo
+Dependencias y riesgos externos: Voice Analysis con Hume AI, Slack Block Kit, AWS services, MedGemma local, y servicios médicos críticos con análisis completo de puntos de falla.
+
+## Código Eraser.io
+```
+colorMode bold
+styleMode shadow
+direction down
+
+// VIGIA Core System
+VIGIA_Core [icon: server, color: blue] {
+  Master_Medical_Orchestrator [icon: hub, color: purple]
+  Medical_Dispatcher [icon: medical, color: red]
+  Agent_Factory [icon: cog, color: green]
+  A2A_Communication [icon: network, color: blue]
+}
+
+// Voice Analysis Integration (NEW)
+Voice_AI_Services [icon: mic, color: orange] {
+  Hume_AI_Voice [icon: mic, color: blue] {
+    risk_level: "HIGH"
+    uptime: "99.5%"
+    backup: "Local Voice Processing"
+    cost_per_request: "$0.02"
+    emotion_categories: "48 medical emotions"
+  }
+  
+  Voice_Analysis_Agent [icon: brain, color: orange] {
+    risk_level: "LOW"
+    deployment: "Local Processing"
+    backup: "Text-only Analysis"
+    integration_success: "66.7%"
+  }
+}
+
+// Enhanced Communication APIs (CRITICAL)
+Communication_APIs [icon: network, color: green] {
+  Twilio_WhatsApp [icon: mobile, color: blue] {
+    risk_level: "HIGH"
+    uptime: "99.95%"
+    backup: "SMS Fallback"
+    cost_per_message: "$0.005"
+  }
+  
+  Slack_Block_Kit_API [icon: slack, color: purple] {
+    risk_level: "MEDIUM"
+    uptime: "99.99%"
+    backup: "Plain Text Messages"
+    rate_limit: "50 req/min"
+    features: "Visual Medical Alerts"
+  }
+  
+  Slack_Medical_Templates [icon: medical, color: green] {
+    risk_level: "LOW"
+    deployment: "Local Templates"
+    backup: "Always Available"
+    lpp_grades: "Visual Indicators"
+  }
+}
+
+// Enhanced Local AI Stack (RELIABLE)
+Local_AI_Stack [icon: brain, color: green] {
+  MedGemma_27B_Local [icon: brain, color: purple] {
+    risk_level: "LOW"
+    deployment: "Local Ollama"
+    backup: "AWS Bedrock"
+    model_size: "27B params"
+    hipaa_compliant: "Yes"
+  }
+  
+  MONAI_Framework [icon: medical, color: blue] {
+    risk_level: "LOW"
+    deployment: "Local PyTorch"
+    backup: "AWS SageMaker"
+    precision: "90-95%"
+    adaptive_selection: "Yes"
+  }
+  
+  YOLOv5_Backup [icon: eye, color: orange] {
+    risk_level: "VERY_LOW"
+    deployment: "Local Ultralytics"
+    backup: "Always Available"
+    precision: "85-90%"
+  }
+}
+
+// AWS Cloud Services (PRODUCTION)
+AWS_Services [icon: aws, color: blue] {
+  AWS_Fargate_ECS [icon: server, color: green] {
+    risk_level: "MEDIUM"
+    uptime: "99.99%"
+    backup: "Multi-AZ Deployment"
+    hipaa_eligible: "Yes"
+    auto_scaling: "2-10 tasks"
+  }
+  
+  Aurora_PostgreSQL [icon: database, color: blue] {
+    risk_level: "HIGH"
+    uptime: "99.95%"
+    backup: "Point-in-time Recovery"
+    encryption: "AES-256"
+    compliance: "HIPAA"
+  }
+  
+  ElastiCache_Redis [icon: cache, color: orange] {
+    risk_level: "MEDIUM"
+    uptime: "99.9%"
+    backup: "Automatic Failover"
+    encryption: "In-transit + At-rest"
+  }
+  
+  SageMaker_Bedrock [icon: brain, color: purple] {
+    risk_level: "MEDIUM"
+    uptime: "99.9%"
+    backup: "Multi-model Endpoints"
+    hipaa_eligible: "Yes"
+    cost_optimization: "On-demand"
+  }
+}
+
+// Medical Guardrails & Safety (NEW)
+Medical_Safety_Services [icon: shield, color: red] {
+  Medical_Guardrails [icon: shield, color: blue] {
+    risk_level: "LOW"
+    deployment: "Local Validation"
+    backup: "Always Available"
+    safety_checks: "Medical Response Validation"
+  }
+  
+  Fallback_Handler [icon: server, color: orange] {
+    risk_level: "LOW"
+    deployment: "Local Emergency"
+    backup: "Always Available"
+    emergency_protocols: "Yes"
+  }
+  
+  Response_Monitoring [icon: monitor, color: green] {
+    risk_level: "LOW"
+    deployment: "Real-time"
+    backup: "Local Logging"
+    medical_tracking: "Complete"
+  }
+}
+
+// Training & Synthetic Data (NEW)
+Training_Infrastructure [icon: database, color: purple] {
+  Training_Database [icon: database, color: green] {
+    risk_level: "MEDIUM"
+    uptime: "99.9%"
+    backup: "Local PostgreSQL"
+    npuap_grading: "Yes"
+  }
+  
+  Synthetic_Patient_Generator [icon: user, color: blue] {
+    risk_level: "LOW"
+    deployment: "Local Generation"
+    backup: "Always Available"
+    hipaa_compliant: "Synthetic Only"
+  }
+  
+  Model_Performance_Tracker [icon: chart, color: orange] {
+    risk_level: "LOW"
+    deployment: "Local Monitoring"
+    backup: "File Storage"
+    drift_detection: "Real-time"
+  }
+}
+
+// External Medical APIs (FUTURE)
+Future_Medical_APIs [icon: medical, color: gray] {
+  FHIR_Endpoints [icon: api, color: blue] {
+    status: "PLANNED"
+    risk_level: "HIGH"
+    compliance: "HL7 FHIR R4"
+  }
+  
+  Hospital_EMR [icon: hospital, color: red] {
+    status: "INTEGRATION_READY"
+    risk_level: "CRITICAL"
+    protocols: "HL7, DICOM"
+  }
+}
+
+// Connection Flows with Risk Assessment
+VIGIA_Core > Voice_AI_Services: "Multimodal Analysis\n⚠️ MEDIUM RISK"
+VIGIA_Core > Communication_APIs: "Patient/Team Comm\n🚨 CRITICAL PATH"
+VIGIA_Core > Local_AI_Stack: "Medical Analysis\n✅ LOW RISK"
+VIGIA_Core > AWS_Services: "Production Deployment\n⚠️ MEDIUM RISK"
+VIGIA_Core > Medical_Safety_Services: "Safety Validation\n✅ LOW RISK"
+VIGIA_Core > Training_Infrastructure: "Model Training\n✅ LOW RISK"
+
+// Backup and Fallback Connections
+Local_AI_Stack .- AWS_Services: "Cloud AI Fallback"
+Communication_APIs .- Medical_Safety_Services: "Emergency Fallbacks"
+AWS_Services .- Local_AI_Stack: "Local Development"
+Voice_AI_Services .- Medical_Safety_Services: "Safety Monitoring"
+
+// Production Integration Flow
+AWS_Services <> Training_Infrastructure: "Model Deployment"
+Medical_Safety_Services <> Training_Infrastructure: "Safety Training"
+
+// Risk Indicators
+note over Voice_AI_Services: "🎙️ NEW: Hume AI Voice\n💰 Cost: $0.02/request\n📊 66.7% success rate\n⚡ 48 emotion categories"
+note over Communication_APIs: "📱 Slack Block Kit Ready\n💰 Cost: $0.005/message\n🎨 Visual medical alerts\n📊 Rate limits apply"
+note over AWS_Services: "☁️ Production Infrastructure\n💰 Cost: $1,275-2,020/month\n🔒 HIPAA compliant\n📊 Auto-scaling 2-10 tasks"
+note over Medical_Safety_Services: "🛡️ NEW: Medical Guardrails\n✅ Always available\n🏥 NPUAP/EPUAP compliant\n📋 Complete audit trail"
+```
+
+## Notas Clave
+- **Voice Analysis Integration**: Hume AI para análisis emocional (66.7% success rate, 48 categorías médicas)
+- **Slack Block Kit Production**: Visual medical alerts con templates locales (fallback texto plano)
+- **AWS Production Infrastructure**: Fargate + Aurora + ElastiCache ($1,275-2,020/month, HIPAA compliant)
+- **Medical Safety Layer**: Guardrails locales + fallback handlers + response monitoring
+- **Local AI Redundancy**: MedGemma 27B + MONAI + YOLOv5 para independencia de cloud
+- **Training Infrastructure**: Database local + synthetic patients + performance tracking
+- **Multi-Cloud Strategy**: AWS primary, local development, cloud alternatives disponibles
+
+## Para Editar
+1. Copia el código anterior
+2. Ve a [eraser.io](https://eraser.io)
+3. Crea nuevo diagrama → Diagram-as-code
+4. Pega el código y edita

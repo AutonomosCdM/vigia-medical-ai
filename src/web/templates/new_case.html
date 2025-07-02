@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block title %}New Patient Case - VIGIA Medical AI{% endblock %}
+
+{% block page_title %}New Patient Case{% endblock %}
+{% block page_subtitle %}Create a new medical case for analysis{% endblock %}
+
+{% block content %}
+<div class="p-6 space-y-6">
+    <!-- New Case Form -->
+    <div class="medical-card">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold text-gray-900">Case Information</h3>
+                <div class="flex space-x-3">
+                    <button onclick="history.back()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        <i class="fas fa-arrow-left mr-2"></i>Back
+                    </button>
+                </div>
+            </div>
+            
+            <form id="newCaseForm" class="space-y-6">
+                <!-- Patient Selection -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-user mr-2 text-blue-600"></i>
+                            Select Patient
+                        </label>
+                        <select id="patientSelect" name="patient_id" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                            <option value="">Choose a patient...</option>
+                            {% for patient in patients %}
+                            <option value="{{ patient.id }}">{{ patient.name }} (Age {{ patient.age }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-map-marker-alt mr-2 text-red-600"></i>
+                            Anatomical Location
+                        </label>
+                        <select name="location" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                            <option value="">Select location...</option>
+                            <option value="sacrum">Sacrum</option>
+                            <option value="heel">Heel</option>
+                            <option value="hip">Hip/Trochanter</option>
+                            <option value="shoulder">Shoulder</option>
+                            <option value="elbow">Elbow</option>
+                            <option value="back_of_head">Back of Head</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Case Details -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-clipboard-list mr-2 text-green-600"></i>
+                        Case Description
+                    </label>
+                    <textarea name="description" rows="4" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                              placeholder="Describe the medical case, symptoms, and clinical observations..." required></textarea>
+                </div>
+                
+                <!-- Priority Level -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-exclamation-triangle mr-2 text-orange-600"></i>
+                            Priority Level
+                        </label>
+                        <select name="priority" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                            <option value="routine">Routine</option>
+                            <option value="urgent">Urgent</option>
+                            <option value="emergency">Emergency</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-calendar mr-2 text-purple-600"></i>
+                            Onset Date
+                        </label>
+                        <input type="date" name="onset_date" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-thermometer-half mr-2 text-red-600"></i>
+                            Pain Level (0-10)
+                        </label>
+                        <input type="range" name="pain_level" min="0" max="10" value="0" class="w-full" 
+                               oninput="document.getElementById('painValue').textContent = this.value">
+                        <div class="text-center">
+                            <span class="text-sm text-gray-600">Pain Level: </span>
+                            <span id="painValue" class="text-sm font-bold text-red-600">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- File Upload Section -->
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">
+                    <div class="space-y-4">
+                        <div class="flex justify-center space-x-4">
+                            <i class="fas fa-camera text-4xl text-gray-400"></i>
+                            <i class="fas fa-microphone text-4xl text-gray-400"></i>
+                        </div>
+                        <div>
+                            <p class="text-lg font-medium text-gray-900">Upload Medical Files</p>
+                            <p class="text-sm text-gray-500">Drag and drop images or audio files, or click to select</p>
+                        </div>
+                        <input type="file" id="mediaFiles" name="files" multiple accept="image/*,audio/*" class="hidden">
+                        <button type="button" onclick="document.getElementById('mediaFiles').click()" 
+                                class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                            Select Files
+                        </button>
+                    </div>
+                    
+                    <!-- File preview area -->
+                    <div id="filePreview" class="mt-4 hidden">
+                        <h4 class="text-sm font-medium text-gray-700 mb-2">Selected Files:</h4>
+                        <div id="fileList" class="text-sm text-gray-600"></div>
+                    </div>
+                </div>
+                
+                <!-- Submit Buttons -->
+                <div class="flex justify-between items-center pt-6 border-t border-gray-200">
+                    <div class="text-sm text-gray-500">
+                        <i class="fas fa-shield-alt text-blue-600 mr-1"></i>
+                        All data is HIPAA-compliant and encrypted
+                    </div>
+                    
+                    <div class="space-x-3">
+                        <button type="button" onclick="saveDraft()" 
+                                class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                            Save Draft
+                        </button>
+                        <button type="submit" 
+                                class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-microscope mr-2"></i>
+                            Start Analysis
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Form handling
+    document.getElementById('newCaseForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const caseData = {
+            patient_id: formData.get('patient_id'),
+            location: formData.get('location'),
+            description: formData.get('description'),
+            priority: formData.get('priority'),
+            onset_date: formData.get('onset_date'),
+            pain_level: formData.get('pain_level')
+        };
+        
+        // Show loading state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Creating Case...';
+        submitBtn.disabled = true;
+        
+        // Simulate case creation
+        setTimeout(() => {
+            VIGIA.showNotification('Medical case created successfully!', 'success');
+            
+            // Redirect to dashboard after 2 seconds
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 2000);
+        }, 1500);
+    });
+    
+    // File upload handling
+    document.getElementById('mediaFiles').addEventListener('change', function(e) {
+        const files = Array.from(e.target.files);
+        const preview = document.getElementById('filePreview');
+        const fileList = document.getElementById('fileList');
+        
+        if (files.length > 0) {
+            preview.classList.remove('hidden');
+            fileList.innerHTML = files.map(file => 
+                `<div class="flex items-center justify-between p-2 bg-gray-50 rounded mb-1">
+                    <span>${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+                    <span class="text-xs text-gray-500">${file.type}</span>
+                </div>`
+            ).join('');
+        } else {
+            preview.classList.add('hidden');
+        }
+    });
+    
+    // Save draft function
+    function saveDraft() {
+        VIGIA.showNotification('Draft saved successfully', 'info');
+    }
+    
+    // Patient selection change
+    document.getElementById('patientSelect').addEventListener('change', function(e) {
+        if (e.target.value) {
+            // Could load patient-specific information here
+            console.log('Selected patient:', e.target.value);
+        }
+    });
+</script>
+{% endblock %}

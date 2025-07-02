@@ -1,0 +1,107 @@
+{
+  "metadata": {
+    "last_updated": "2025-06-13T13:00:00Z",
+    "version": "2.0.0",
+    "system": "Vigia Medical Decision Engine",
+    "compliance_standards": ["NPUAP", "EPUAP", "PPPIA", "MINSAL"]
+  },
+  "references": [
+    {
+      "source": "NPUAP/EPUAP/PPPIA",
+      "title": "Prevention and Treatment of Pressure Ulcers/Injuries Clinical Practice Guideline",
+      "year": "2019",
+      "edition": "Third Edition",
+      "priority": 1,
+      "evidence_level": "A",
+      "status": "primary",
+      "url": "https://npuap.org/pressure-injury-stages/",
+      "description": "International consensus guidelines for pressure injury classification and management"
+    },
+    {
+      "source": "MINSAL",
+      "title": "ULCERAS POR PRESION MINISTERIO",
+      "year": "2015",
+      "path": "references/minsal/ULCERAS-POR-PRESION-MINISTERIO.pdf",
+      "priority": 2,
+      "evidence_level": "B",
+      "status": "national_guideline",
+      "jurisdiction": "Chile",
+      "description": "Directrices oficiales del Ministerio de Salud de Chile para úlceras por presión"
+    },
+    {
+      "source": "MINSAL",
+      "title": "Orientación Técnica Prevención de Lesiones Por Presión",
+      "year": "2018",
+      "path": "references/minsal/OOTT-Prevencion-LPP-2018.pdf",
+      "priority": 3,
+      "evidence_level": "B",
+      "status": "national_technical_guidance",
+      "jurisdiction": "Chile",
+      "description": "Orientación técnica actualizada del MINSAL para prevención de LPP"
+    },
+    {
+      "source": "Hospital Coquimbo",
+      "title": "Protocolo Prevención de UPP",
+      "year": "2021",
+      "path": "references/minsal/Protocolo-UPP-HCoquimbo-2021.pdf",
+      "priority": 4,
+      "evidence_level": "C",
+      "status": "institutional_protocol",
+      "jurisdiction": "Chile",
+      "description": "Protocolo hospitalario chileno para prevención de úlceras por presión"
+    }
+  ],
+  "classification_systems": {
+    "primary": "NPUAP/EPUAP",
+    "regional": "MINSAL_Chile",
+    "mapping": {
+      "NPUAP_Grade_0": "Sin_Evidencia_LPP",
+      "NPUAP_Grade_1": "Eritema_No_Blanqueable",
+      "NPUAP_Grade_2": "Perdida_Parcial_Espesor",
+      "NPUAP_Grade_3": "Perdida_Completa_Espesor",
+      "NPUAP_Grade_4": "Perdida_Completa_Tejido",
+      "NPUAP_Unstageable": "No_Clasificable",
+      "NPUAP_Suspected_DTI": "Sospecha_Lesion_Tejido_Profundo"
+    }
+  },
+  "evidence_levels": {
+    "A": {
+      "description": "Strong evidence from multiple high-quality RCTs",
+      "confidence_threshold": 0.85,
+      "automatic_application": true
+    },
+    "B": {
+      "description": "Moderate evidence from some RCTs or high-quality observational studies",
+      "confidence_threshold": 0.75,
+      "automatic_application": true
+    },
+    "C": {
+      "description": "Limited evidence, expert opinion, case series",
+      "confidence_threshold": 0.65,
+      "automatic_application": false,
+      "requires_review": true
+    }
+  },
+  "regional_adaptations": {
+    "chile": {
+      "language": "spanish",
+      "terminology_preference": "lesiones_por_presion",
+      "regulatory_authority": "MINSAL",
+      "required_documentation": [
+        "Clasificación según NPUAP/EPUAP",
+        "Justificación según directrices MINSAL",
+        "Plan de tratamiento evidencia-based"
+      ],
+      "escalation_protocols": {
+        "grade_3_4": "Evaluación especializada obligatoria",
+        "low_confidence": "Revisión humana requerida"
+      }
+    }
+  },
+  "update_schedule": {
+    "guidelines_review": "quarterly",
+    "evidence_update": "annually",
+    "system_validation": "monthly",
+    "next_review_date": "2025-09-13"
+  }
+}
