@@ -9,11 +9,11 @@ from vigia_stack import VigiaStack
 
 app = cdk.App()
 
-# Deploy VIGIA Medical AI Stack
+# Deploy VIGIA Medical AI Stack with explicit environment for custom domain
 VigiaStack(app, "VigiaStack",
     env=cdk.Environment(
-        account=app.node.try_get_context("account"),
-        region=app.node.try_get_context("region") or "us-east-1"
+        account="586794472237",  # Autonomos AI Lab AWS account
+        region="us-east-1"       # Primary deployment region
     ),
     description="VIGIA Medical AI - 9-Agent Pressure Injury Detection System with HIPAA Compliance"
 )

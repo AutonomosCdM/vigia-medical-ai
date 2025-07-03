@@ -29,6 +29,11 @@ from aws_cdk import (
     aws_cloudwatch_actions as cw_actions,
     aws_sns as sns,
     aws_logs as logs,
+    aws_route53 as route53,
+    aws_route53_targets as route53_targets,
+    aws_certificatemanager as acm,
+    aws_cloudfront as cloudfront,
+    aws_cloudfront_origins as origins,
     RemovalPolicy,
     CfnOutput
 )
@@ -466,6 +471,20 @@ class VigiaStack(Stack):
         )
 
         # =============================================================================
+        # CUSTOM DOMAIN PLACEHOLDER - MANUAL SETUP REQUIRED
+        # =============================================================================
+        
+        # Note: Custom domain setup requires:
+        # 1. Register autonomos.dev domain in Route 53
+        # 2. Create hosted zone for autonomos.dev
+        # 3. Deploy CloudFront distribution manually
+        # For now, using direct Lambda Function URL
+        
+        custom_domain_configured = False
+        distribution = None
+        certificate = None
+
+        # =============================================================================
         # MONITORING & ALERTING - AWS MCP PATTERNS
         # =============================================================================
         
@@ -755,6 +774,26 @@ class VigiaStack(Stack):
         
         CfnOutput(
             self, "OptimizedContainerImageOutput",
-            value="586794472237.dkr.ecr.us-east-1.amazonaws.com/vigia-fastapi:optimized",
-            description="ECR URI for optimized VIGIA FastAPI container"
+            value="586794472237.dkr.ecr.us-east-1.amazonaws.com/vigia-fastapi:autonomos-dev",
+            description="ECR URI for autonomos.dev VIGIA FastAPI container"
         )
+        
+        # Custom domain outputs (conditional)
+        if 'custom_domain_configured' in locals() and custom_domain_configured:
+            CfnOutput(
+                self, "CustomDomainURL",
+                value="https://www.autonomos.dev",
+                description="Custom domain URL for VIGIA Medical AI"
+            )
+            
+            CfnOutput(
+                self, "CloudFrontDistributionID",
+                value=distribution.distribution_id,
+                description="CloudFront distribution ID for autonomos.dev"
+            )
+            
+            CfnOutput(
+                self, "SSLCertificateArn",
+                value=certificate.certificate_arn,
+                description="SSL certificate ARN for autonomos.dev"
+            )
