@@ -9,36 +9,36 @@
 <div class="p-6 space-y-6">
     <!-- Quick Stats -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="medical-metric bg-blue-50">
+        <div class="medical-metric bg-gray-800/50 border border-gray-700/50">
             <div class="metric-icon" style="background-color: var(--vigia-primary);">
                 <i class="fas fa-clipboard-list"></i>
             </div>
-            <div class="metric-value text-blue-900">12</div>
-            <div class="metric-label">Active Cases</div>
+            <div class="metric-value text-white">12</div>
+            <div class="metric-label text-gray-300">Active Cases</div>
         </div>
         
-        <div class="medical-metric bg-green-50">
+        <div class="medical-metric bg-gray-800/50 border border-gray-700/50">
             <div class="metric-icon" style="background-color: var(--vigia-secondary);">
                 <i class="fas fa-check-circle"></i>
             </div>
-            <div class="metric-value text-green-900">8</div>
-            <div class="metric-label">Completed Today</div>
+            <div class="metric-value text-white">8</div>
+            <div class="metric-label text-gray-300">Completed Today</div>
         </div>
         
-        <div class="medical-metric bg-yellow-50">
+        <div class="medical-metric bg-gray-800/50 border border-gray-700/50">
             <div class="metric-icon" style="background-color: var(--vigia-warning);">
                 <i class="fas fa-exclamation-triangle"></i>
             </div>
-            <div class="metric-value text-yellow-900">3</div>
-            <div class="metric-label">High Risk</div>
+            <div class="metric-value text-white">3</div>
+            <div class="metric-label text-gray-300">High Risk</div>
         </div>
         
-        <div class="medical-metric bg-red-50">
+        <div class="medical-metric bg-gray-800/50 border border-gray-700/50">
             <div class="metric-icon" style="background-color: var(--vigia-danger);">
                 <i class="fas fa-heartbeat"></i>
             </div>
-            <div class="metric-value text-red-900">1</div>
-            <div class="metric-label">Critical</div>
+            <div class="metric-value text-white">1</div>
+            <div class="metric-label text-gray-300">Critical</div>
         </div>
     </div>
     
@@ -47,11 +47,11 @@
         <!-- Left Column: Case Queue -->
         <div class="lg:col-span-2 space-y-6">
             <!-- Recent Cases -->
-            <div class="medical-card">
+            <div class="medical-card bg-gray-800/50 border border-gray-700/50">
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-semibold text-gray-900">Recent Cases</h3>
-                        <a href="/patients" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                        <h3 class="text-lg font-semibold text-white">Recent Cases</h3>
+                        <a href="/patients" class="text-green-400 hover:text-green-300 text-sm font-medium">
                             View All <i class="fas fa-arrow-right ml-1"></i>
                         </a>
                     </div>
@@ -61,14 +61,14 @@
                         {% set case = item.case %}
                         {% set patient = item.patient %}
                         <!-- Case Item -->
-                        <div class="flex items-center justify-between p-4 {% if case.risk_level == 'critical' %}bg-red-50 border border-red-200{% else %}bg-gray-50{% endif %} rounded-lg hover:bg-{% if case.risk_level == 'critical' %}red{% else %}gray{% endif %}-100 transition-colors cursor-pointer" onclick="viewPatient('{{ patient.id }}')">
+                        <div class="flex items-center justify-between p-4 {% if case.risk_level == 'critical' %}bg-gray-700/50 border border-red-500/50{% else %}bg-gray-700/30 border border-gray-600/50{% endif %} rounded-lg hover:bg-gray-600/50 transition-colors cursor-pointer" onclick="viewPatient('{{ patient.id }}')">
                             <div class="flex items-center">
-                                <div class="w-10 h-10 {% if case.risk_level == 'critical' %}bg-red-100{% elif case.risk_level == 'high' %}bg-orange-100{% elif case.risk_level == 'medium' %}bg-yellow-100{% else %}bg-green-100{% endif %} rounded-full flex items-center justify-center mr-4">
-                                    <i class="fas fa-user {% if case.risk_level == 'critical' %}text-red-600{% elif case.risk_level == 'high' %}text-orange-600{% elif case.risk_level == 'medium' %}text-yellow-600{% else %}text-green-600{% endif %}"></i>
+                                <div class="w-10 h-10 {% if case.risk_level == 'critical' %}bg-red-500/30{% elif case.risk_level == 'high' %}bg-orange-500/30{% elif case.risk_level == 'medium' %}bg-yellow-500/30{% else %}bg-gray-700/300/30{% endif %} rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-user {% if case.risk_level == 'critical' %}text-red-400{% elif case.risk_level == 'high' %}text-orange-400{% elif case.risk_level == 'medium' %}text-yellow-400{% else %}text-green-400{% endif %}"></i>
                                 </div>
                                 <div>
-                                    <p class="font-medium text-gray-900">{{ patient.name }}</p>
-                                    <p class="text-sm text-gray-500">Age {{ patient.age }}{% if patient.diabetes %}, Diabetic{% endif %}{% if patient.hypertension %}, Hypertension{% endif %}</p>
+                                    <p class="font-medium text-white">{{ patient.name }}</p>
+                                    <p class="text-sm text-gray-300">Age {{ patient.age }}{% if patient.diabetes %}, Diabetic{% endif %}{% if patient.hypertension %}, Hypertension{% endif %}</p>
                                 </div>
                             </div>
                             <div class="flex items-center space-x-4">
@@ -88,13 +88,13 @@
                                 {% endif %}
                                 <div class="text-center">
                                     {% set status_colors = {
-                                        'new': 'bg-blue-100 text-blue-800',
-                                        'analyzing': 'bg-yellow-100 text-yellow-800',
-                                        'completed': 'bg-green-100 text-green-800',
-                                        'reviewing': 'bg-purple-100 text-purple-800',
-                                        'error': 'bg-red-100 text-red-800'
+                                        'new': 'bg-blue-600/30 text-blue-300',
+                                        'analyzing': 'bg-yellow-600/30 text-yellow-300',
+                                        'completed': 'bg-green-600/30 text-green-300',
+                                        'reviewing': 'bg-purple-600/30 text-purple-300',
+                                        'error': 'bg-red-600/30 text-red-300'
                                     } %}
-                                    <span class="px-2 py-1 {{ status_colors.get(case.status, 'bg-gray-100 text-gray-800') }} text-xs rounded-full">
+                                    <span class="px-2 py-1 {{ status_colors.get(case.status, 'bg-gray-600/30 text-gray-300') }} text-xs rounded-full">
                                         {% if case.risk_level == 'critical' %}
                                             <i class="fas fa-exclamation-triangle mr-1"></i>
                                         {% endif %}
@@ -117,12 +117,12 @@
             </div>
             
             <!-- 9-Agent System Status -->
-            <div class="medical-card">
+            <div class="medical-card bg-gray-800/50 border border-gray-700/50">
                 <div class="p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">AI Agent System Status</h3>
+                    <h3 class="text-lg font-semibold text-white mb-4">AI Agent System Status</h3>
                     
                     <div class="grid grid-cols-3 gap-4">
-                        <div class="text-center p-3 bg-green-50 rounded-lg">
+                        <div class="text-center p-3 bg-gray-700/30 rounded-lg">
                             <div class="w-8 h-8 agent-status-completed rounded-full mx-auto mb-2 flex items-center justify-center">
                                 <i class="fas fa-eye text-white text-sm"></i>
                             </div>
@@ -130,7 +130,7 @@
                             <p class="text-xs text-gray-500">Ready</p>
                         </div>
                         
-                        <div class="text-center p-3 bg-green-50 rounded-lg">
+                        <div class="text-center p-3 bg-gray-700/30 rounded-lg">
                             <div class="w-8 h-8 agent-status-completed rounded-full mx-auto mb-2 flex items-center justify-center">
                                 <i class="fas fa-microphone text-white text-sm"></i>
                             </div>
@@ -138,7 +138,7 @@
                             <p class="text-xs text-gray-500">Ready</p>
                         </div>
                         
-                        <div class="text-center p-3 bg-green-50 rounded-lg">
+                        <div class="text-center p-3 bg-gray-700/30 rounded-lg">
                             <div class="w-8 h-8 agent-status-completed rounded-full mx-auto mb-2 flex items-center justify-center">
                                 <i class="fas fa-stethoscope text-white text-sm"></i>
                             </div>
@@ -146,7 +146,7 @@
                             <p class="text-xs text-gray-500">Ready</p>
                         </div>
                         
-                        <div class="text-center p-3 bg-green-50 rounded-lg">
+                        <div class="text-center p-3 bg-gray-700/30 rounded-lg">
                             <div class="w-8 h-8 agent-status-completed rounded-full mx-auto mb-2 flex items-center justify-center">
                                 <i class="fas fa-exclamation-triangle text-white text-sm"></i>
                             </div>
@@ -154,7 +154,7 @@
                             <p class="text-xs text-gray-500">Ready</p>
                         </div>
                         
-                        <div class="text-center p-3 bg-green-50 rounded-lg">
+                        <div class="text-center p-3 bg-gray-700/30 rounded-lg">
                             <div class="w-8 h-8 agent-status-completed rounded-full mx-auto mb-2 flex items-center justify-center">
                                 <i class="fas fa-brain text-white text-sm"></i>
                             </div>
@@ -162,7 +162,7 @@
                             <p class="text-xs text-gray-500">Ready</p>
                         </div>
                         
-                        <div class="text-center p-3 bg-green-50 rounded-lg">
+                        <div class="text-center p-3 bg-gray-700/30 rounded-lg">
                             <div class="w-8 h-8 agent-status-completed rounded-full mx-auto mb-2 flex items-center justify-center">
                                 <i class="fas fa-clipboard-check text-white text-sm"></i>
                             </div>
@@ -177,9 +177,9 @@
         <!-- Right Column: Quick Actions & Analytics -->
         <div class="space-y-6">
             <!-- Quick Actions -->
-            <div class="medical-card">
+            <div class="medical-card bg-gray-800/50 border border-gray-700/50">
                 <div class="p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                    <h3 class="text-lg font-semibold text-white mb-4">Quick Actions</h3>
                     
                     <div class="space-y-3">
                         <button onclick="createNewCase()" class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center">
@@ -201,15 +201,15 @@
             </div>
             
             <!-- System Health -->
-            <div class="medical-card">
+            <div class="medical-card bg-gray-800/50 border border-gray-700/50">
                 <div class="p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">System Health</h3>
+                    <h3 class="text-lg font-semibold text-white mb-4">System Health</h3>
                     
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-600">VIGIA Core</span>
                             <div class="flex items-center">
-                                <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                                <div class="w-2 h-2 bg-gray-700/300 rounded-full mr-2"></div>
                                 <span class="text-sm text-green-600">Online</span>
                             </div>
                         </div>
@@ -217,7 +217,7 @@
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-600">MedGemma 27B</span>
                             <div class="flex items-center">
-                                <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                                <div class="w-2 h-2 bg-gray-700/300 rounded-full mr-2"></div>
                                 <span class="text-sm text-green-600">Ready</span>
                             </div>
                         </div>
@@ -225,7 +225,7 @@
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-600">Hume AI Voice</span>
                             <div class="flex items-center">
-                                <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                                <div class="w-2 h-2 bg-gray-700/300 rounded-full mr-2"></div>
                                 <span class="text-sm text-green-600">Connected</span>
                             </div>
                         </div>
@@ -233,7 +233,7 @@
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-600">MONAI Framework</span>
                             <div class="flex items-center">
-                                <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                                <div class="w-2 h-2 bg-gray-700/300 rounded-full mr-2"></div>
                                 <span class="text-sm text-green-600">Active</span>
                             </div>
                         </div>
@@ -242,23 +242,23 @@
             </div>
             
             <!-- Recent Activity -->
-            <div class="medical-card">
+            <div class="medical-card bg-gray-800/50 border border-gray-700/50">
                 <div class="p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
+                    <h3 class="text-lg font-semibold text-white mb-4">Recent Activity</h3>
                     
                     <div class="space-y-3">
                         <div class="flex items-start">
                             <div class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3"></div>
                             <div>
-                                <p class="text-sm text-gray-900">New case assigned</p>
+                                <p class="text-sm text-white">New case assigned</p>
                                 <p class="text-xs text-gray-500">2 minutes ago</p>
                             </div>
                         </div>
                         
                         <div class="flex items-start">
-                            <div class="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3"></div>
+                            <div class="w-2 h-2 bg-gray-700/300 rounded-full mt-2 mr-3"></div>
                             <div>
-                                <p class="text-sm text-gray-900">Analysis completed</p>
+                                <p class="text-sm text-white">Analysis completed</p>
                                 <p class="text-xs text-gray-500">5 minutes ago</p>
                             </div>
                         </div>
@@ -266,7 +266,7 @@
                         <div class="flex items-start">
                             <div class="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3"></div>
                             <div>
-                                <p class="text-sm text-gray-900">Critical case detected</p>
+                                <p class="text-sm text-white">Critical case detected</p>
                                 <p class="text-xs text-gray-500">12 minutes ago</p>
                             </div>
                         </div>

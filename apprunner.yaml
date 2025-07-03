@@ -1,0 +1,21 @@
+version: 1.0
+runtime: python3
+build:
+  commands:
+    build:
+      - echo "Building VIGIA Medical AI with Agent Smith Landing..."
+      - pip install --upgrade pip
+      - pip install -r requirements.txt
+run:
+  runtime-version: 3.11.0
+  command: python src/web/main.py
+  network:
+    port: 8000
+    env: PORT
+  env:
+    - name: AWS_DEPLOYMENT
+      value: "true"
+    - name: VIGIA_ENV
+      value: "production"
+    - name: PYTHONPATH
+      value: "/opt/conda/envs/default/src"

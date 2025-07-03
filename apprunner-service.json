@@ -1,0 +1,39 @@
+{
+  "ServiceName": "vigia-medical-ai-agent-smith",
+  "SourceConfiguration": {
+    "ImageRepository": {
+      "ImageIdentifier": "586794472237.dkr.ecr.us-east-1.amazonaws.com/vigia-medical-ai:latest",
+      "ImageConfiguration": {
+        "Port": "8000",
+        "RuntimeEnvironmentVariables": {
+          "AWS_DEPLOYMENT": "true",
+          "PORT": "8000",
+          "VIGIA_ENV": "production"
+        }
+      },
+      "ImageRepositoryType": "ECR"
+    },
+    "AutoDeploymentsEnabled": false
+  },
+  "EncryptionConfiguration": {
+    "KmsKey": "alias/aws/apprunner"
+  },
+  "InstanceConfiguration": {
+    "Cpu": "1 vCPU",
+    "Memory": "2 GB"
+  },
+  "Tags": [
+    {
+      "Key": "Project",
+      "Value": "VIGIA Medical AI"
+    },
+    {
+      "Key": "Environment",
+      "Value": "Production"
+    },
+    {
+      "Key": "Landing",
+      "Value": "Agent Smith"
+    }
+  ]
+}
