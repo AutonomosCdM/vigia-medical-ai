@@ -144,8 +144,10 @@ lambda/*/botocore-*/
 lambda/*/boto3-*/
 lambda/*/dateutil/
 lambda/*/jmespath/
+lambda/*/jmespath-*/
 lambda/*/python_dateutil-*/
 lambda/*/s3transfer/
+lambda/*/s3transfer-*/
 lambda/*/six.py
 lambda/*/six-*/
 lambda/*/urllib3/
@@ -155,9 +157,26 @@ lambda/*/PIL/
 lambda/*/numpy/
 lambda/*/numpy-*/
 lambda/*/pillow-*/
+lambda/*/*-dist-info/
 
 # AWS CDK generated files
 infrastructure/cdk.out/
+
+# Deployment Configuration Files (use environment-specific configs)
+railway.json
+render.yaml
+apprunner.yaml
+apprunner-service.json
+deploy_to_aws.py
+DEPLOYMENT_STATUS.md
+
+# Frontend File Duplication Prevention
+# Keep Agent Smith files ONLY in src/web/static/
+agent_smith_hd.jpg
+hero-agent-smith.html
+infrastructure/frontend_deploy/agent_smith_hd.jpg
+infrastructure/frontend_deploy/hero-agent-smith.html
+infrastructure/frontend_deploy/hf_space/
 
 # Sensitive files (use environment variables)
 apprunner_*.json
