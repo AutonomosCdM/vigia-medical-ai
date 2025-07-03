@@ -1,13 +1,14 @@
 FROM public.ecr.aws/lambda/python:3.11
 
-# Copy requirements first for better caching
+# Copy only essential files for FastAPI
 COPY requirements.txt ${LAMBDA_TASK_ROOT}/
-
-# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy source code to Lambda task root
-COPY . ${LAMBDA_TASK_ROOT}/
+# Copy only web interface and core modules
+COPY src/web/ ${LAMBDA_TASK_ROOT}/src/web/
+COPY src/__init__.py ${LAMBDA_TASK_ROOT}/src/
+COPY src/core/ ${LAMBDA_TASK_ROOT}/src/core/
+COPY src/utils/ ${LAMBDA_TASK_ROOT}/src/utils/
 
 # Set environment variables for Lambda
 ENV AWS_DEPLOYMENT=true

@@ -1,5 +1,5 @@
 {
-  "validation_timestamp": 1751550158.5890508,
+  "validation_timestamp": 1751557883.236792,
   "system_ready": true,
   "tests_passed": 8,
   "total_tests": 8,
@@ -7,42 +7,42 @@
     "Medical Decision Engine": {
       "status": "PASS",
       "details": "Real NPUAP Grade 4 \u2192 Emergency: N/A",
-      "timestamp": 1751550157.661029
+      "timestamp": 1751557882.213991
     },
     "CV Pipeline Framework": {
       "status": "PASS",
       "details": "AdaptiveMedicalDetector ready: AdaptiveMedicalDetector",
-      "timestamp": 1751550157.77919
+      "timestamp": 1751557882.3715022
     },
     "PHI Tokenization Client": {
       "status": "PASS",
       "details": "HIPAA client ready: http://localhost:8080",
-      "timestamp": 1751550157.780263
+      "timestamp": 1751557882.3725498
     },
     "Redis Medical Database": {
       "status": "PASS",
       "details": "Connection and medical data storage working",
-      "timestamp": 1751550157.7815151
+      "timestamp": 1751557882.374206
     },
     "Ollama + MedGemma AI": {
       "status": "PASS",
       "details": "MedGemma medical AI model loaded",
-      "timestamp": 1751550157.786405
+      "timestamp": 1751557882.38353
     },
     "Environment Configuration": {
       "status": "PASS",
       "details": "All required medical environment variables configured",
-      "timestamp": 1751550157.7864919
+      "timestamp": 1751557882.3836238
     },
     "Medical Audit Trail": {
       "status": "PASS",
-      "details": "Complete audit trail: e3610de8-1ee5-4789-a3f9-3a9e4f99c58b",
-      "timestamp": 1751550157.786539
+      "details": "Complete audit trail: 7185578d-8f87-4b9f-8068-5ad268854d39",
+      "timestamp": 1751557882.3836741
     },
     "Demo Interface": {
       "status": "PASS",
       "details": "Gradio demo ready for launch",
-      "timestamp": 1751550158.589036
+      "timestamp": 1751557883.236779
     }
   }
 }

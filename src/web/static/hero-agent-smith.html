@@ -144,7 +144,7 @@
 <body class="text-white overflow-x-hidden bg-black">
     <!-- Agent Smith Background Image - Hero Section -->
     <div class="fixed inset-0 w-full h-screen overflow-hidden" style="z-index: -10;">
-        <img src="/static/agent_smith_hd.jpg" 
+        <img src="./agent_smith_hd.jpg" 
              class="w-full h-full object-cover" 
              style="object-position: right center; transform: translateX(calc(30% - 100px)); opacity: 0.85;" 
              alt="Agent Smith AI Background" 
@@ -157,7 +157,7 @@
     
     <!-- Agent Smith Background Image - VIGIA Section (Subtle) -->
     <div class="fixed w-full overflow-hidden" style="top: 100vh; height: 100vh; z-index: -5;">
-        <img src="/static/agent_smith_hd.jpg" 
+        <img src="./agent_smith_hd.jpg" 
              class="w-full h-full object-cover" 
              style="object-position: right center; transform: translateX(calc(30% - 100px)); opacity: 0.12;" 
              alt="Agent Smith AI Background Subtle" 
@@ -212,11 +212,11 @@
         </div>
         
         <!-- Agent Smith Quote -->
-        <div class="absolute mobile-quote" style="left: 310px; bottom: 220px;">
-            <blockquote class="text-green-400 text-lg italic font-light opacity-70 tracking-wider text-left">
+        <div class="absolute bottom-4 left-4 right-4 md:left-80 md:bottom-48 md:right-auto">
+            <blockquote class="text-green-400 text-lg italic font-light opacity-70 tracking-wider">
                 "Never send a human to do a machine's job."
             </blockquote>
-            <cite class="text-gray-400 text-sm mt-1 font-light text-left block">
+            <cite class="text-gray-400 text-sm mt-1 font-light block">
                 - Agent Smith
             </cite>
         </div>
@@ -491,7 +491,7 @@
                             console.warn('Local API not available, using fallback:', error);
                             showNotification('Redirecting to Medical Console...', 'warning');
                             setTimeout(() => {
-                                window.location.href = 'http://127.0.0.1:8000';
+                                window.location.href = '/';
                             }, 1000);
                         });
                 } catch (error) {
@@ -542,18 +542,8 @@
         
         // Medical Console URL Management
         function getVigiaUrl() {
-            // Use local FastAPI medical dashboard
-            const localDashboard = 'http://127.0.0.1:8000';
-            
-            // Check if custom URL is set (for future migrations)
-            const customUrl = window.VIGIA_LOCAL_URL || localStorage.getItem('vigia_local_url');
-            
-            if (customUrl && customUrl !== 'undefined') {
-                return customUrl;
-            }
-            
-            // Return local dashboard URL (primary)
-            return localDashboard;
+            // Always return root URL for AWS deployment
+            return '/';
         }
         
         // Update deployment status indicators

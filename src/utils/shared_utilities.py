@@ -10,14 +10,18 @@ from datetime import datetime
 from pathlib import Path
 import json
 
-# Mock settings for testing
-import os
-class MockSettings:
-    def __init__(self):
-        self.testing = os.getenv('TESTING', 'false').lower() == 'true'
-        self.log_level = os.getenv('LOG_LEVEL', 'INFO')
+# Try to import real settings, fallback to mock for testing
+try:
+    from config.settings import settings
+except ImportError:
+    import os
+    class MockSettings:
+        def __init__(self):
+            self.testing = os.getenv('TESTING', 'false').lower() == 'true'
+            self.log_level = os.getenv('LOG_LEVEL', 'INFO')
+            self.LOG_LEVEL = self.log_level  # Compatibility
         
-settings = MockSettings()
+    settings = MockSettings()
 from src.utils.medical_logger import get_medical_logger, MedicalLogLevel
 
 
@@ -60,7 +64,8 @@ class VigiaLogger:
                     logger.addHandler(file_handler)
                 
                 # Set level from settings
-                logger.setLevel(getattr(logging, settings.LOG_LEVEL))
+                log_level = getattr(settings, 'LOG_LEVEL', None) or getattr(settings, 'log_level', 'INFO')
+                logger.setLevel(getattr(logging, log_level))
             
             cls._loggers[name] = logger
         

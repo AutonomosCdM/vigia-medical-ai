@@ -24,6 +24,11 @@ from aws_cdk import (
     aws_apigateway as apigateway,
     aws_events as events,
     aws_events_targets as targets,
+    aws_ecr as ecr,
+    aws_cloudwatch as cloudwatch,
+    aws_cloudwatch_actions as cw_actions,
+    aws_sns as sns,
+    aws_logs as logs,
     RemovalPolicy,
     CfnOutput
 )
@@ -399,6 +404,204 @@ class VigiaStack(Stack):
         )
 
         # =============================================================================
+        # FASTAPI WEB INTERFACE - LAMBDA CONTAINER
+        # =============================================================================
+        
+        # FastAPI web interface as Lambda container (Optimized deployment)
+        self.fastapi_lambda = _lambda.Function(
+            self, "VigiaFastAPILambda",
+            function_name="vigia-fastapi-web-interface",
+            code=_lambda.Code.from_ecr_image(
+                repository=ecr.Repository.from_repository_name(
+                    self, "VigiaFastAPIRepo",
+                    repository_name="vigia-fastapi"
+                ),
+                tag_or_digest="lambda-single"  # Using single-platform Lambda container
+            ),
+            handler=_lambda.Handler.FROM_IMAGE,
+            runtime=_lambda.Runtime.FROM_IMAGE,
+            memory_size=2048,  # Optimized memory for web interface
+            timeout=Duration.seconds(30),  # API Gateway max timeout
+            environment={
+                "AWS_DEPLOYMENT": "true",
+                "LAMBDA_DEPLOYMENT": "true",
+                "VIGIA_ENV": "production",
+                "MEDICAL_MODE": "production",
+                "PHI_TOKENIZATION_ENABLED": "true",
+                "AGENTS_STATE_TABLE": self.agents_state_table.table_name,
+                "MEDICAL_AUDIT_TABLE": self.medical_audit_table.table_name,
+                "MEDICAL_STORAGE_BUCKET": self.medical_storage.bucket_name,
+                "WORKFLOW_ARN": self.vigia_workflow.state_machine_arn,
+                # AWS MCP patterns for better monitoring
+                "AWS_XRAY_TRACING_NAME": "vigia-fastapi-web",
+                "AWS_LAMBDA_POWERTOOLS_SERVICE_NAME": "vigia-medical-ai",
+                "AWS_LAMBDA_POWERTOOLS_METRICS_NAMESPACE": "VIGIA/Medical",
+                "LOG_LEVEL": "INFO"
+            },
+            vpc=None,  # No VPC for web interface
+            description="VIGIA Medical AI FastAPI Web Interface - Optimized Container",
+            # AWS MCP patterns for reliability
+            tracing=_lambda.Tracing.ACTIVE,  # Enable X-Ray tracing
+            retry_attempts=0,  # Disable automatic retries for web interface
+            # Dead letter queue for failed invocations
+            dead_letter_queue_enabled=True,
+            # Architecture optimization
+            architecture=_lambda.Architecture.X86_64
+        )
+        
+        # Grant permissions to access medical resources
+        self.agents_state_table.grant_read_write_data(self.fastapi_lambda)
+        self.medical_audit_table.grant_read_write_data(self.fastapi_lambda)
+        self.medical_storage.grant_read_write(self.fastapi_lambda)
+        self.vigia_workflow.grant_start_execution(self.fastapi_lambda)
+        
+        # Create Function URL for direct access
+        self.fastapi_function_url = self.fastapi_lambda.add_function_url(
+            auth_type=_lambda.FunctionUrlAuthType.NONE,
+            cors=_lambda.FunctionUrlCorsOptions(
+                allowed_origins=["*"],
+                allowed_methods=[_lambda.HttpMethod.ALL],
+                allowed_headers=["*"]
+            )
+        )
+
+        # =============================================================================
+        # MONITORING & ALERTING - AWS MCP PATTERNS
+        # =============================================================================
+        
+        # SNS Topic for medical system alerts
+        self.medical_alerts_topic = sns.Topic(
+            self, "VigiamedicalAlerts",
+            topic_name="vigia-medical-alerts",
+            display_name="VIGIA Medical AI System Alerts"
+        )
+        
+        # CloudWatch Log Groups with structured logging
+        self.fastapi_log_group = logs.LogGroup(
+            self, "VigiaFastAPILogGroup",
+            log_group_name=f"/aws/lambda/{self.fastapi_lambda.function_name}",
+            retention=logs.RetentionDays.ONE_MONTH,
+            removal_policy=RemovalPolicy.DESTROY
+        )
+        
+        # CloudWatch Alarms for FastAPI Lambda
+        self.fastapi_error_alarm = cloudwatch.Alarm(
+            self, "VigiaFastAPIErrorAlarm",
+            alarm_name="vigia-fastapi-error-rate",
+            alarm_description="VIGIA FastAPI Lambda error rate is high",
+            metric=self.fastapi_lambda.metric_errors(
+                period=Duration.minutes(5),
+                statistic="Sum"
+            ),
+            threshold=5,
+            evaluation_periods=2,
+            comparison_operator=cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD
+        )
+        
+        # Add SNS notification to alarm
+        self.fastapi_error_alarm.add_alarm_action(
+            cw_actions.SnsAction(self.medical_alerts_topic)
+        )
+        
+        # Duration alarm for performance monitoring
+        self.fastapi_duration_alarm = cloudwatch.Alarm(
+            self, "VigiaFastAPIDurationAlarm",
+            alarm_name="vigia-fastapi-high-duration",
+            alarm_description="VIGIA FastAPI Lambda duration is high",
+            metric=self.fastapi_lambda.metric_duration(
+                period=Duration.minutes(5),
+                statistic="Average"
+            ),
+            threshold=25000,  # 25 seconds (close to 30s timeout)
+            evaluation_periods=3,
+            comparison_operator=cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD
+        )
+        
+        self.fastapi_duration_alarm.add_alarm_action(
+            cw_actions.SnsAction(self.medical_alerts_topic)
+        )
+        
+        # Medical workflow error monitoring
+        self.workflow_error_alarm = cloudwatch.Alarm(
+            self, "VigiaWorkflowErrorAlarm",
+            alarm_name="vigia-workflow-execution-failures",
+            alarm_description="VIGIA Medical workflow has execution failures",
+            metric=cloudwatch.Metric(
+                namespace="AWS/States",
+                metric_name="ExecutionsFailed",
+                dimensions_map={
+                    "StateMachineArn": self.vigia_workflow.state_machine_arn
+                },
+                period=Duration.minutes(5),
+                statistic="Sum"
+            ),
+            threshold=1,
+            evaluation_periods=1,
+            comparison_operator=cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD
+        )
+        
+        self.workflow_error_alarm.add_alarm_action(
+            cw_actions.SnsAction(self.medical_alerts_topic)
+        )
+        
+        # Medical system dashboard
+        self.medical_dashboard = cloudwatch.Dashboard(
+            self, "VigiamedicalDashboard",
+            dashboard_name="vigia-medical-ai-monitoring",
+            widgets=[
+                [
+                    cloudwatch.GraphWidget(
+                        title="FastAPI Lambda Performance",
+                        left=[self.fastapi_lambda.metric_invocations()],
+                        right=[self.fastapi_lambda.metric_errors()],
+                        width=12,
+                        height=6
+                    )
+                ],
+                [
+                    cloudwatch.GraphWidget(
+                        title="FastAPI Lambda Duration",
+                        left=[self.fastapi_lambda.metric_duration()],
+                        width=12,
+                        height=6
+                    )
+                ],
+                [
+                    cloudwatch.GraphWidget(
+                        title="Medical Workflow Executions",
+                        left=[
+                            cloudwatch.Metric(
+                                namespace="AWS/States",
+                                metric_name="ExecutionsStarted",
+                                dimensions_map={
+                                    "StateMachineArn": self.vigia_workflow.state_machine_arn
+                                }
+                            ),
+                            cloudwatch.Metric(
+                                namespace="AWS/States", 
+                                metric_name="ExecutionsSucceeded",
+                                dimensions_map={
+                                    "StateMachineArn": self.vigia_workflow.state_machine_arn
+                                }
+                            )
+                        ],
+                        right=[
+                            cloudwatch.Metric(
+                                namespace="AWS/States",
+                                metric_name="ExecutionsFailed",
+                                dimensions_map={
+                                    "StateMachineArn": self.vigia_workflow.state_machine_arn
+                                }
+                            )
+                        ],
+                        width=12,
+                        height=6
+                    )
+                ]
+            ]
+        )
+
+        # =============================================================================
         # API GATEWAY - MEDICAL INTERFACES
         # =============================================================================
 
@@ -501,6 +704,12 @@ class VigiaStack(Stack):
             value=self.api.url,
             description="VIGIA Medical API Gateway endpoint"
         )
+        
+        CfnOutput(
+            self, "FastAPIWebInterface",
+            value=self.fastapi_function_url.url,
+            description="VIGIA Medical AI FastAPI Web Interface URL"
+        )
 
         CfnOutput(
             self, "MedicalWorkflowArn",
@@ -530,4 +739,22 @@ class VigiaStack(Stack):
             self, "MasterOrchestratorOutput",
             value=self.master_orchestrator.function_name,
             description="Lambda function for VIGIA master medical orchestrator"
+        )
+        
+        CfnOutput(
+            self, "MedicalAlertsTopicOutput",
+            value=self.medical_alerts_topic.topic_arn,
+            description="SNS topic for VIGIA medical system alerts"
+        )
+        
+        CfnOutput(
+            self, "MedicalDashboardOutput",
+            value=f"https://console.aws.amazon.com/cloudwatch/home?region={self.region}#dashboards:name={self.medical_dashboard.dashboard_name}",
+            description="CloudWatch dashboard for VIGIA medical system monitoring"
+        )
+        
+        CfnOutput(
+            self, "OptimizedContainerImageOutput",
+            value="586794472237.dkr.ecr.us-east-1.amazonaws.com/vigia-fastapi:optimized",
+            description="ECR URI for optimized VIGIA FastAPI container"
         )

@@ -617,6 +617,7 @@ async def analyze_voice(
     voice_analysis_db[case_id] = voice_analysis
     return voice_analysis
 
+
 if __name__ == "__main__":
     # Check deployment environment
     aws_deployment = os.environ.get("AWS_DEPLOYMENT", "false").lower() == "true"

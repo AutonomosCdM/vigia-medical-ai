@@ -1,0 +1,1 @@
+"""Configuration module for VIGIA Medical AI."""

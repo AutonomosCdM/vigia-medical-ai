@@ -1,0 +1,27 @@
+FROM public.ecr.aws/lambda/python:3.11
+
+# Install only essential dependencies
+RUN pip install --no-cache-dir fastapi==0.110.2 mangum==0.17.0 jinja2==3.1.2 pydantic==2.0.0
+
+# Create minimal structure
+RUN mkdir -p ${LAMBDA_TASK_ROOT}/src/web ${LAMBDA_TASK_ROOT}/src/core ${LAMBDA_TASK_ROOT}/src/utils
+
+# Copy only the absolute essentials
+COPY src/web/main.py ${LAMBDA_TASK_ROOT}/src/web/
+COPY src/web/lambda_handler.py ${LAMBDA_TASK_ROOT}/src/web/
+COPY src/web/templates/ ${LAMBDA_TASK_ROOT}/src/web/templates/
+COPY src/web/static/ ${LAMBDA_TASK_ROOT}/src/web/static/
+COPY src/__init__.py ${LAMBDA_TASK_ROOT}/src/
+
+# Create empty __init__.py files
+RUN touch ${LAMBDA_TASK_ROOT}/src/web/__init__.py
+RUN touch ${LAMBDA_TASK_ROOT}/src/core/__init__.py  
+RUN touch ${LAMBDA_TASK_ROOT}/src/utils/__init__.py
+
+# Set environment variables
+ENV AWS_DEPLOYMENT=true
+ENV LAMBDA_DEPLOYMENT=true
+ENV PYTHONPATH=${LAMBDA_TASK_ROOT}
+
+# Lambda handler
+CMD ["src.web.lambda_handler.handler"]

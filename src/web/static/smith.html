@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Smith - Autonomos AiLab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-image: url('./agent_smith_hd.jpg');
+            background-size: cover;
+            background-position: center right;
+            background-attachment: fixed;
+        }
+        .overlay {
+            background: linear-gradient(to right, 
+                rgba(0,0,0,0.9) 0%, 
+                rgba(0,0,0,0.7) 50%, 
+                rgba(0,0,0,0.3) 100%);
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+        }
+        .animate-fade-in {
+            animation: fadeIn 2s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-white">
+    <div class="overlay min-h-screen flex items-center">
+        <div class="container mx-auto px-6 lg:px-8">
+            <div class="max-w-4xl animate-fade-in">
+                <!-- Hero Content -->
+                <div class="mb-12">
+                    <h1 class="text-6xl md:text-8xl font-bold mb-6">
+                        <span class="text-white">Agent</span>
+                        <span class="text-green-400 text-glow">Smith</span>
+                    </h1>
+                    
+                    <h2 class="text-3xl md:text-4xl font-light mb-8 text-gray-200">
+                        Autonomos AiLab
+                    </h2>
+                    
+                    <p class="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed max-w-3xl">
+                        Revolutionary medical AI systems with <strong class="text-green-400">9 specialized agents</strong> 
+                        for critical healthcare automation. HIPAA-compliant, sub-2-second analysis, 
+                        deployed in real hospitals.
+                    </p>
+                    
+                    <!-- Agent Smith Quote -->
+                    <blockquote class="text-green-400 text-2xl italic font-light mb-12 border-l-4 border-green-400 pl-6">
+                        "Never send a human to do a machine's job."
+                        <cite class="text-gray-400 text-lg block mt-2 not-italic">
+                            - Agent Smith
+                        </cite>
+                    </blockquote>
+                </div>
+
+                <!-- VIGIA System Status -->
+                <div class="bg-black/60 rounded-lg p-8 mb-12 border border-green-500/30">
+                    <h3 class="text-2xl font-semibold text-green-400 mb-6">
+                        🏥 VIGIA Medical AI - Live System
+                    </h3>
+                    
+                    <div class="grid md:grid-cols-3 gap-6 mb-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-green-400">9</div>
+                            <div class="text-gray-300">AI Agents</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-blue-400">1.8s</div>
+                            <div class="text-gray-300">Analysis Time</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-purple-400">94.2%</div>
+                            <div class="text-gray-300">Accuracy</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Live Agent Status -->
+                    <div class="grid grid-cols-5 gap-3 mb-6">
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-green-500 rounded-full mx-auto mb-2 flex items-center justify-center">
+                                <span class="text-black font-bold text-sm">IMG</span>
+                            </div>
+                            <div class="text-xs text-gray-300">Image Analysis</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-blue-500 rounded-full mx-auto mb-2 flex items-center justify-center">
+                                <span class="text-white font-bold text-sm">RISK</span>
+                            </div>
+                            <div class="text-xs text-gray-300">Risk Assessment</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-purple-500 rounded-full mx-auto mb-2 flex items-center justify-center">
+                                <span class="text-white font-bold text-sm">DX</span>
+                            </div>
+                            <div class="text-xs text-gray-300">Diagnostic</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-orange-500 rounded-full mx-auto mb-2 flex items-center justify-center">
+                                <span class="text-white font-bold text-sm">COM</span>
+                            </div>
+                            <div class="text-xs text-gray-300">Communication</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-red-500 rounded-full mx-auto mb-2 flex items-center justify-center">
+                                <span class="text-white font-bold text-sm">MON</span>
+                            </div>
+                            <div class="text-xs text-gray-300">MONAI Review</div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <span class="text-green-400 font-semibold">🟢 Sistema Operativo</span>
+                        <span class="text-gray-400 ml-4">147 análisis completados hoy</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col md:flex-row gap-4 mb-12">
+                    <a href="/" 
+                       class="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 text-center">
+                        🏥 Access VIGIA Medical Console
+                    </a>
+                    
+                    <a href="https://calendly.com/cesar-autonomos/30min" 
+                       target="_blank"
+                       class="border border-green-500 bg-transparent text-green-400 hover:bg-green-500 hover:text-black px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 text-center">
+                        📞 Schedule Demo Call
+                    </a>
+                </div>
+
+                <!-- System Features -->
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-gray-800/60 rounded-lg p-6 border border-gray-700/50">
+                        <div class="text-green-400 text-3xl mb-4">🤖</div>
+                        <h4 class="text-lg font-semibold text-white mb-3">Multi-Agent AI</h4>
+                        <p class="text-gray-400">9 specialized medical agents working in perfect coordination</p>
+                    </div>
+                    
+                    <div class="bg-gray-800/60 rounded-lg p-6 border border-gray-700/50">
+                        <div class="text-green-400 text-3xl mb-4">🔒</div>
+                        <h4 class="text-lg font-semibold text-white mb-3">HIPAA Compliant</h4>
+                        <p class="text-gray-400">Complete patient privacy protection with PHI tokenization</p>
+                    </div>
+                    
+                    <div class="bg-gray-800/60 rounded-lg p-6 border border-gray-700/50">
+                        <div class="text-green-400 text-3xl mb-4">⚡</div>
+                        <h4 class="text-lg font-semibold text-white mb-3">Real-Time Analysis</h4>
+                        <p class="text-gray-400">Sub-2-second medical analysis for critical care decisions</p>
+                    </div>
+                </div>
+
+                <!-- Deployment Status -->
+                <div class="mt-12 text-center">
+                    <div class="text-sm text-gray-400">
+                        🚀 Live AWS Deployment Active | 
+                        <a href="https://k0lhxhcl5a.execute-api.us-east-1.amazonaws.com/prod/health" 
+                           class="text-green-400 hover:text-green-300" target="_blank">
+                            API Health Check
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

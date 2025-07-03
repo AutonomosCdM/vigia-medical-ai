@@ -1,0 +1,232 @@
+# Ruff configuration for VIGIA Medical AI
+# Based on AWS MCP Server development patterns
+# https://docs.astral.sh/ruff/configuration/
+
+# Basic configuration
+line-length = 100
+indent-width = 4
+target-version = "py311"
+
+# Include/exclude patterns
+extend-include = ["*.pyi"]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+    "storage",
+    "logs",
+    "data",
+    "models",
+    ".aws-sam",
+    "cdk.out",
+]
+
+[lint]
+# Enable comprehensive rule set for medical AI code
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings  
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "UP",   # pyupgrade
+    "ARG",  # flake8-unused-arguments
+    "SIM",  # flake8-simplify
+    "TCH",  # flake8-type-checking
+    "TID",  # flake8-tidy-imports
+    "Q",    # flake8-quotes
+    "FBT",  # flake8-boolean-trap
+    "A",    # flake8-builtins
+    "COM",  # flake8-commas
+    "C90",  # mccabe
+    "T20",  # flake8-print
+    "EXE",  # flake8-executable
+    "FA",   # flake8-future-annotations
+    "ISC",  # flake8-implicit-str-concat
+    "ICN",  # flake8-import-conventions
+    "G",    # flake8-logging-format
+    "INP",  # flake8-no-pep420
+    "PIE",  # flake8-pie
+    "T10",  # flake8-debugger
+    "EM",   # flake8-errmsg
+    "TRY",  # tryceratops
+    "FLY",  # flynt
+    "NPY",  # NumPy-specific rules
+    "PD",   # pandas-vet
+    "PERF", # Perflint
+    "PL",   # Pylint
+    "PT",   # flake8-pytest-style
+    "PTH",  # flake8-use-pathlib
+    "ERA",  # eradicate
+    "PGH",  # pygrep-hooks
+    "RUF",  # Ruff-specific rules
+    "S",    # flake8-bandit (security)
+]
+
+# Ignore rules that conflict with medical AI development
+ignore = [
+    # Line length handled by formatter
+    "E501",
+
+    # Medical code patterns that are acceptable
+    "B008",     # function calls in argument defaults (medical configs)
+    "C901",     # too complex (medical algorithms are complex)
+    "PLR0913",  # too many arguments (medical functions need many params)
+    "PLR0915",  # too many statements (medical processing is detailed)
+    "PLR0912",  # too many branches (medical decision trees)
+    "PLR0911",  # too many return statements (medical validation)
+    
+    # Medical validation and testing
+    "S101",     # use of assert (common in medical validation)
+    "S603",     # subprocess call (medical tools integration)
+    "S607",     # partial executable path (medical tools)
+    "S311",     # pseudo-random generators (synthetic medical data)
+    
+    # Medical error handling
+    "TRY003",   # long exception message (medical errors need detail)
+    "EM101",    # string in exception (medical context important)
+    "EM102",    # f-string in exception (dynamic medical info)
+    
+    # Medical library compatibility
+    "PGH003",   # blanket type ignore (needed for medical libs)
+    "PLR2004",  # magic value (medical constants)
+    "UP007",    # use X | Y syntax (older medical lib compatibility)
+    
+    # Medical code clarity over cleverness
+    "C416",     # unnecessary comprehension (clarity over brevity)
+    "SIM108",   # use ternary operator (explicit is better)
+    "PD901",    # vague variable names ('df' standard in medical data)
+    
+    # Medical interface consistency
+    "ARG001",   # unused function argument (interface consistency)
+    "ARG002",   # unused method argument (interface consistency)
+    "FBT001",   # boolean positional argument (medical flags)
+    "FBT002",   # boolean default argument (medical configuration)
+    
+    # Formatter conflicts
+    "COM812",   # trailing comma (handled by formatter)
+    "ISC001",   # single line implicit string concatenation
+]
+
+# Per-file ignores for different types of code
+[lint.per-file-ignores]
+# Test files - more relaxed rules
+"tests/*" = [
+    "S101",     # assert statements are fine in tests
+    "PLR2004",  # magic values OK in tests
+    "SLF001",   # private member access OK in tests
+    "ARG001",   # unused arguments OK in test fixtures
+    "FBT001",   # boolean arguments OK in tests
+    "PT011",    # pytest.raises without match
+]
+
+# Script files - utility scripts have different needs
+"scripts/*" = [
+    "T201",     # print statements OK in scripts
+    "S602",     # subprocess shell injection (scripts may need this)
+    "S603",     # subprocess call without shell=False check
+    "S607",     # partial executable path
+    "PLR0913",  # many arguments OK in CLI scripts
+]
+
+# Demo files - similar to scripts
+"demo/*" = [
+    "T201",     # print statements for demo output
+    "S602",     # subprocess for demo purposes
+    "S603",     # subprocess calls in demos
+    "PLR0913",  # many arguments in demo functions
+]
+
+# Synthetic data generation - uses randomness intentionally
+"src/synthetic/*" = [
+    "S311",     # pseudo-random generators (needed for synthetic data)
+    "PLR2004",  # magic values (medical parameters)
+]
+
+# Computer vision - complex algorithms
+"src/cv_pipeline/*" = [
+    "PLR0913",  # many arguments (CV algorithms need many params)
+    "C901",     # complexity (CV algorithms are inherently complex)
+]
+
+# Agent coordination - complex state management
+"src/agents/*" = [
+    "PLR0913",  # many arguments (agent coordination is complex)
+    "C901",     # complexity (agent state machines are complex)
+    "PLR0915",  # many statements (agent initialization is detailed)
+]
+
+# AI/ML models - complex configurations
+"src/ai/*" = [
+    "PLR0913",  # many arguments (model configurations)
+    "PLR2004",  # magic values (model hyperparameters)
+]
+
+# Database models - ORM patterns
+"src/db/*" = [
+    "A003",     # class attribute shadows builtin
+    "PLR0913",  # many arguments in constructors
+]
+
+[lint.flake8-quotes]
+docstring-quotes = "double"
+inline-quotes = "double"
+
+[lint.isort]
+known-first-party = ["src"]
+known-third-party = [
+    "fastapi", "uvicorn", "pydantic", "jinja2",
+    "torch", "torchvision", "transformers", "monai", "yolov5",
+    "numpy", "pandas", "scipy", "scikit-learn", "matplotlib", "seaborn",
+    "boto3", "botocore", "aws_cdk", "aws_lambda_powertools",
+    "supabase", "redis", "celery", "flower",
+    "twilio", "slack_sdk", "hume",
+    "opencv", "pillow", "cv2",
+    "pytest", "httpx", "aiohttp", "websockets",
+]
+force-sort-within-sections = true
+split-on-trailing-comma = true
+
+[lint.mccabe]
+max-complexity = 15  # Higher limit for medical algorithms
+
+[lint.pylint]
+max-args = 10       # Medical functions often need many parameters
+max-branches = 20   # Medical decision trees can be complex
+max-returns = 8     # Medical validation may have multiple exit points
+max-statements = 60 # Medical processing can be detailed
+
+[format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = false
+docstring-code-line-length = "dynamic"
+
+# Respect existing formatting
+respect-gitignore = true

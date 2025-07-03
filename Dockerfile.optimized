@@ -1,0 +1,137 @@
+# Optimized Multi-Stage Dockerfile for VIGIA Medical AI
+# Based on AWS MCP patterns for reliable container deployment
+# Addresses ECR push timeout issues with layered approach
+
+# =============================================================================
+# Stage 1: Base Dependencies
+# =============================================================================
+FROM public.ecr.aws/lambda/python:3.11 AS base
+
+# Set environment variables for build optimization
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# Update system packages
+RUN yum update -y && yum clean all
+
+# Install system dependencies needed for medical libraries
+RUN yum install -y \
+    gcc \
+    gcc-c++ \
+    && yum clean all
+
+# =============================================================================
+# Stage 2: Python Dependencies Installation
+# =============================================================================
+FROM base AS dependencies
+
+# Copy only dependency files first for better caching
+COPY pyproject.toml uv.lock ./
+
+# Install uv for faster dependency resolution
+RUN pip install uv==0.4.18
+
+# Install only essential FastAPI dependencies first
+RUN uv pip install --system \
+    fastapi==0.115.14 \
+    uvicorn==0.35.0 \
+    jinja2==3.1.6 \
+    python-multipart==0.0.20 \
+    pydantic==2.11.7 \
+    mangum==0.19.0
+
+# Install AWS integration dependencies
+RUN uv pip install --system \
+    boto3==1.39.2 \
+    botocore==1.39.2 \
+    aws-lambda-powertools==3.16.0 \
+    aws-xray-sdk==2.14.0
+
+# Install security and compliance dependencies
+RUN uv pip install --system \
+    cryptography==45.0.5 \
+    python-jose==3.5.0 \
+    python-dotenv==1.1.1 \
+    pycryptodome==3.23.0
+
+# Install medical libraries (lighter subset for web interface)
+RUN uv pip install --system \
+    numpy==1.26.4 \
+    pandas==2.3.0 \
+    pillow==11.3.0
+
+# =============================================================================
+# Stage 3: Application Code
+# =============================================================================
+FROM dependencies AS application
+
+# Create necessary directories
+RUN mkdir -p ${LAMBDA_TASK_ROOT}/src/web \
+             ${LAMBDA_TASK_ROOT}/src/core \
+             ${LAMBDA_TASK_ROOT}/src/utils \
+             ${LAMBDA_TASK_ROOT}/src/agents \
+             ${LAMBDA_TASK_ROOT}/src/ai
+
+# Copy source code in optimized order (most stable files first)
+COPY src/__init__.py ${LAMBDA_TASK_ROOT}/src/
+
+# Copy core modules (stable, rarely change)
+COPY src/core/ ${LAMBDA_TASK_ROOT}/src/core/
+COPY src/utils/ ${LAMBDA_TASK_ROOT}/src/utils/
+
+# Copy medical agents (moderate change frequency)
+COPY src/agents/ ${LAMBDA_TASK_ROOT}/src/agents/
+COPY src/ai/ ${LAMBDA_TASK_ROOT}/src/ai/
+
+# Copy web interface (changes more frequently)
+COPY src/web/ ${LAMBDA_TASK_ROOT}/src/web/
+
+# =============================================================================
+# Stage 4: Production Image
+# =============================================================================
+FROM application AS production
+
+# Set Lambda-specific environment variables
+ENV AWS_DEPLOYMENT=true \
+    LAMBDA_DEPLOYMENT=true \
+    VIGIA_ENV=production \
+    MEDICAL_MODE=production \
+    PHI_TOKENIZATION_ENABLED=true \
+    PYTHONPATH=${LAMBDA_TASK_ROOT}
+
+# Create required empty __init__.py files
+RUN touch ${LAMBDA_TASK_ROOT}/src/web/__init__.py \
+          ${LAMBDA_TASK_ROOT}/src/core/__init__.py \
+          ${LAMBDA_TASK_ROOT}/src/utils/__init__.py \
+          ${LAMBDA_TASK_ROOT}/src/agents/__init__.py \
+          ${LAMBDA_TASK_ROOT}/src/ai/__init__.py
+
+# Set proper permissions
+RUN chmod -R 755 ${LAMBDA_TASK_ROOT}/src
+
+# Health check for container validation
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD python -c "import src.web.main; print('Container healthy')" || exit 1
+
+# Lambda runtime will call this handler
+CMD ["src.web.lambda_handler.handler"]
+
+# =============================================================================
+# Stage 5: Development Image (for local testing)
+# =============================================================================
+FROM production AS development
+
+# Install development dependencies
+RUN uv pip install --system \
+    pytest==8.4.1 \
+    pytest-mock==3.14.1 \
+    ruff==0.12.1 \
+    black
+
+# Copy test files for development
+COPY tests/ ${LAMBDA_TASK_ROOT}/tests/
+
+# Override CMD for development
+CMD ["uvicorn", "src.web.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
