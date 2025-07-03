@@ -23,7 +23,7 @@ from typing import Dict, Any, Optional, List, Union
 from dataclasses import dataclass
 from enum import Enum
 
-from ..communication.twilio_client import TwilioClient, default_client
+from .twilio_client import TwilioClient, default_client
 from ..utils.audit_service import AuditService, AuditEventType
 from ..utils.secure_logger import SecureLogger
 

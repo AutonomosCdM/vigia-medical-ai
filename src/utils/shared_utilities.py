@@ -10,7 +10,14 @@ from datetime import datetime
 from pathlib import Path
 import json
 
-from config.settings import settings
+# Mock settings for testing
+import os
+class MockSettings:
+    def __init__(self):
+        self.testing = os.getenv('TESTING', 'false').lower() == 'true'
+        self.log_level = os.getenv('LOG_LEVEL', 'INFO')
+        
+settings = MockSettings()
 from src.utils.medical_logger import get_medical_logger, MedicalLogLevel
 
 

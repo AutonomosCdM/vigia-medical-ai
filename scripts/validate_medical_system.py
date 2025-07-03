@@ -13,11 +13,11 @@ import requests
 from pathlib import Path
 
 # Add project root to path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from vigia_detect.systems.medical_decision_engine import MedicalDecisionEngine
-from vigia_detect.cv_pipeline.medical_detector_factory import create_medical_detector
-from vigia_detect.core.phi_tokenization_client import PHITokenizationClient
+from src.systems.medical_decision_engine import MedicalDecisionEngine
+from src.cv_pipeline.medical_detector_factory import create_medical_detector
+from src.core.phi_tokenization_client import PHITokenizationClient
 
 class VigiaValidator:
     def __init__(self):

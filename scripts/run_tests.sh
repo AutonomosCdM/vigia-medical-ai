@@ -14,7 +14,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Project root directory
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_ROOT"
 
 # Function to print colored output
@@ -208,7 +208,7 @@ main() {
             ;;
         "coverage")
             print_status "Running tests with coverage..."
-            python -m pytest tests/ --cov=vigia_detect --cov-report=html --cov-report=term-missing -v || FAILED_SUITES+=("coverage")
+            python -m pytest tests/ --cov=src --cov-report=html --cov-report=term-missing -v || FAILED_SUITES+=("coverage")
             print_status "Coverage report generated in htmlcov/"
             ;;
         "quick")

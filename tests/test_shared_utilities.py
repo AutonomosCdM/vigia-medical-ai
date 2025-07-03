@@ -7,7 +7,7 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 import tempfile
 
-from vigia_detect.utils.shared_utilities import (
+from src.utils.shared_utilities import (
     VigiaLogger,
     VigiaValidator, 
     VigiaErrorHandler,

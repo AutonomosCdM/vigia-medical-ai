@@ -17,9 +17,9 @@ from pathlib import Path
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from medical.medical_decision_engine import MedicalDecisionEngine
-from cv_pipeline.medical_detector_factory import create_medical_detector
-from security.phi_tokenization_client import PHITokenizationClient
+from src.systems.medical_decision_engine import MedicalDecisionEngine
+from src.cv_pipeline.medical_detector_factory import create_medical_detector
+from src.core.phi_tokenization_client import PHITokenizationClient
 
 class TestMedicalDecisionEngine:
     """Test real NPUAP/EPUAP medical decision functionality"""

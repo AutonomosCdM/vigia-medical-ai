@@ -17,7 +17,7 @@ from unittest.mock import Mock, patch, AsyncMock
 from src.agents.agent_factory import VigiaAgentFactory, create_complete_vigia_system
 from src.messaging.whatsapp_processor import WhatsAppProcessor, MessageType
 from src.messaging.whatsapp.isolated_bot import IsolatedWhatsAppBot
-from src.communication.twilio_client import TwilioClient
+from src.messaging.twilio_client import TwilioClient
 from src.cv_pipeline.medical_detector_factory import create_medical_detector
 from src.cv_pipeline.adaptive_medical_detector import AdaptiveMedicalDetector
 from src.core.phi_tokenization_client import PHITokenizationClient
@@ -485,7 +485,7 @@ def test_import_validations():
     # Test integration imports
     from src.messaging.whatsapp_processor import WhatsAppProcessor
     from src.messaging.whatsapp.isolated_bot import IsolatedWhatsAppBot
-    from src.communication.twilio_client import TwilioClient
+    from src.messaging.twilio_client import TwilioClient
     
     # Test medical detection imports
     from src.cv_pipeline.adaptive_medical_detector import AdaptiveMedicalDetector

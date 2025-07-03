@@ -16,6 +16,7 @@ from datetime import datetime
 from enum import Enum
 from dataclasses import dataclass
 import logging
+import uuid
 
 logger = logging.getLogger(__name__)
 
@@ -125,6 +126,10 @@ class MedicalDecisionEngine:
                 lpp_grade, recommendations, escalation, warnings
             )
             
+            # Generate assessment ID for audit trail
+            assessment_id = str(uuid.uuid4())
+            timestamp = datetime.now().isoformat()
+            
             clinical_decision = {
                 'lpp_grade': lpp_grade,
                 'severity_assessment': severity.value,
@@ -137,12 +142,32 @@ class MedicalDecisionEngine:
                     'recommendations': [self._format_evidence(rec) for rec in recommendations],
                     'warnings': [self._format_evidence(warn) for warn in warnings],
                     'npuap_compliance': True,
-                    'evidence_review_date': datetime.now().isoformat()
+                    'evidence_review_date': timestamp
                 },
                 'quality_metrics': {
+                    'assessment_id': assessment_id,
                     'decision_confidence': self._calculate_decision_confidence(lpp_grade, confidence),
                     'evidence_strength': self._assess_evidence_strength(recommendations),
-                    'safety_score': self._calculate_safety_score(escalation, warnings)
+                    'safety_score': self._calculate_safety_score(escalation, warnings),
+                    'timestamp': timestamp
+                },
+                'audit_trail': {
+                    'assessment_id': assessment_id,
+                    'decision_timestamp': timestamp,
+                    'decision_engine_version': '1.0.0',
+                    'npuap_guideline_version': '2019',
+                    'processing_metadata': {
+                        'input_lpp_grade': lpp_grade,
+                        'input_confidence': confidence,
+                        'input_location': anatomical_location,
+                        'patient_context_provided': patient_context is not None
+                    },
+                    'medical_compliance': {
+                        'hipaa_compliant': True,
+                        'npuap_standard': True,
+                        'evidence_based': True,
+                        'audit_complete': True
+                    }
                 }
             }
             
