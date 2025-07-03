@@ -473,25 +473,26 @@
                 const vigiaUrl = getVigiaUrl();
                 
                 try {
-                    // Test local API health first
-                    fetch('http://127.0.0.1:8000/api/v1/health')
+                    // Test VIGIA subdomain health first
+                    fetch('https://vigia.autonomos.dev/api/v1/health')
                         .then(response => response.json())
                         .then(data => {
                             if (data.status === 'healthy') {
-                                // API is healthy, redirect to medical interface
-                                showNotification('Redirecting to Medical Console...', 'success');
+                                // VIGIA is healthy, redirect to medical interface
+                                showNotification('Redirecting to VIGIA Medical Console...', 'success');
                                 setTimeout(() => {
                                     window.location.href = vigiaUrl;
                                 }, 1000);
                             } else {
-                                throw new Error('API health check failed');
+                                throw new Error('VIGIA health check failed');
                             }
                         })
                         .catch(error => {
-                            console.warn('Local API not available, using fallback:', error);
-                            showNotification('Redirecting to Medical Console...', 'warning');
+                            console.warn('VIGIA subdomain not available, using fallback:', error);
+                            showNotification('Accessing Medical Console...', 'warning');
                             setTimeout(() => {
-                                window.location.href = '/';
+                                // Fallback to direct API Gateway URL
+                                window.location.href = 'https://k0lhxhcl5a.execute-api.us-east-1.amazonaws.com/prod/';
                             }, 1000);
                         });
                 } catch (error) {
@@ -542,8 +543,8 @@
         
         // Medical Console URL Management
         function getVigiaUrl() {
-            // Always return root URL for AWS deployment
-            return '/';
+            // Return clean subdomain URL for VIGIA Medical Console
+            return 'https://vigia.autonomos.dev/';
         }
         
         // Update deployment status indicators

@@ -335,6 +335,11 @@ async def agent_smith_landing(request: Request):
     else:
         raise HTTPException(status_code=404, detail="Agent Smith page not found")
 
+@app.get("/index.html", response_class=HTMLResponse)
+async def index_html_redirect(request: Request):
+    """Serve Agent Smith landing for index.html requests."""
+    return await agent_smith_landing(request)
+
 @app.get("/landing", response_class=HTMLResponse)
 async def landing_redirect(request: Request):
     """Redirect to Agent Smith landing page."""
