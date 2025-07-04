@@ -35,6 +35,11 @@ from src.db.supabase_client import SupabaseClient
 from src.utils.audit_service import AuditService
 from src.systems.medical_knowledge import MedicalKnowledgeSystem
 
+# AgentOps Monitoring Integration
+from src.monitoring.agentops_client import AgentOpsClient
+from src.monitoring.medical_telemetry import MedicalTelemetry
+from src.monitoring.adk_wrapper import adk_agent_wrapper
+
 logger = logging.getLogger(__name__)
 
 
@@ -155,6 +160,12 @@ class MonaiReviewAgent(BaseAgent):
             'technical_issues_identified': 0,
             'avg_review_time': 0.0
         }
+        
+        # AgentOps telemetry integration
+        self.telemetry = MedicalTelemetry(
+            agent_id=self.agent_id,
+            agent_type="monai_review"
+        )
     
     async def initialize(self) -> bool:
         """Initialize the MONAI review agent"""

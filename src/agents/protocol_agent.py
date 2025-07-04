@@ -16,6 +16,11 @@ from src.redis_layer.vector_service import VectorService
 from src.redis_layer.protocol_indexer import ProtocolIndexer
 from src.utils.secure_logger import SecureLogger
 
+# AgentOps Monitoring Integration
+from src.monitoring.agentops_client import AgentOpsClient
+from src.monitoring.medical_telemetry import MedicalTelemetry
+from src.monitoring.adk_wrapper import adk_agent_wrapper
+
 logger = SecureLogger("protocol_agent")
 
 
@@ -102,12 +107,19 @@ class ProtocolAgent(BaseAgent):
             "max_response_time": 30.0  # segundos
         }
         
+        # AgentOps telemetry integration
+        self.telemetry = MedicalTelemetry(
+            agent_id=self.agent_id,
+            agent_type="protocol"
+        )
+        
         # Registro de auditoría
         logger.audit("protocol_agent_initialized", {
             "agent_id": self.agent_id,
             "capabilities": [cap.value for cap in self.capabilities],
             "medical_system": "active",
-            "config": self.protocol_config
+            "config": self.protocol_config,
+            "telemetry_enabled": True
         })
     
     async def initialize(self) -> bool:

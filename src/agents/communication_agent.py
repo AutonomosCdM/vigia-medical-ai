@@ -33,6 +33,11 @@ from src.interfaces.slack_orchestrator import (
 from src.interfaces.slack_orchestrator import NotificationPayload, NotificationType, SlackChannel
 from src.utils.secure_logger import SecureLogger
 
+# AgentOps Monitoring Integration
+from src.monitoring.agentops_client import AgentOpsClient
+from src.monitoring.medical_telemetry import MedicalTelemetry
+from src.monitoring.adk_wrapper import adk_agent_wrapper
+
 logger = SecureLogger("communication_agent")
 
 
@@ -138,11 +143,18 @@ class CommunicationAgent(BaseAgent):
         self.active_communications: Dict[str, CommunicationRequest] = {}
         self.pending_acknowledgments: Dict[str, datetime] = {}
         
+        # AgentOps telemetry integration
+        self.telemetry = MedicalTelemetry(
+            agent_id=self.agent_id,
+            agent_type="communication"
+        )
+        
         logger.audit("communication_agent_initialized", {
             "agent_id": self.agent_id,
             "capabilities": [cap.value for cap in self.capabilities],
             "supported_channels": [ch.value for ch in self.communication_config["supported_channels"]],
-            "escalation_enabled": self.communication_config["escalation_enabled"]
+            "escalation_enabled": self.communication_config["escalation_enabled"],
+            "telemetry_enabled": True
         })
     
     async def initialize(self) -> bool:

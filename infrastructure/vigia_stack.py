@@ -137,6 +137,30 @@ class VigiaStack(Stack):
         self.lpp_results_table.grant_read_write_data(lambda_role)
         self.medical_storage.grant_read_write(lambda_role)
 
+        # Common environment variables for all medical agents
+        def get_agent_environment(specific_vars: dict = None) -> dict:
+            """Get common environment variables for all medical agents including AgentOps"""
+            base_env = {
+                # AgentOps Integration
+                "AGENTOPS_API_KEY": "sk-ao-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",  # Replace with real key
+                "AGENTOPS_ENVIRONMENT": "production",
+                "AGENTOPS_TAGS": "medical-ai,vigia,hipaa-compliant,pressure-injury-detection",
+                "TELEMETRY_ENABLED": "true",
+                "PERFORMANCE_MONITORING": "true",
+                
+                # Medical System Configuration
+                "ENVIRONMENT": "production",
+                "MEDICAL_MODE": "production",
+                "PHI_TOKENIZATION_ENABLED": "true",
+                "HIPAA_COMPLIANCE": "true",
+                "BATMAN_TOKEN_EXPIRY": "900",
+            }
+            
+            if specific_vars:
+                base_env.update(specific_vars)
+            
+            return base_env
+
         # Master Medical Orchestrator - Central coordination
         self.master_orchestrator = _lambda.Function(
             self, "MasterMedicalOrchestrator",
@@ -147,12 +171,13 @@ class VigiaStack(Stack):
             timeout=Duration.minutes(15),
             memory_size=3008,
             role=lambda_role,
-            environment={
+            environment=get_agent_environment({
                 "MEDICAL_STORAGE_BUCKET": self.medical_storage.bucket_name,
                 "AGENTS_STATE_TABLE": self.agents_state_table.table_name,
                 "MEDICAL_AUDIT_TABLE": self.medical_audit_table.table_name,
-                "LPP_RESULTS_TABLE": self.lpp_results_table.table_name
-            }
+                "LPP_RESULTS_TABLE": self.lpp_results_table.table_name,
+                "AGENT_TYPE": "master_orchestrator"
+            })
         )
 
         # Image Analysis Agent - MONAI + YOLOv5 medical imaging
@@ -165,11 +190,12 @@ class VigiaStack(Stack):
             timeout=Duration.minutes(10),
             memory_size=3008,
             role=lambda_role,
-            environment={
+            environment=get_agent_environment({
                 "MEDICAL_STORAGE_BUCKET": self.medical_storage.bucket_name,
                 "AGENTS_STATE_TABLE": self.agents_state_table.table_name,
-                "LPP_RESULTS_TABLE": self.lpp_results_table.table_name
-            }
+                "LPP_RESULTS_TABLE": self.lpp_results_table.table_name,
+                "AGENT_TYPE": "image_analysis"
+            })
         )
 
         # Voice Analysis Agent - Hume AI integration
@@ -182,10 +208,11 @@ class VigiaStack(Stack):
             timeout=Duration.minutes(8),
             memory_size=2048,
             role=lambda_role,
-            environment={
+            environment=get_agent_environment({
                 "AGENTS_STATE_TABLE": self.agents_state_table.table_name,
-                "MEDICAL_AUDIT_TABLE": self.medical_audit_table.table_name
-            }
+                "MEDICAL_AUDIT_TABLE": self.medical_audit_table.table_name,
+                "AGENT_TYPE": "voice_analysis"
+            })
         )
 
         # Clinical Assessment Agent - Evidence-based medical evaluation
@@ -198,10 +225,11 @@ class VigiaStack(Stack):
             timeout=Duration.minutes(5),
             memory_size=1024,
             role=lambda_role,
-            environment={
+            environment=get_agent_environment({
                 "AGENTS_STATE_TABLE": self.agents_state_table.table_name,
-                "LPP_RESULTS_TABLE": self.lpp_results_table.table_name
-            }
+                "LPP_RESULTS_TABLE": self.lpp_results_table.table_name,
+                "AGENT_TYPE": "clinical_assessment"
+            })
         )
 
         # Risk Assessment Agent - Medical risk stratification
@@ -214,10 +242,11 @@ class VigiaStack(Stack):
             timeout=Duration.minutes(5),
             memory_size=1024,
             role=lambda_role,
-            environment={
+            environment=get_agent_environment({
                 "AGENTS_STATE_TABLE": self.agents_state_table.table_name,
-                "LPP_RESULTS_TABLE": self.lpp_results_table.table_name
-            }
+                "LPP_RESULTS_TABLE": self.lpp_results_table.table_name,
+                "AGENT_TYPE": "risk_assessment"
+            })
         )
 
         # Diagnostic Agent - Multi-agent diagnostic fusion
@@ -230,11 +259,12 @@ class VigiaStack(Stack):
             timeout=Duration.minutes(8),
             memory_size=2048,
             role=lambda_role,
-            environment={
+            environment=get_agent_environment({
                 "AGENTS_STATE_TABLE": self.agents_state_table.table_name,
                 "LPP_RESULTS_TABLE": self.lpp_results_table.table_name,
-                "MEDICAL_AUDIT_TABLE": self.medical_audit_table.table_name
-            }
+                "MEDICAL_AUDIT_TABLE": self.medical_audit_table.table_name,
+                "AGENT_TYPE": "diagnostic"
+            })
         )
 
         # Protocol Agent - NPUAP/EPUAP/PPPIA 2019 guidelines
@@ -247,10 +277,11 @@ class VigiaStack(Stack):
             timeout=Duration.minutes(5),
             memory_size=1024,
             role=lambda_role,
-            environment={
+            environment=get_agent_environment({
                 "AGENTS_STATE_TABLE": self.agents_state_table.table_name,
-                "LPP_RESULTS_TABLE": self.lpp_results_table.table_name
-            }
+                "LPP_RESULTS_TABLE": self.lpp_results_table.table_name,
+                "AGENT_TYPE": "protocol"
+            })
         )
 
         # Communication Agent - WhatsApp/Slack coordination
@@ -263,10 +294,11 @@ class VigiaStack(Stack):
             timeout=Duration.minutes(5),
             memory_size=1024,
             role=lambda_role,
-            environment={
+            environment=get_agent_environment({
                 "AGENTS_STATE_TABLE": self.agents_state_table.table_name,
-                "MEDICAL_AUDIT_TABLE": self.medical_audit_table.table_name
-            }
+                "MEDICAL_AUDIT_TABLE": self.medical_audit_table.table_name,
+                "AGENT_TYPE": "communication"
+            })
         )
 
         # MONAI Review Agent - Medical imaging quality assessment
@@ -279,11 +311,12 @@ class VigiaStack(Stack):
             timeout=Duration.minutes(10),
             memory_size=3008,
             role=lambda_role,
-            environment={
+            environment=get_agent_environment({
                 "MEDICAL_STORAGE_BUCKET": self.medical_storage.bucket_name,
                 "AGENTS_STATE_TABLE": self.agents_state_table.table_name,
-                "LPP_RESULTS_TABLE": self.lpp_results_table.table_name
-            }
+                "LPP_RESULTS_TABLE": self.lpp_results_table.table_name,
+                "AGENT_TYPE": "monai_review"
+            })
         )
 
         # =============================================================================
@@ -427,12 +460,9 @@ class VigiaStack(Stack):
             runtime=_lambda.Runtime.FROM_IMAGE,
             memory_size=2048,  # Optimized memory for web interface
             timeout=Duration.seconds(30),  # API Gateway max timeout
-            environment={
+            environment=get_agent_environment({
                 "AWS_DEPLOYMENT": "true",
                 "LAMBDA_DEPLOYMENT": "true",
-                "VIGIA_ENV": "production",
-                "MEDICAL_MODE": "production",
-                "PHI_TOKENIZATION_ENABLED": "true",
                 "AGENTS_STATE_TABLE": self.agents_state_table.table_name,
                 "MEDICAL_AUDIT_TABLE": self.medical_audit_table.table_name,
                 "MEDICAL_STORAGE_BUCKET": self.medical_storage.bucket_name,
@@ -441,8 +471,9 @@ class VigiaStack(Stack):
                 "AWS_XRAY_TRACING_NAME": "vigia-fastapi-web",
                 "AWS_LAMBDA_POWERTOOLS_SERVICE_NAME": "vigia-medical-ai",
                 "AWS_LAMBDA_POWERTOOLS_METRICS_NAMESPACE": "VIGIA/Medical",
-                "LOG_LEVEL": "INFO"
-            },
+                "LOG_LEVEL": "INFO",
+                "AGENT_TYPE": "fastapi_web"
+            }),
             vpc=None,  # No VPC for web interface
             description="VIGIA Medical AI FastAPI Web Interface - Optimized Container",
             # AWS MCP patterns for reliability
@@ -682,6 +713,39 @@ class VigiaStack(Stack):
                 apigateway.MethodResponse(status_code="200")
             ]
         )
+
+        # AgentOps Monitoring Endpoints
+        monitoring_resource = self.api.root.add_resource("monitoring")
+        
+        # AgentOps status endpoint
+        agentops_resource = monitoring_resource.add_resource("agentops")
+        agentops_status_integration = apigateway.LambdaIntegration(
+            self.master_orchestrator,
+            request_templates={
+                "application/json": '{"action": "get_agentops_status"}'
+            }
+        )
+        agentops_resource.add_resource("status").add_method("GET", agentops_status_integration)
+        
+        # Agent statistics endpoint
+        agents_resource = monitoring_resource.add_resource("agents")
+        agent_stats_integration = apigateway.LambdaIntegration(
+            self.master_orchestrator,
+            request_templates={
+                "application/json": '{"action": "get_agent_stats"}'
+            }
+        )
+        agents_resource.add_resource("stats").add_method("GET", agent_stats_integration)
+        
+        # Active sessions endpoint
+        sessions_resource = monitoring_resource.add_resource("sessions")
+        active_sessions_integration = apigateway.LambdaIntegration(
+            self.master_orchestrator,
+            request_templates={
+                "application/json": '{"action": "get_active_sessions"}'
+            }
+        )
+        sessions_resource.add_resource("active").add_method("GET", active_sessions_integration)
 
         # =============================================================================
         # EVENTBRIDGE - SCHEDULED MEDICAL PROCESSING

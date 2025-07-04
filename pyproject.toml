@@ -96,6 +96,7 @@ dependencies = [
     # Monitoring & Logging
     "structlog>=23.0.0",
     "loguru>=0.7.0",
+    "agentops>=0.3.18",
     
     # AWS Integration
     "aws-cdk-lib>=2.100.0",
