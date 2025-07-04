@@ -1,7 +1,7 @@
-# VIGIA Medical AI - System Overview
+# VIGIA Medical AI v1.0 - System Overview (CORRECTED)
 
 ## Objetivo
-Entender VIGIA Medical AI en 5 minutos: arquitectura médica serverless con AWS Lambda, PHI tokenización, 9 agentes especializados, análisis multimodal (imagen + voz) y comunicación bidireccional WhatsApp↔Slack desplegada en producción.
+Vista clara del sistema médico real: 9 agentes Lambda coordinados por Step Functions, PHI tokenización Batman, dominios profesionales, y AgentOps monitoring integrado. Arquitectura real desplegada con costos serverless realistas ($200-500/mes).
 
 ## Código Eraser.io
 ```
@@ -9,130 +9,186 @@ colorMode bold
 styleMode shadow
 direction down
 
-// Patient Communication Layer
-Patient_Interface [icon: mobile, color: green] {
-  WhatsApp_Bot [icon: mobile, color: blue]
-  Voice_Messages [icon: mic, color: orange]
-  Medical_Images [icon: camera, color: purple]
-  Web_Interface_autonomos_dev [icon: browser, color: green]
+// Patient Input Layer - Real Production Endpoints  
+Patient_Input_Layer [icon: mobile, color: green] {
+  WhatsApp_Business_API [icon: mobile, color: blue]
+  Voice_Messages_Hume_AI [icon: mic, color: orange]
+  Medical_Image_Upload [icon: camera, color: purple]
+  autonomos_dev_Landing [icon: browser, color: green]
+  vigia_autonomos_dev_Console [icon: medical, color: blue]
 }
 
-// Security & Tokenization Layer
-PHI_Tokenization [icon: shield, color: red] {
-  Bruce_Wayne [icon: user, color: gray]
-  Batman_Tokens [icon: key, color: blue]
-  Session_Manager_15min [icon: clock, color: orange]
-  HIPAA_Compliance [icon: medical, color: red]
+// HIPAA PHI Tokenization - Batman System
+PHI_Tokenization_Service [icon: shield, color: red] {
+  Bruce_Wayne_Input [icon: user, color: gray]
+  Batman_Token_Generator [icon: key, color: red]
+  KMS_Encryption_15min_TTL [icon: lock, color: orange]
+  HIPAA_Audit_Logger [icon: clipboard, color: red]
 }
 
-// AWS Serverless Infrastructure (Production)
-AWS_Serverless_Core [icon: aws-lambda, color: purple] {
-  API_Gateway_Medical [icon: aws-apigateway, color: blue]
-  Step_Functions_Orchestrator [icon: aws-stepfunctions, color: purple]
-  Lambda_Agent_Factory [icon: aws-lambda, color: green]
-  DynamoDB_Medical_State [icon: aws-dynamodb, color: orange]
+// AWS CDK Production Stack - Real Infrastructure
+AWS_Production_Infrastructure [icon: aws, color: blue] {
+  API_Gateway_Medical_Endpoints [icon: aws-apigateway, color: blue]
+  Step_Functions_Orchestrator [icon: aws-stepfunctions, color: purple] {
+    workflow: "Master → (Image+Voice+MONAI parallel) → (Clinical+Risk parallel) → Diagnostic → Protocol → Communication"
+    timeout: "45 minutes total"
+  }
+  DynamoDB_Three_Tables [icon: aws-dynamodb, color: green] {
+    agents_state_table: "All agents write session states"
+    medical_audit_table: "Master+Communication write audit logs"
+    lpp_results_table: "Clinical+Diagnostic+Risk write results"
+  }
+  S3_Medical_Storage [icon: aws-s3, color: orange]
+  CloudWatch_SNS_Alerts [icon: aws-cloudwatch, color: red]
 }
 
-// Core Medical AI System (Lambda-based)
-Medical_AI_Core [icon: server, color: blue] {
-  Master_Medical_Orchestrator_Lambda [icon: hub, color: purple]
-  Agent_Factory_Serverless [icon: cog, color: green]
-  Medical_Dispatcher_Lambda [icon: medical, color: red]
-  A2A_Communication_StepFunctions [icon: network, color: blue]
+// 9 Lambda Agents - Real Memory Allocations from CDK
+Nine_Lambda_Agents [icon: aws-lambda, color: purple] {
+  Master_Orchestrator [icon: hub, color: purple] {
+    memory: "3008MB"
+    role: "Coordinates all 9 agents"
+    timeout: "15min"
+  }
+  Image_Analysis_Agent [icon: camera, color: blue] {
+    memory: "3008MB" 
+    role: "MONAI + YOLOv5 processing"
+    timeout: "10min"
+  }
+  Voice_Analysis_Agent [icon: mic, color: orange] {
+    memory: "2048MB"
+    role: "Hume AI emotion analysis"
+    timeout: "8min"
+  }
+  Clinical_Assessment_Agent [icon: medical, color: red] {
+    memory: "1024MB"
+    role: "Evidence-based decisions"
+    timeout: "5min"
+  }
+  Risk_Assessment_Agent [icon: warning, color: orange] {
+    memory: "1024MB"
+    role: "LPP risk stratification"
+    timeout: "5min"
+  }
+  Diagnostic_Agent [icon: stethoscope, color: green] {
+    memory: "2048MB"
+    role: "Multi-agent synthesis"
+    timeout: "8min"
+  }
+  MONAI_Review_Agent [icon: brain, color: purple] {
+    memory: "3008MB"
+    role: "Medical imaging quality"
+    timeout: "10min"
+  }
+  Protocol_Agent [icon: book, color: red] {
+    memory: "1024MB"
+    role: "NPUAP/EPUAP guidelines"
+    timeout: "5min"
+  }
+  Communication_Agent [icon: slack, color: green] {
+    memory: "1024MB"
+    role: "WhatsApp + Slack alerts"
+    timeout: "5min"
+  }
 }
 
-// Complete 9-Agent Medical Architecture (AWS Lambda)
-Medical_Agents_Tier1_Lambda [icon: aws-lambda, color: purple] {
-  Image_Analysis_Agent_Lambda [icon: eye, color: blue]
-  Voice_Analysis_Agent_Lambda [icon: mic, color: orange]
-  Clinical_Assessment_Agent_Lambda [icon: medical, color: red]
+// AgentOps Monitoring - Integrated Throughout
+AgentOps_Medical_Telemetry [icon: chart, color: orange] {
+  Agent_Performance_Tracking [icon: monitor, color: green]
+  HIPAA_Compliant_Session_Logs [icon: medical, color: blue]
+  Real_Time_Error_Escalation [icon: warning, color: red]
+  Medical_Compliance_Dashboard [icon: dashboard, color: purple]
 }
 
-Medical_Agents_Tier2_Lambda [icon: aws-lambda, color: green] {
-  Risk_Assessment_Agent_Lambda [icon: warning, color: orange]
-  Diagnostic_Agent_Lambda [icon: stethoscope, color: green]
-  MONAI_Review_Agent_Lambda [icon: brain, color: purple]
+// External AI Services - Real Integrations
+External_Medical_AI [icon: brain, color: blue] {
+  Hume_AI_Voice_Emotion [icon: mic, color: orange] {
+    cost_per_request: "$0.025"
+    accuracy: "92% pain detection"
+    used_by: "Voice Analysis Agent"
+  }
+  AWS_Bedrock_Claude [icon: aws-bedrock, color: purple] {
+    used_by: "Clinical+Diagnostic agents"
+  }
+  SageMaker_MONAI_Inference [icon: aws-sagemaker, color: green] {
+    used_by: "Image+MONAI Review agents"
+  }
+  MedGemma_27B_Local_Fallback [icon: brain, color: red] {
+    fallback_for: "When Bedrock/SageMaker unavailable"
+    deployment: "Local Ollama instance"
+  }
 }
 
-Medical_Agents_Tier3_Lambda [icon: aws-lambda, color: blue] {
-  Protocol_Agent_Lambda [icon: clipboard, color: red]
-  Communication_Agent_Lambda [icon: slack, color: green]
-  Workflow_Orchestration_Agent_Lambda [icon: hub, color: blue]
+// Medical Team Communication - Real Channels
+Medical_Team_Integration [icon: slack, color: green] {
+  Slack_Emergency_Channels [icon: slack, color: red] {
+    trigger: "LPP Grade 3-4 → #emergencias-medicas"
+    trigger: "LPP Grade 1-2 → #equipo-medico"
+  }
+  WhatsApp_Patient_Updates [icon: mobile, color: green] {
+    content: "Batman tokens only, no PHI"
+  }
+  Medical_Dashboard_Console [icon: browser, color: blue]
+  Grade_4_LPP_Decision_Flow [icon: warning, color: orange] {
+    decision: "Confidence <60% OR Grade 3-4 → Human review"
+    escalation: "Dr. Smith notified within 30min"
+  }
 }
 
-// AWS AI Services (Production)
-AWS_AI_Services [icon: aws-bedrock, color: blue] {
-  AWS_Bedrock_Medical_LLM [icon: brain, color: purple]
-  AWS_Transcribe_Medical [icon: mic, color: orange]
-  SageMaker_MONAI [icon: aws-sagemaker, color: green]
-  Local_YOLOv5_Backup [icon: eye, color: blue]
+// Professional Domain Setup - Real Configuration
+Professional_Domains [icon: aws-route53, color: green] {
+  autonomos_dev_S3_Landing [icon: aws-s3, color: blue] {
+    theme: "Agent Smith landing page"
+    ssl: "ACM certificate"
+  }
+  vigia_autonomos_dev_Console [icon: aws-cloudfront, color: green] {
+    backend: "API Gateway + Lambda"
+    ssl: "ACM certificate"
+    dns: "GoDaddy management"
+  }
 }
 
-// External AI Services
-External_AI_Services [icon: brain, color: orange] {
-  Hume_AI_Voice_Analysis [icon: mic, color: blue]
-  MedGemma_27B_Fallback [icon: brain, color: purple]
-  Medical_Guardrails_Engine [icon: shield, color: red]
+// FastAPI Web Interface - Real Container Deployment  
+FastAPI_Medical_Console [icon: docker, color: blue] {
+  ECR_Container_Registry [icon: aws-ecr, color: green]
+  Lambda_Container_2GB_30sec [icon: aws-lambda, color: blue]
+  Medical_Dashboard_UI [icon: dashboard, color: purple]
+  REST_API_Endpoints [icon: api, color: orange]
 }
 
-// Medical Team Communication
-Team_Communication [icon: slack, color: green] {
-  Slack_Block_Kit [icon: slack, color: blue]
-  Medical_Teams [icon: users, color: green]
-  Emergency_Escalation [icon: warning, color: red]
-  WhatsApp_Patient_Updates [icon: mobile, color: orange]
-}
+// System Flow - Realistic Data Processing
+Patient_Input_Layer > PHI_Tokenization_Service: "Medical data → Batman tokens"
+PHI_Tokenization_Service > AWS_Production_Infrastructure: "Encrypted tokens only"
+AWS_Production_Infrastructure > Nine_Lambda_Agents: "Step Functions coordination"
 
-// AWS Medical Storage & Compliance
-AWS_Medical_Storage [icon: aws-s3, color: blue] {
-  DynamoDB_Medical_State [icon: aws-dynamodb, color: green]
-  S3_Medical_Imaging [icon: aws-s3, color: orange]
-  NPUAP_Grading_System [icon: medical, color: red]
-  Complete_Audit_Trail_DynamoDB [icon: clipboard, color: purple]
-}
+// 9-Agent Workflow - Real A2A Communication
+Nine_Lambda_Agents > External_Medical_AI: "Medical AI processing"
+Nine_Lambda_Agents <> AgentOps_Medical_Telemetry: "Real-time telemetry"
+Nine_Lambda_Agents > Medical_Team_Integration: "Clinical results"
 
-// Medical Decision Engine
-Clinical_Engine [icon: medical, color: red] {
-  NPUAP_EPUAP_2019_Guidelines [icon: book, color: blue]
-  Evidence_Based_Recommendations [icon: stethoscope, color: green]
-  Medical_Guardrails [icon: shield, color: red]
-  Safety_Monitoring [icon: monitor, color: orange]
-}
+// Professional Access Points
+Professional_Domains > Patient_Input_Layer: "Professional medical URLs"
+FastAPI_Medical_Console > Professional_Domains: "Web interface deployment"
 
-// Primary AWS Serverless Flow
-Patient_Interface > PHI_Tokenization: "Patient Data + Voice"
-PHI_Tokenization > AWS_Serverless_Core: "Batman Tokens"
-AWS_Serverless_Core > Medical_AI_Core: "Lambda Orchestration"
-Medical_AI_Core > Medical_Agents_Tier1_Lambda: "Step Functions Workflow"
+// Data Flow - HIPAA Compliant
+AWS_Production_Infrastructure <> AgentOps_Medical_Telemetry: "Performance data"
+Medical_Team_Integration <> Patient_Input_Layer: "Patient communications"
 
-// Lambda Agent Coordination Flow
-Medical_Agents_Tier1_Lambda > Medical_Agents_Tier2_Lambda: "A2A via Step Functions"
-Medical_Agents_Tier2_Lambda > Medical_Agents_Tier3_Lambda: "Clinical Synthesis"
+// System Notes
+note over AWS_Production_Infrastructure: "REAL CDK DEPLOYMENT\n• 9 Lambda functions\n• Step Functions workflow\n• 3 DynamoDB tables\n• Total cost: $200-500/month"
 
-// AWS AI Processing Flow
-Medical_Agents_Tier1_Lambda > AWS_AI_Services: "Bedrock + SageMaker"
-Medical_Agents_Tier1_Lambda > External_AI_Services: "Hume AI + Guardrails"
-AWS_AI_Services > Clinical_Engine: "Medical Analysis"
-External_AI_Services > Clinical_Engine: "Voice + Safety Analysis"
-Clinical_Engine > Team_Communication: "Clinical Results"
+note over PHI_Tokenization_Service: "BATMAN TOKENIZATION\n• Bruce Wayne → Batman\n• All agents see tokens only\n• 15-minute TTL cleanup\n• Zero PHI in processing"
 
-// AWS Storage & State Management
-AWS_Serverless_Core <> AWS_Medical_Storage: "DynamoDB State"
-Team_Communication > AWS_Medical_Storage: "Audit Trail"
-Clinical_Engine > AWS_Medical_Storage: "NPUAP Grading"
-
-// Production Endpoints & Communication
-Team_Communication <> Patient_Interface: "Medical Updates"
-AWS_Serverless_Core > Patient_Interface: "autonomos.dev Response"
+note over AgentOps_Medical_Telemetry: "INTEGRATED MONITORING\n• All 9 agents instrumented\n• HIPAA-compliant logging\n• Real-time error alerts\n• Medical compliance tracking"
 ```
 
-## Notas Clave
-- **AWS Serverless Production**: Lambda + Step Functions + DynamoDB architecture
-- **PHI Tokenización**: Bruce Wayne → Batman tokens para HIPAA compliance
-- **9 Agentes Lambda**: Análisis especializado con Step Functions coordination
-- **AWS AI Stack**: Bedrock + SageMaker + Transcribe Medical + Hume AI external
-- **Production Endpoints**: autonomos.dev domain with API Gateway integration
-- **Comunicación Bidireccional**: WhatsApp pacientes ↔ Slack equipos médicos
+## Notas Clave - Sistema Real Mejorado
+- **Step Functions Detallado**: Master → (Image+Voice+MONAI paralelo) → (Clinical+Risk paralelo) → Diagnostic → Protocol → Communication
+- **DynamoDB Específico**: Cada agente escribe en tablas específicas según su función
+- **External AI Claro**: MedGemma como fallback local cuando AWS services fallan
+- **Escalación Médica**: Grade 3-4 → #emergencias-medicas, Grade 1-2 → #equipo-medico
+- **Decisión Automática**: Confidence <60% OR Grade 3-4 → Human review mandatory
+- **PHI Tokens Only**: Batman tokens en todas las comunicaciones, zero PHI exposure
+- **Costos Realistas**: $200-500/mes serverless vs $20,000+ contenedores
 
 ## Para Editar
 1. Copia el código anterior

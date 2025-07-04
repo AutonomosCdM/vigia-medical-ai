@@ -1,7 +1,7 @@
-# VIGIA Medical AI - AWS Serverless Deployment Infrastructure
+# VIGIA Medical AI - Deployment Infrastructure (REAL CDK STACK)
 
 ## Objetivo
-Arquitectura de deployment AWS CDK serverless: Lambda + Step Functions + DynamoDB para 9 agentes médicos, con infraestructura como código, auto-scaling y compliance HIPAA.
+Real deployment with vigia_stack.py: 9 Lambda agents + Step Functions + Professional domains (autonomos.dev) + KMS encryption + AgentOps monitoring. Serverless $200-500/month vs $1,275+ containers.
 
 ## Código Eraser.io
 ```
@@ -9,206 +9,269 @@ colorMode bold
 styleMode shadow
 direction down
 
-// Local Development Environment
+// Local Development Setup
 Local_Development [icon: desktop, color: green] {
-  One_Command_Setup [icon: terminal, color: green] {
-    Install_Script [icon: file, color: blue]
-    Docker_Compose_Medical [icon: docker, color: orange]
-    Auto_Service_Detection [icon: cog, color: purple]
+  One_Command_Install [icon: terminal, color: blue] {
+    command: "./install.sh"
+    functions: "Complete setup + validation"
+    includes: "MedGemma + FastAPI + CDK"
   }
   
-  Development_Services [icon: server, color: orange] {
-    Redis_Local [icon: cache, color: red]
-    PostgreSQL_Dev [icon: database, color: blue]
-    FastAPI_Interface_8000 [icon: browser, color: green]
-    Ollama_MedGemma [icon: brain, color: purple]
+  Development_Stack [icon: server, color: orange] {
+    FastAPI_Web [icon: browser, color: green] {
+      port: "8000"
+      command: "python launch_fastapi_web.py"
+    }
+    MedGemma_27B [icon: brain, color: purple] {
+      deployment: "Local Ollama instance"
+      command: "python scripts/setup_medgemma_ollama.py"
+    }
+    Medical_Validation [icon: medical, color: red] {
+      command: "python scripts/validate_medical_system.py"
+    }
   }
   
-  CDK_Development [icon: aws-cdk, color: blue] {
-    CDK_Bootstrap [icon: cog, color: orange]
-    CDK_Synth [icon: file, color: green]
-    CDK_Deploy [icon: rocket, color: purple]
-    CDK_Destroy [icon: trash, color: red]
+  CDK_Tools [icon: aws-cdk, color: blue] {
+    vigia_stack_py [icon: python, color: green] {
+      lines: "863 lines"
+      deployment: "Production infrastructure"
+    }
+    commands: "cdk bootstrap, cdk synth, cdk deploy"
   }
 }
 
-// AWS CDK Serverless Infrastructure (Production)
-AWS_CDK_Serverless [icon: aws, color: blue] {
-  Lambda_Functions_9_Agents [icon: aws-lambda, color: purple] {
-    Master_Orchestrator_Lambda [icon: hub, color: purple]
-    Image_Analysis_Lambda [icon: eye, color: blue]
-    Voice_Analysis_Lambda [icon: mic, color: orange]
-    Clinical_Assessment_Lambda [icon: medical, color: red]
-    Risk_Assessment_Lambda [icon: warning, color: orange]
-    Diagnostic_Lambda [icon: stethoscope, color: green]
-    Protocol_Lambda [icon: clipboard, color: red]
-    Communication_Lambda [icon: slack, color: green]
-    Workflow_Orchestration_Lambda [icon: hub, color: blue]
+// AWS CDK Production Stack (vigia_stack.py)
+AWS_CDK_Stack [icon: aws, color: blue] {
+  Lambda_Functions [icon: aws-lambda, color: purple] {
+    Master_Orchestrator [icon: hub, color: purple] {
+      memory: "3008MB"
+      timeout: "15min"
+    }
+    Image_Analysis [icon: camera, color: blue] {
+      memory: "3008MB"
+      timeout: "10min"
+    }
+    Voice_Analysis [icon: mic, color: orange] {
+      memory: "2048MB"
+      timeout: "8min"
+    }
+    Clinical_Assessment [icon: medical, color: red] {
+      memory: "1024MB"
+      timeout: "5min"
+    }
+    Risk_Assessment [icon: warning, color: orange] {
+      memory: "1024MB"
+      timeout: "5min"
+    }
+    Diagnostic_Agent [icon: stethoscope, color: green] {
+      memory: "2048MB"
+      timeout: "8min"
+    }
+    MONAI_Review [icon: brain, color: purple] {
+      memory: "3008MB"
+      timeout: "10min"
+    }
+    Protocol_Agent [icon: clipboard, color: red] {
+      memory: "1024MB"
+      timeout: "5min"
+    }
+    Communication_Agent [icon: slack, color: green] {
+      memory: "1024MB"
+      timeout: "5min"
+    }
   }
   
-  AWS_Serverless_Services [icon: aws-cloudformation, color: blue] {
-    Step_Functions_Medical_Workflow [icon: aws-stepfunctions, color: purple]
-    DynamoDB_Medical_State [icon: aws-dynamodb, color: green]
-    API_Gateway_Medical_Endpoints [icon: aws-apigateway, color: blue]
-    S3_Medical_Storage [icon: aws-s3, color: orange]
-    EventBridge_Medical_Scheduler [icon: aws-eventbridge, color: red]
-    CloudWatch_Medical_Monitoring [icon: aws-cloudwatch, color: purple]
+  AWS_Services [icon: aws-cloudformation, color: blue] {
+    Step_Functions [icon: aws-stepfunctions, color: purple] {
+      workflow: "9-agent medical analysis"
+      timeout: "45 minutes"
+    }
+    DynamoDB_Tables [icon: aws-dynamodb, color: green] {
+      agents_state: "Session management"
+      medical_audit: "HIPAA compliance"
+      lpp_results: "Medical findings"
+    }
+    S3_Storage [icon: aws-s3, color: blue] {
+      encryption: "KMS"
+      lifecycle: "Glacier archiving"
+    }
+    API_Gateway [icon: aws-apigateway, color: green] {
+      endpoints: "Medical API"
+    }
+    CloudWatch [icon: aws-cloudwatch, color: red] {
+      monitoring: "System health"
+      alarms: "SNS alerts"
+    }
   }
   
-  AI_ML_Services [icon: aws-bedrock, color: purple] {
-    AWS_Bedrock_Medical_LLM [icon: brain, color: blue]
-    SageMaker_MONAI_Inference [icon: aws-sagemaker, color: green]
-    Transcribe_Medical [icon: mic, color: red]
-    Comprehend_Medical [icon: brain, color: orange]
+  AI_Services [icon: aws-bedrock, color: purple] {
+    AWS_Bedrock [icon: brain, color: blue] {
+      model: "Claude Sonnet medical"
+    }
+    SageMaker_MONAI [icon: aws-sagemaker, color: green] {
+      inference: "Medical imaging"
+    }
   }
 }
 
-// Alternative Cloud Options
-Alternative_Clouds [icon: cloud, color: gray] {
-  Render_Deployment [icon: cloud, color: green] {
-    Web_Service [icon: server, color: blue]
-    Background_Workers [icon: cog, color: orange]
+// FastAPI Container Deployment
+FastAPI_Container [icon: docker, color: blue] {
+  ECR_Repository [icon: aws-ecr, color: green] {
+    name: "vigia-fastapi"
+    build: "Multi-platform ARM64/x86_64"
+    optimization: "Medical dashboard"
   }
   
-  Backup_Options [icon: cloud, color: orange] {
-    Google_Cloud_Run [icon: gcp, color: blue]
-    Railway_App [icon: train, color: green]
-    DigitalOcean_Apps [icon: server, color: purple]
+  Lambda_Container [icon: aws-lambda, color: purple] {
+    memory: "2048MB"
+    timeout: "30 seconds"
+    function_url: "Direct access"
+    endpoints: "RESTful medical API"
+    interface: "Professional web dashboard"
   }
 }
 
-// CDK Infrastructure as Code
-CDK_Infrastructure [icon: aws-cdk, color: blue] {
-  CDK_Stack_Definition [icon: aws-cloudformation, color: green] {
-    VigiaStack_Python [icon: python, color: blue]
-    Lambda_Layer_Medical_AI [icon: package, color: orange]
-    Step_Functions_Definition [icon: aws-stepfunctions, color: purple]
-    DynamoDB_Schema [icon: aws-dynamodb, color: green]
-    API_Gateway_Routes [icon: aws-apigateway, color: blue]
+// Professional Domains (autonomos.dev)
+Professional_Domains [icon: aws-route53, color: green] {
+  autonomos_dev [icon: aws-s3, color: blue] {
+    hosting: "S3 static website"
+    theme: "Agent Smith landing page"
+    bucket: "autonomos-landing-page"
+    ssl: "ACM certificate"
   }
   
-  Frontend_Deployment [icon: aws-s3, color: purple] {
-    S3_Static_Website [icon: aws-s3, color: blue]
-    CloudFront_CDN [icon: aws-cloudfront, color: green]
-    Route53_DNS_autonomos_dev [icon: aws-route53, color: orange]
-    Certificate_Manager_SSL [icon: lock, color: red]
-    Agent_Smith_Landing_Page [icon: browser, color: green]
+  vigia_autonomos_dev [icon: aws-cloudfront, color: purple] {
+    hosting: "CloudFront + API Gateway"
+    function: "VIGIA Medical Console"
+    ssl: "ACM certificate"
+    cdn: "Global distribution"
+  }
+  
+  GoDaddy_DNS [icon: network, color: orange] {
+    records: "A record + CNAME vigia"
+    validation: "SSL certificate validation"
+    management: "DNS propagation"
   }
 }
 
-// AWS Serverless Security & Compliance
-AWS_Serverless_Security [icon: shield, color: red] {
-  HIPAA_Compliance [icon: medical, color: blue] {
-    Lambda_Execution_Role [icon: aws-iam, color: green]
-    KMS_Encryption [icon: key, color: red]
-    Secrets_Manager [icon: lock, color: orange]
-    CloudTrail_Audit [icon: clipboard, color: purple]
-    DynamoDB_Encryption_at_Rest [icon: aws-dynamodb, color: blue]
+// AgentOps Monitoring
+AgentOps_Monitoring [icon: chart, color: orange] {
+  API_Integration [icon: api, color: blue] {
+    api_key: "AGENTOPS_API_KEY environment"
+    session_tracking: "HIPAA-compliant medical sessions"
+    telemetry: "All 9 agents instrumented"
+  }
+  
+  Monitoring_Endpoints [icon: monitor, color: purple] {
+    status: "/monitoring/agentops/status"
+    stats: "/monitoring/agents/stats"
+    sessions: "/monitoring/sessions/active"
+    escalation: "Real-time error alerts"
+  }
+}
+
+// HIPAA Security
+HIPAA_Security [icon: shield, color: red] {
+  Lambda_Security [icon: aws-iam, color: blue] {
+    execution_role: "Medical Lambda execution role"
+    kms_encryption: "Medical data encryption"
+    secrets_manager: "API key management"
+    dynamodb_encryption: "At-rest encryption"
   }
   
   API_Security [icon: shield, color: orange] {
-    API_Gateway_Throttling [icon: aws-apigateway, color: blue]
-    CORS_Configuration [icon: network, color: green]
-    Lambda_Authorizer [icon: aws-lambda, color: purple]
-    WAF_Medical_Protection [icon: shield, color: red]
+    api_throttling: "Medical endpoint throttling"
+    cors: "Medical CORS configuration"
+    validation: "Request validation"
+    tokenization: "Batman PHI tokenization"
   }
 }
 
-// AWS Serverless Monitoring & Operations
-AWS_Serverless_Monitoring [icon: aws-cloudwatch, color: green] {
-  CloudWatch_Serverless [icon: chart, color: blue] {
-    Lambda_Medical_Metrics [icon: graph, color: purple]
-    Step_Functions_Execution_Logs [icon: clipboard, color: orange]
-    DynamoDB_Performance_Alarms [icon: warning, color: red]
-    API_Gateway_Dashboards [icon: monitor, color: green]
+// CloudWatch Monitoring
+CloudWatch_Monitoring [icon: aws-cloudwatch, color: green] {
+  Medical_Dashboards [icon: dashboard, color: blue] {
+    fastapi_performance: "Lambda performance metrics"
+    step_functions: "Workflow execution monitoring"
+    dynamodb_alarms: "Medical performance alarms"
+    end_to_end: "Complete workflow tracking"
   }
   
-  Serverless_Performance [icon: chart, color: purple] {
-    Lambda_Cold_Start_Monitoring [icon: clock, color: red]
-    DynamoDB_Read_Write_Capacity [icon: aws-dynamodb, color: blue]
-    AI_Model_Inference_Latency [icon: brain, color: orange]
-    End_to_End_Response_Tracking [icon: clock, color: green]
-  }
-}
-
-// AWS Serverless Network & Endpoints
-AWS_Serverless_Network [icon: aws-apigateway, color: green] {
-  Production_Endpoints [icon: network, color: blue] {
-    API_Gateway_Medical_Endpoints [icon: aws-apigateway, color: green]
-    autonomos_dev_Domain [icon: aws-route53, color: orange]
-    S3_Website_autonomos_landing [icon: aws-s3, color: blue]
-    CloudFront_CDN_Distribution [icon: aws-cloudfront, color: purple]
-  }
-  
-  SSL_and_DNS [icon: lock, color: blue] {
-    Route53_DNS_Management [icon: aws-route53, color: green]
-    ACM_SSL_Certificates [icon: lock, color: red]
-    CNAME_Records_Configuration [icon: network, color: orange]
-    Domain_Validation [icon: shield, color: purple]
+  Alert_System [icon: notification, color: orange] {
+    sns_topic: "Medical alerts topic"
+    error_rate: "FastAPI error rate alarms"
+    duration: "Lambda duration monitoring"
+    workflow_failures: "Medical workflow alerts"
   }
 }
 
 // External Integrations
-External_Services [icon: network, color: purple] {
+External_Integrations [icon: network, color: purple] {
   Communication_APIs [icon: mobile, color: green] {
-    WhatsApp_Business_API [icon: mobile, color: blue]
-    Slack_Block_Kit_API [icon: slack, color: green]
-    Twilio_Integration [icon: phone, color: orange]
+    whatsapp_business: "Patient communication"
+    slack_medical: "Medical team alerts"
   }
   
   AI_Services [icon: brain, color: orange] {
-    Hume_AI_Voice_Analysis [icon: mic, color: blue]
-    Local_MedGemma_Fallback [icon: brain, color: green]
-    Medical_Guardrails [icon: shield, color: red]
+    hume_ai: "Voice emotion analysis"
+    medgemma_local: "Local medical LLM fallback"
+    medical_guardrails: "Safety validation"
+    adk_framework: "Agent coordination"
   }
 }
 
-// Serverless Cost Optimization
-Serverless_Cost_Management [icon: dollar, color: orange] {
-  Pay_Per_Use_Scaling [icon: scale, color: green] {
-    Lambda_Concurrent_Executions [icon: aws-lambda, color: blue]
-    DynamoDB_On_Demand_Scaling [icon: aws-dynamodb, color: orange]
-    API_Gateway_Request_Based [icon: aws-apigateway, color: purple]
+// Cost Management
+Cost_Management [icon: dollar, color: orange] {
+  Serverless_Optimization [icon: scale, color: green] {
+    lambda: "Pay-per-execution"
+    dynamodb: "On-demand scaling"
+    api_gateway: "Request-based pricing"
+    s3: "Lifecycle policies"
   }
   
   Cost_Monitoring [icon: chart, color: blue] {
-    Monthly_Budget_Serverless_200_500 [icon: dollar, color: red]
-    Lambda_Invocation_Alerts [icon: warning, color: orange]
-    Resource_Tagging_CDK [icon: tag, color: green]
-    Cost_Anomaly_Detection [icon: chart, color: purple]
+    budget: "$200-500/month"
+    tracking: "Lambda invocation costs"
+    tagging: "CDK automated resource tags"
+    analysis: "Container vs serverless comparison"
   }
 }
 
-// CDK Serverless Deployment Flow
-Local_Development > CDK_Infrastructure: "CDK Deploy vigia-stack"
-CDK_Infrastructure > AWS_CDK_Serverless: "CloudFormation Deployment"
-AWS_CDK_Serverless > AWS_Serverless_Security: "HIPAA Compliance"
-AWS_Serverless_Security > AWS_Serverless_Network: "Secure API Gateway"
-AWS_Serverless_Network > AWS_Serverless_Monitoring: "CloudWatch Integration"
+// Deployment Flow
+Local_Development > AWS_CDK_Stack: "cdk deploy VigiaStack"
+AWS_CDK_Stack > FastAPI_Container: "ECR build + deploy"
+FastAPI_Container > Professional_Domains: "Function URL + custom domain"
+Professional_Domains > HIPAA_Security: "SSL + security configuration"
 
-// External Integration Flow
-AWS_CDK_Serverless <> External_Services: "Lambda Integration"
-AWS_Serverless_Monitoring > Serverless_Cost_Management: "Cost Optimization"
-Alternative_Clouds > AWS_CDK_Serverless: "Migration Path"
+// Monitoring Integration
+AWS_CDK_Stack <> AgentOps_Monitoring: "9-agent telemetry"
+AgentOps_Monitoring > CloudWatch_Monitoring: "Performance metrics"
 
-// Frontend Deployment Flow
-CDK_Infrastructure > AWS_Serverless_Network: "S3 + CloudFront"
-AWS_Serverless_Network > External_Services: "autonomos.dev Live"
+// External Integration
+AWS_CDK_Stack <> External_Integrations: "Lambda + API integration"
+External_Integrations > Professional_Domains: "Communication endpoints"
 
-// Production Notes
-note over Local_Development: "🚀 One-command install\n./install.sh + CDK bootstrap\n🐳 docker-compose.medical.yml\n☁️ CDK deploy VigiaStack"
-note over AWS_CDK_Serverless: "⚡ AWS Lambda serverless\n🔒 HIPAA compliant\n📊 Auto-scaling pay-per-use\n💰 $200-500/month"
-note over CDK_Infrastructure: "🏗️ Infrastructure as Code\n🔒 CDK Python deployment\n⚡ 9-agent Lambda architecture\n🌐 autonomos.dev production"
-note over AWS_Serverless_Security: "🛡️ Serverless HIPAA services\n🔐 Lambda execution roles\n📋 DynamoDB audit trail\n🎯 Medical compliance"
+// Management Flow
+CloudWatch_Monitoring > Cost_Management: "Cost optimization"
+HIPAA_Security > CloudWatch_Monitoring: "Security audit logging"
+
+// Deployment Notes
+note over Local_Development: "REAL SETUP COMMANDS\n• ./install.sh (complete setup)\n• python launch_fastapi_web.py\n• cdk deploy VigiaStack\n• 863-line production stack"
+
+note over AWS_CDK_Stack: "PRODUCTION AWS STACK\n• 9 Lambda functions (1-3GB)\n• Step Functions 45-min workflow\n• 3 DynamoDB tables + S3\n• $200-500/month serverless"
+
+note over Professional_Domains: "PROFESSIONAL DOMAINS\n• autonomos.dev (S3 landing)\n• vigia.autonomos.dev (medical)\n• SSL certificates + DNS\n• Agent Smith theme"
+
+note over AgentOps_Monitoring: "PRODUCTION MONITORING\n• HIPAA-compliant telemetry\n• 9-agent performance tracking\n• Medical error escalation\n• Real-time dashboards"
 ```
 
-## Notas Clave
-- **CDK Serverless Architecture**: AWS Lambda + Step Functions + DynamoDB deployment
-- **Local-First Design**: Desarrollo completo local con `./install.sh` + CDK commands
-- **Infrastructure as Code**: CDK Python stack con deployment automatizado
-- **Production Domain**: autonomos.dev live con S3 static website + CloudFront CDN
-- **HIPAA Serverless**: Lambda execution roles, DynamoDB encryption, complete audit trail
-- **Cost Efficient**: Pay-per-use serverless pricing ($200-500/month vs $1,275-2,020)
+## Notas Clave - Real Deployment Infrastructure
+- **AWS CDK Stack**: vigia_stack.py with 863 lines, 9 Lambda functions deployed
+- **Professional Domains**: autonomos.dev + vigia.autonomos.dev with SSL certificates
+- **Container Deployment**: FastAPI optimized containers on Lambda
+- **AgentOps Monitoring**: HIPAA-compliant telemetry for all 9 agents
+- **3 DynamoDB Tables**: agents-state, medical-audit, lpp-results with encryption
+- **CloudWatch Monitoring**: Medical dashboards + SNS alerts
+- **Cost Efficiency**: $200-500/month serverless vs $1,275-2,020 containers
 
 ## Para Editar
 1. Copia el código anterior

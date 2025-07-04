@@ -1,159 +1,199 @@
-# VIGIA Medical AI - AWS DynamoDB Data Model
+# VIGIA Medical AI - Data Model (PHI TOKENIZATION FOCUSED)
 
 ## Objetivo
-Esquema DynamoDB para sistema médico serverless: PHI tokenización con KMS, sesiones médicas con TTL, Lambda execution state y audit trail para compliance HIPAA.
+Batman Tokenization System: Bruce Wayne → Batman tokens sin PHI. 3 DynamoDB tables + 15-minute TTL + KMS encryption. Enfoque en flujo de tokenización HIPAA-compliant.
 
 ## Código Eraser.io
 ```
 colorMode bold
 styleMode shadow
+direction down
 
-// PHI Tokenization Tables
-phi_patients [icon: user, color: blue] {
-  id string pk
-  hospital_mrn string unique
-  real_name string encrypted
-  date_of_birth date encrypted
-  medical_record_number string
-  created_at timestamp
-  updated_at timestamp
+// PHI Tokenization Flow - Core System
+PHI_Tokenization_System [icon: shield, color: red] {
+  input_mrn: "MRN-2025-001-BW"
+  patient_name: "Bruce Wayne"
+  output_token: "BATMAN_TC001"
+  patient_alias: "Batman"
+  ttl_minutes: 15
+  kms_encrypted: true
+  hipaa_compliant: true
 }
 
-batman_tokens [icon: key, color: red] {
-  id string pk
-  token_id string unique
-  patient_id < phi_patients.id
-  batman_alias string
-  session_timeout timestamp
-  created_at timestamp
-  is_active boolean
+// DynamoDB Table 1: vigia-agents-state (Session Management)
+vigia_agents_state [icon: aws-dynamodb, color: green] {
+  // Primary Key
+  batman_token: "BATMAN_TC001" [pk]
+  agent_timestamp: 1704038400 [sk]
+  
+  // Agent Information
+  agent_id: "master_orchestrator"
+  agent_type: "coordination"
+  agent_status: "processing"
+  lambda_function_name: "vigia-master-orchestrator"
+  
+  // Processing State
+  execution_state: {
+    "current_step": "image_analysis",
+    "completed_agents": ["master"],
+    "pending_agents": ["image", "voice", "monai"]
+  }
+  step_functions_arn: "arn:aws:states:us-east-1:123456789012:execution:vigia-workflow:BATMAN_TC001"
+  
+  // Performance Metrics
+  memory_size_mb: 3008
+  timeout_minutes: 15
+  confidence_score: 0.94
+  
+  // TTL Management
+  ttl_timestamp: 1704039300 [ttl]
+  created_at: "2024-01-01T00:00:00Z"
 }
 
-// Medical Session Management
-medical_sessions [icon: clock, color: orange] {
-  id string pk
-  token_id < batman_tokens.token_id
-  session_state string
-  session_type string
-  priority_level string
-  timeout_at timestamp
-  created_at timestamp
-  metadata json
+// DynamoDB Table 2: vigia-medical-audit (HIPAA Compliance)
+vigia_medical_audit [icon: aws-dynamodb, color: orange] {
+  // Primary Key
+  audit_id: "AUDIT_BATMAN_TC001_001" [pk]
+  audit_timestamp: 1704038400 [sk]
+  
+  // Batman Token Reference
+  batman_token: "BATMAN_TC001"
+  
+  // Medical Actions
+  audit_type: "medical_analysis"
+  medical_action: "pressure_injury_detection"
+  agent_name: "diagnostic_agent"
+  
+  // Clinical Results
+  medical_grade: "LPP_GRADE_2"
+  confidence_level: 0.87
+  clinical_recommendations: {
+    "immediate_action": "wound_care_protocol",
+    "follow_up": "24_hour_reassessment"
+  }
+  
+  // Communication Tracking
+  emergency_escalation: false
+  medical_team_notified: true
+  slack_notification_sent: true
+  whatsapp_response_sent: true
+  
+  // HIPAA Compliance
+  hipaa_audit_trail: {
+    "phi_tokenization_method": "batman_system",
+    "data_encryption": "kms_aes_256",
+    "access_controls": "rbac_medical_staff"
+  }
+  kms_data_key_id: "alias/vigia-medical-data"
+  
+  // AgentOps Integration
+  agentops_session_id: "ao_session_batman_tc001"
+  
+  created_at: "2024-01-01T00:00:00Z"
 }
 
-// Medical Analysis Results
-agent_analyses [icon: brain, color: purple] {
-  id string pk
-  session_id < medical_sessions.id
-  agent_name string
-  analysis_type string
-  confidence_score float
-  medical_findings json
-  recommendations json
-  processing_time_ms integer
-  created_at timestamp
+// DynamoDB Table 3: vigia-lpp-results (Medical Analysis)
+vigia_lpp_results [icon: aws-dynamodb, color: purple] {
+  // Primary Key
+  case_id: "CASE_BATMAN_TC001" [pk]
+  analysis_timestamp: 1704038400 [sk]
+  
+  // Batman Token Reference
+  batman_token: "BATMAN_TC001"
+  
+  // Medical Analysis Results
+  lpp_grade: 2
+  lpp_confidence: 0.87
+  anatomical_location: "sacral_region"
+  
+  // Multi-Agent Analysis
+  image_analysis_results: {
+    "agent": "image_analysis_agent",
+    "wound_dimensions": "2.5cm x 1.8cm",
+    "tissue_type": "partial_thickness",
+    "monai_confidence": 0.89
+  }
+  voice_analysis_results: {
+    "agent": "voice_analysis_agent",
+    "pain_level": "moderate_6_10",
+    "hume_ai_confidence": 0.92,
+    "emotional_state": "concerned"
+  }
+  
+  // Clinical Assessment
+  clinical_assessment: {
+    "agent": "clinical_assessment_agent",
+    "npuap_classification": "Stage_II",
+    "healing_prognosis": "good_with_treatment"
+  }
+  
+  // Treatment Protocol
+  intervention_urgency: "routine_care"
+  treatment_recommendations: {
+    "wound_care": "hydrocolloid_dressing",
+    "repositioning": "every_2_hours",
+    "nutrition": "protein_supplementation"
+  }
+  
+  // S3 Storage References
+  medical_images_s3_paths: {
+    "original": "s3://vigia-medical-data/BATMAN_TC001/images/",
+    "analyzed": "s3://vigia-medical-data/BATMAN_TC001/analysis/"
+  }
+  
+  // Performance Tracking
+  total_processing_time_seconds: 154
+  agentops_performance_data: {
+    "session_id": "ao_session_batman_tc001",
+    "agent_performance": "high",
+    "system_efficiency": 0.94
+  }
+  
+  kms_encryption_key_id: "alias/vigia-medical-data"
+  created_at: "2024-01-01T00:00:00Z"
 }
 
-// Image Processing Data
-medical_images [icon: camera, color: green] {
-  id string pk
-  session_id < medical_sessions.id
-  image_path string
-  image_metadata json
-  preprocessing_applied json
-  storage_location string
-  created_at timestamp
-  processed_at timestamp
+// Batman Token TTL Management
+Batman_Token_TTL [icon: clock, color: yellow] {
+  token_id: "BATMAN_TC001"
+  created_at: "2024-01-01T00:00:00Z"
+  expires_at: "2024-01-01T00:15:00Z"
+  ttl_seconds: 900
+  cleanup_status: "active"
+  
+  // Automatic Cleanup
+  cleanup_trigger: "ttl_expiration"
+  phi_data_deleted: true
+  tokens_invalidated: true
+  audit_trail_preserved: true
 }
 
-// CV Pipeline Results
-cv_detections [icon: eye, color: blue] {
-  id string pk
-  image_id < medical_images.id
-  detection_engine string
-  detected_objects json
-  confidence_scores json
-  bounding_boxes json
-  medical_classification string
-  created_at timestamp
-}
+// Data Flow - PHI Tokenization
+PHI_Tokenization_System > vigia_agents_state: "Batman tokens only"
+vigia_agents_state > vigia_medical_audit: "batman_token FK"
+vigia_medical_audit > vigia_lpp_results: "case_id FK"
+Batman_Token_TTL > PHI_Tokenization_System: "15-minute cleanup"
 
-// Medical Decision Engine
-medical_decisions [icon: medical, color: red] {
-  id string pk
-  session_id < medical_sessions.id
-  decision_type string
-  npuap_grade string
-  clinical_recommendations json
-  evidence_level string
-  urgency_level string
-  created_at timestamp
-  reviewed_by string
-}
+// Security Notes
+note over PHI_Tokenization_System: "BATMAN TOKENIZATION\n• Bruce Wayne → Batman\n• Zero PHI in processing\n• 15-minute TTL cleanup\n• KMS encryption required"
 
-// Communication Log
-communication_log [icon: mobile, color: green] {
-  id string pk
-  session_id < medical_sessions.id
-  channel_type string
-  direction string
-  message_content text encrypted
-  recipient_info json
-  sent_at timestamp
-  delivered_at timestamp
-  read_at timestamp
-}
+note over vigia_agents_state: "AGENT SESSION MANAGEMENT\n• Batman tokens as primary keys\n• 9 agents write execution state\n• Step Functions coordination\n• TTL automatic cleanup"
 
-// Audit Trail for HIPAA
-audit_trail [icon: clipboard, color: orange] {
-  id string pk
-  session_id < medical_sessions.id
-  action_type string
-  actor_id string
-  actor_type string
-  action_details json
-  ip_address string
-  user_agent string
-  created_at timestamp
-}
+note over vigia_medical_audit: "HIPAA AUDIT TRAIL\n• Complete compliance logging\n• AgentOps integration\n• Medical team notifications\n• Legal evidence documentation"
 
-// Medical Team Management
-medical_teams [icon: users, color: purple] {
-  id string pk
-  team_name string
-  slack_channel_id string
-  specialization string
-  on_call_schedule json
-  created_at timestamp
-}
+note over vigia_lpp_results: "MEDICAL ANALYSIS STORAGE\n• Multi-agent fusion results\n• NPUAP/EPUAP compliance\n• Treatment recommendations\n• Performance metrics"
 
-medical_team_members [icon: user, color: blue] {
-  id string pk
-  team_id < medical_teams.id
-  user_id string
-  role string
-  slack_user_id string
-  phone_number string encrypted
-  created_at timestamp
-}
-
-// Relationships
-phi_patients - batman_tokens: "1:many"
-batman_tokens - medical_sessions: "1:many" 
-medical_sessions - agent_analyses: "1:many"
-medical_sessions - medical_images: "1:many"
-medical_sessions - medical_decisions: "1:many"
-medical_sessions - communication_log: "1:many"
-medical_sessions - audit_trail: "1:many"
-medical_images - cv_detections: "1:many"
-medical_teams - medical_team_members: "1:many"
+note over Batman_Token_TTL: "AUTOMATIC PHI CLEANUP\n• 15-minute session timeout\n• Complete data deletion\n• Audit trail preservation\n• Zero PHI retention"
 ```
 
-## Notas Clave
-- **PHI Separation**: Datos reales (phi_patients) completamente separados de tokens de procesamiento (batman_tokens)
-- **Session Management**: Timeouts de 15 minutos con estados médicos específicos
-- **Complete Audit Trail**: Cada acción médica registrada para compliance HIPAA
-- **Multi-Agent Results**: Análisis de 9 agentes especializados con confidence scores
+## Notas Clave - PHI Tokenization Data Model
+- **Batman Tokenization**: Bruce Wayne → Batman tokens, zero PHI in processing
+- **15-Minute TTL**: Automatic cleanup prevents PHI retention
+- **3 DynamoDB Tables**: Real CDK deployment with batman_token primary keys
+- **KMS Encryption**: All medical data encrypted with AWS KMS keys
+- **HIPAA Compliance**: Complete audit trail with tokenization method tracking
+- **AgentOps Integration**: Performance telemetry in medical-audit table
+- **Multi-Agent Results**: 9 agents write analysis results to lpp-results table
 
 ## Para Editar
 1. Copia el código anterior

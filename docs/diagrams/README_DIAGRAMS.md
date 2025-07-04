@@ -1,180 +1,174 @@
-# 📊 VIGIA Medical AI - AWS Serverless Architecture Diagrams
+# 📊 VIGIA Medical AI v1.0 - Architecture Diagrams (CORRECTED)
 
 ## 🎯 Objetivo
 
-Esta colección de 7 diagramas esenciales te permite entender **VIGIA Medical AI AWS Serverless** en 30 minutos máximo. Cada diagrama refleja la arquitectura serverless productiva con Lambda + Step Functions + DynamoDB, optimizado usando sintaxis nativa de Eraser.io para máxima claridad y facilidad de edición.
+Collection of 6 corrected diagrams showing **real VIGIA Medical AI production system**. Each diagram reflects the **actual deployed architecture** with AWS CDK: 9 Lambda agents + Batman PHI tokenization + AgentOps monitoring + professional domains (autonomos.dev). All diagrams fixed to eliminate architectural inconsistencies.
 
 ---
 
 ## 📋 Índice de Diagramas
 
 ### 1. 🏗️ [System Overview](./01_system_overview.eraser)
-**⏱️ Tiempo de comprensión: 5 minutos**
+**⏱️ Reading time: 5 minutes**
 
-**Cuándo usar:**
-- Nuevos desarrolladores en el proyecto
-- Presentaciones ejecutivas
-- Onboarding médico-técnico
-- Demos rápidos del sistema
+**When to use:**
+- New developers joining project
+- Executive presentations  
+- Medical-technical onboarding
+- System demos
 
-**Qué muestra:**
-- AWS serverless architecture completa (Lambda + Step Functions + DynamoDB)
-- PHI tokenización con KMS encryption (Bruce Wayne → Batman)
-- 9 Lambda agents especializados con A2A coordination
-- Comunicación bidireccional WhatsApp ↔ Slack + autonomos.dev frontend
+**What it shows:**
+- **Real deployed system**: 9 Lambda agents (realistic 1-3GB memory) with Step Functions
+- **Professional domains**: autonomos.dev + vigia.autonomos.dev with SSL certificates
+- **Batman PHI tokenization**: Bruce Wayne → Batman tokens, zero PHI in processing
+- **AgentOps monitoring**: HIPAA-compliant telemetry integrated throughout
+- **Cost efficiency**: $200-500/month serverless vs $1,275+ containers
 
 ---
 
 ### 2. ⚙️ [Technical Architecture](./02_technical_architecture.eraser)
-**⏱️ Tiempo de comprensión: 8 minutos**
+**⏱️ Reading time: 8 minutes**
 
-**Cuándo usar:**
-- Decisiones de arquitectura técnica
-- Code reviews estructurales
-- Planning de escalabilidad
-- Evaluación de stack tecnológico
+**When to use:**
+- Technical architecture decisions
+- Code reviews
+- Scalability planning
+- Technology stack evaluation
 
-**Qué muestra:**
-- 3-Layer AWS Serverless Security Design (API Gateway → Step Functions → Lambda)
-- Step Functions A2A coordination protocol
-- AWS AI Stack (Bedrock + SageMaker MONAI + Transcribe Medical)
-- HIPAA serverless compliance architecture
+**What it shows:**
+- **Simplified AWS stack**: No artificial layers, real component groups
+- **9 Lambda agents**: Real memory allocations (1-3GB) without duplications
+- **Unified monitoring**: AgentOps primary + CloudWatch backup
+- **External AI clear**: Each service used by specific agents
+- **Direct workflow**: Step Functions coordination without complex connections
 
 ---
 
 ### 3. 🔄 [Critical User Flow](./03_critical_user_flow.eraser)
-**⏱️ Tiempo de comprensión: 7 minutos**
+**⏱️ Reading time: 7 minutes**
 
-**Cuándo usar:**
-- Testing de flujos críticos
-- Debugging de experiencia médica
-- Optimización de performance
-- Validación de procesos médicos
+**When to use:**
+- Critical flow testing
+- Medical experience debugging
+- Performance optimization
+- Medical process validation
 
-**Qué muestra:**
-- AWS serverless happy path: paciente → API Gateway → Step Functions → Lambda agents
-- Step Functions parallel execution de 9 Lambda medical agents
-- DynamoDB state management con KMS encryption
-- Sub-3 minutos serverless response time
+**What it shows:**
+- **Pure user experience**: Patient → Analysis → Medical response (no technical details)
+- **Realistic communication**: "Dr. Smith en camino" vs "batman_TC001"
+- **3-phase flow**: Input → Process → Output without parallel/sequential confusion
+- **Human actors**: Patient, WhatsApp, VIGIA System, Dr. Smith, Medical Team
+- **Timeline**: 3 minutes total from image to medical response
 
 ---
 
 ### 4. 💾 [Data Model](./04_data_model.eraser)
-**⏱️ Tiempo de comprensión: 6 minutos**
+**⏱️ Reading time: 6 minutes**
 
-**Cuándo usar:**
+**When to use:**
 - Database schema updates
 - HIPAA compliance audits
 - Data migration planning
 - PHI security reviews
 
-**Qué muestra:**
-- DynamoDB PHI tokenización schema con KMS encryption
-- Lambda execution state management con TTL
-- S3 + DynamoDB agent analysis results storage
-- Complete serverless audit trail structure
+**What it shows:**
+- **Batman tokenization focus**: Bruce Wayne → Batman tokens with 15-minute TTL
+- **3 DynamoDB tables**: Real CDK deployment with batman_token primary keys
+- **KMS encryption**: All medical data encrypted with AWS KMS keys
+- **HIPAA compliance**: Complete audit trail with tokenization method tracking
+- **Multi-agent results**: 9 agents write analysis results to structured tables
 
 ---
 
 ### 5. 🔌 [External Integrations](./05_external_integrations.eraser)
-**⏱️ Tiempo de comprensión: 5 minutos**
+**⏱️ Reading time: 5 minutes**
 
-**Cuándo usar:**
-- Risk assessment de dependencias
-- SLA planning y monitoring
+**When to use:**
+- Dependency risk assessment
+- SLA planning and monitoring
 - Backup strategy design
 - Cost optimization analysis
 
-**Qué muestra:**
-- AWS Serverless Services (Lambda, DynamoDB, Step Functions, API Gateway)
-- External APIs con Lambda integration (Hume AI + Slack + WhatsApp)
-- Cost analysis serverless ($200-500/month vs $1,275-2,020)
-- Serverless fallback mechanisms
+**What it shows:**
+- **Real external services**: Hume AI (92% pain detection), AWS Bedrock, AgentOps
+- **Cost analysis**: $225-581/month vs $1,275-2,020 containers (82% savings)
+- **Risk mitigation**: Local fallbacks for all external dependencies
+- **Communication integration**: WhatsApp patient + Slack medical team
+- **Professional domains**: autonomos.dev + vigia.autonomos.dev with SSL
 
 ---
 
 ### 6. 🚀 [Deployment Infrastructure](./06_deployment_infrastructure.eraser)
-**⏱️ Tiempo de comprensión: 8 minutos**
+**⏱️ Reading time: 8 minutes**
 
-**Cuándo usar:**
+**When to use:**
 - Production deployment planning
 - DevOps configuration
 - Infrastructure scaling
 - Security hardening
 
-**Qué muestra:**
-- AWS CDK infrastructure-as-code deployment (`cdk deploy VigiaStack`)
-- Serverless production architecture (Lambda + Step Functions + DynamoDB)
-- autonomos.dev domain setup con S3 static website + CloudFront
-- HIPAA serverless infrastructure compliance
+**What it shows:**
+- **Real CDK deployment**: vigia_stack.py with 863 lines, 9 Lambda functions
+- **Professional domains**: autonomos.dev + vigia.autonomos.dev with SSL certificates
+- **Container deployment**: FastAPI optimized containers on Lambda
+- **AgentOps monitoring**: HIPAA-compliant telemetry for all 9 agents
+- **Cost efficiency**: $200-500/month serverless infrastructure
 
 ---
 
-### 7. 📊 [Entity States](./07_entity_states.eraser)
-**⏱️ Tiempo de comprensión: 6 minutos**
-
-**Cuándo usar:**
-- State machine debugging
-- Medical workflow optimization
-- Timeout management tuning
-- Emergency escalation testing
-
-**Qué muestra:**
-- DynamoDB medical session lifecycle con TTL (15-min timeout)
-- Step Functions emergency state transitions (Grade 4 → 30-min extension)
-- Lambda 9-agent coordination states
-- DynamoDB HIPAA audit trail completion
+## ❌ Diagram Removed
+**07_entity_states.eraser** was removed during architectural correction as it contained redundant state information already covered in the data model and technical architecture diagrams.
 
 ---
 
-## 🛠️ Cómo Usar Estos Diagramas
+## 🛠️ How to Use These Diagrams
 
-### 📖 Para Lectura
-1. **Nuevos en el proyecto**: Empieza con `01_system_overview`
-2. **Developers técnicos**: Continúa con `02_technical_architecture` 
-3. **Testing/QA**: Focus en `03_critical_user_flow`
-4. **Database/Data**: Revisa `04_data_model`
-5. **DevOps/Infrastructure**: Estudia `06_deployment_infrastructure`
+### 📖 For Reading
+1. **New to project**: Start with `01_system_overview`
+2. **Technical developers**: Continue with `02_technical_architecture` 
+3. **Testing/QA**: Focus on `03_critical_user_flow`
+4. **Database/Data**: Review `04_data_model`
+5. **DevOps/Infrastructure**: Study `06_deployment_infrastructure`
 
-### ☁️ Para AWS Deployment Context
-1. **Production Architecture**: Todos los diagramas reflejan AWS serverless production
+### ☁️ For AWS Deployment Context
+1. **Production Architecture**: All diagrams reflect real AWS serverless deployment
 2. **Cost Analysis**: $200-500/month serverless vs $1,275-2,020/month containers
-3. **Domain Configuration**: autonomos.dev live con S3 + CloudFront + Route53
-4. **CDK Deployment**: Infrastructure-as-code con `cdk deploy VigiaStack`
+3. **Domain Configuration**: autonomos.dev live with S3 + CloudFront + Route53
+4. **CDK Deployment**: Infrastructure-as-code with `cdk deploy VigiaStack`
 
-### ✏️ Para Editar en Eraser.io
-1. **Abre cualquier archivo `.eraser`**
-2. **Copia el contenido del código**
-3. **Ve a [eraser.io](https://eraser.io)**
-4. **Crea nuevo diagrama** → Diagram-as-code
-5. **Pega el código** y edita visualmente
-6. **Exporta** o guarda cambios
+### ✏️ For Editing in Eraser.io
+1. **Open any `.eraser` file**
+2. **Copy the code content**
+3. **Go to [eraser.io](https://eraser.io)**
+4. **Create new diagram** → Diagram-as-code
+5. **Paste code** and edit visually
+6. **Export** or save changes
 
-### 🔄 Para Actualizar
-Cuando hagas cambios significativos al código:
+### 🔄 For Updates
+When making significant code changes:
 
-1. **Identifica diagramas afectados**:
+1. **Identify affected diagrams**:
    - New Lambda agents → `01_system_overview` + `02_technical_architecture`
    - New AWS services → `05_external_integrations` + `06_deployment_infrastructure`
    - DynamoDB schema changes → `04_data_model`
-   - Step Functions workflow changes → `03_critical_user_flow` + `07_entity_states`
+   - Step Functions workflow changes → `03_critical_user_flow`
    - CDK infrastructure changes → `06_deployment_infrastructure`
 
-2. **Actualiza código Eraser.io**:
-   - Mantén sintaxis exacta de Eraser.io
-   - Usa iconos disponibles únicamente
-   - Preserva colores y styling consistente
+2. **Update Eraser.io code**:
+   - Maintain exact Eraser.io syntax
+   - Use only available icons
+   - Preserve consistent colors and styling
 
-3. **Valida funcionamiento**:
-   - Prueba código en eraser.io
-   - Verifica que compile sin errores
-   - Mantén claridad visual
+3. **Validate functionality**:
+   - Test code in eraser.io
+   - Verify compilation without errors
+   - Maintain visual clarity
 
 ---
 
-## 🎨 Guía de Estilo Eraser.io
+## 🎨 Eraser.io Style Guide
 
-### **Iconos Estándar VIGIA + AWS**
+### **VIGIA + AWS Standard Icons**
 ```
 - Medical: medical, stethoscope, hospital
 - Users: user, users, admin
@@ -190,7 +184,7 @@ Cuando hagas cambios significativos al código:
 - Monitoring: monitor, chart, graph
 ```
 
-### **Colores Consistentes**
+### **Consistent Colors**
 ```
 - Medical Critical: red
 - AI/Processing: purple
@@ -201,19 +195,19 @@ Cuando hagas cambios significativos al código:
 - External Services: gray
 ```
 
-### **Sintaxis Patterns**
+### **Syntax Patterns**
 ```
-// Grupos con servicios
+// Service groups
 Group_Name [icon: icon, color: color] {
   Service1 [icon: service_icon]
   Service2 [icon: service_icon]
 }
 
-// Conexiones con contexto
+// Connections with context
 Service1 > Service2: "Action description"
 Service1 <> Service2: "Bidirectional"
 
-// Properties críticas
+// Critical properties
 Service [icon: icon, color: color] {
   risk_level: "HIGH"
   uptime: "99.9%"
@@ -225,39 +219,41 @@ Service [icon: icon, color: color] {
 
 ## 🚨 Maintenance Guidelines
 
-### **Cuando Actualizar (AWS Serverless Context)**
+### **When to Update (Production v1.0)**
 - ✅ **New Lambda medical agents**: Update `01_system_overview` + `02_technical_architecture`
-- ✅ **DynamoDB schema changes**: Update `04_data_model` + `07_entity_states`
-- ✅ **New AWS services**: Update `05_external_integrations` + `06_deployment_infrastructure`
+- ✅ **DynamoDB schema changes**: Update `04_data_model`
+- ✅ **AgentOps integration changes**: Update ALL diagrams (integrated throughout)
+- ✅ **Domain/SSL updates**: Update `06_deployment_infrastructure` + `05_external_integrations`
 - ✅ **Step Functions workflow modifications**: Update `03_critical_user_flow`
-- ✅ **CDK infrastructure changes**: Update `06_deployment_infrastructure`
-- ✅ **Cost optimization updates**: Update `05_external_integrations`
-- ✅ **Domain/DNS changes**: Update `06_deployment_infrastructure` + `05_external_integrations`
+- ✅ **Multimodal analysis features**: Update `03_critical_user_flow` + `01_system_overview`
+- ✅ **Cost optimization updates**: Update `05_external_integrations` (real production costs)
 
 ### **Validation Checklist**
-- [ ] Código compila en eraser.io sin errores
-- [ ] Iconos son válidos y disponibles
-- [ ] Colores siguen guía de estilo
-- [ ] Conexiones tienen labels descriptivos
-- [ ] Notes incluyen información crítica
-- [ ] Timing estimates son realistas
+- [ ] Code compiles in eraser.io without errors
+- [ ] Icons are valid and available
+- [ ] Colors follow style guide
+- [ ] Connections have descriptive labels
+- [ ] Notes include critical information
+- [ ] Timing estimates are realistic
 
 ---
 
 ## 📞 Support
 
-**¿Questions sobre los diagramas?**
-- 📖 **Docs**: Lee el `README.md` principal
-- 🔧 **Technical**: Revisa `CLAUDE.md` para development context
-- 🏥 **Medical**: Consulta `docs/ARCHITECTURE.md` para detalles médicos
+**Questions about diagrams?**
+- 📖 **Docs**: Read main `README.md`
+- 🔧 **Technical**: Check `CLAUDE.md` for development context
+- 🏥 **Medical**: Consult `docs/ARCHITECTURE.md` for medical details
 
-**Para contribuir:**
-1. Actualiza diagramas usando sintaxis Eraser.io exacta
-2. Mantén consistency con guía de estilo
-3. Valida funcionamiento en eraser.io
-4. Actualiza este README si añades nuevos diagramas
+**To contribute:**
+1. Update diagrams using exact Eraser.io syntax
+2. Maintain consistency with style guide
+3. Validate functionality in eraser.io
+4. Update this README if adding new diagrams
 
 ---
 
-**🩺 Built for medical understanding. AWS serverless production-ready. Optimized for Eraser.io documentation. 
-☁️ Deployed at autonomos.dev with CDK infrastructure-as-code.**
+**🩺 VIGIA Medical AI v1.0 - Corrected diagrams reflect real deployed system.**  
+**☁️ Live at autonomos.dev + vigia.autonomos.dev with 9 Lambda agents + AgentOps monitoring.**  
+**📊 Updated 2025-07-04 - All 6 diagrams corrected to eliminate architectural inconsistencies.**  
+**✅ Fixed: Realistic Lambda memory, Batman PHI tokenization, unified monitoring, simplified flows.**
