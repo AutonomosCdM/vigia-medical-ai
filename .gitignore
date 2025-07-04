@@ -193,3 +193,11 @@ dataset_integration_*.json
 voice_integration_test_report.json
 hume_ai_test_report.json
 TESTING_RESULTS.md
+validation_report.json
+agentops.log
+.env.testing
+
+# Docker build artifacts
+Dockerfile.minimal
+Dockerfile.optimized
+Dockerfile.ultra-minimal

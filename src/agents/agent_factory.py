@@ -33,8 +33,7 @@ from src.agents.monai_review_agent import MonaiReviewAgent
 from src.agents.diagnostic_agent import DiagnosticAgent
 from src.agents.voice_analysis_agent import VoiceAnalysisAgent
 
-# Import ADK agents
-from src.agents.communication_agent_adk import CommunicationAgentADKFactory
+# ADK agent removed - using standard communication agent
 
 # Import orchestrator
 from src.agents.master_medical_orchestrator import MasterMedicalOrchestrator
